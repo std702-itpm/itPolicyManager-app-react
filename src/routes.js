@@ -19,6 +19,7 @@ import ReviewPage from "views/dashboardUserSubPage/reviewPage.jsx";
 import DisplayPolicy from "views/commonPage/DisplayPolicy.jsx";
 import printPreview from "views/commonPage/printPreview.jsx";
 import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
+import Assessment from "views/dashboardAdminSubPage/Assessment";
   const userType = localStorage.getItem('session_type');
   const userLogo = localStorage.getItem('session_logo');
   console.log("userLogo" + userLogo);
@@ -74,6 +75,16 @@ var routesAdmin = [{
     name2:"Questions",
     icon: "nc-icon nc-paper",
     component: Questions,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+
+  {
+    path: "/edit-assessment",
+    name: "Assessment",
+    name2:"Assessment",
+    icon: "nc-icon nc-paper",
+    component: Assessment,
     sidebar: true,
     layout: "/dashboard"
   },

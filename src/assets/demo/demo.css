@@ -636,6 +636,20 @@
   padding-bottom: 0;
 }
 
+.policies-list{
+  margin: 0 auto;
+}
+
+.policies-list ul > li{
+  display: inline-block;
+  margin-left: 2px;
+  padding: 20px;
+}
+
+.landing-section{
+  background: 
+}
+
 @media screen and (max-width: 991px) {
   .section-navbars .navbar-collapse {
     display: none !important;

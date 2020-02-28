@@ -52,9 +52,7 @@ class LandingPage extends React.Component {
 
   policyList() {
     return this.state.landingPolicies.map(function(policy, index){
-      if(!(policy.policy_name==="No match policy")){
         return <li><a className="btn btn-primary" href={"policy-view/" + policy._id}> {policy.policy_name}</a></li>;
-      }
     })
   }
 
@@ -261,4 +259,4 @@ class LandingPage extends React.Component {
 
 // }
 
-export default LandingPage;
+export default policyList;

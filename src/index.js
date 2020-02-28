@@ -21,6 +21,7 @@ import Modal from "views/landingSubPage/RegModal.js";
 import Dashboard from "views/Dashboard.jsx";
 import PaySubscription from 'views/commonPage/PaySubscription.js';
 import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
+import PolicyView from "views/PolicyView";
 // others
 
 ReactDOM.render(
@@ -29,6 +30,9 @@ ReactDOM.render(
       <Route 
         path="/landing-page" 
         render={props => <LandingPage  {...props} />} />
+      <Route 
+        exact path="/policy-view/:id" 
+        render={props => <PolicyView  {...props} />} />
       {/* <Route
         path="/profile-page"
         render={props => <ProfilePage {...props} />}
