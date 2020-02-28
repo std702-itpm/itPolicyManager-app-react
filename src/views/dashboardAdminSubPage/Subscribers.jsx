@@ -1,6 +1,8 @@
-
 import React from "react";
 import Axios from "axios";
+import editSubscriber from "../commonPage/addNewSubscriber.jsx";
+import Policies from "../commonPage/EditProfile.jsx";
+
 
 // reactstrap components
 import {
@@ -14,12 +16,17 @@ import {
   Col,
   Modal,
 } from "reactstrap";
+import RegModal from "views/commonPage/addNewSubscriber.jsx";
+import { toast } from "react-toastify";
 
 class Subscribers extends React.Component {
   constructor(props) {
     super(props);
 
     this.openModal = this.openModal.bind(this);
+    this.openModal1=this.openModal1.bind(this);
+    this.openModal2=this.openModal2.bind(this);
+    this.onDeleteClick=this.onDeleteClick.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.displaySubscribers = this.displaySubscribers.bind(this);
     this.displayDetails = this.displayDetails.bind(this);
@@ -27,7 +34,9 @@ class Subscribers extends React.Component {
       companies: [],
       modal: false,
       index: "",
-      company: []
+      company: [],
+      btnName:"",
+      subscriberId:""
     };
   }
 
@@ -44,6 +53,59 @@ class Subscribers extends React.Component {
         console.log(error);
       });
   }
+
+  openModal1(){
+    this.setState({
+      modal: true,
+      btnName:""
+    });
+    return(
+      <editSubscriber/>
+    );
+  }
+
+  openModal2(index){
+    this.setState({
+      modal: true,
+      btnName:"edit",
+      subscriberId:index
+    });
+    return(
+      <Policies/>  
+    )
+}
+
+onDeleteClick(subscriberId){
+  console.log(subscriberId);
+  const subscriberDetails={
+    companyId:subscriberId,
+    status:false,
+  };
+  if(window.confirm("Are you sure you want to remove this subscriber permanently?")){
+    Axios.post("http://localhost:5000/deleteprofile",subscriberDetails).then(
+      res=>{
+        if(res.data.status==="success"){
+          toast("Deleted successfully!",{
+            type:"success",
+            position:toast.POSITION.TOP_CENTER,
+            onClose:()=>{window.location.reload();}
+          });          
+        }
+        else{
+          toast("Something went wrong!!!",{
+            type:"error",
+            position:toast.POSITION.TOP_CENTER,
+            onClose:()=>{window.location.reload();}
+          });
+        }
+      }
+    )
+  }
+  else{
+    window.location.reload();
+  }
+
+}
 
   displaySubscribers() {
     return this.state.companies.map((company, index) => {
@@ -66,11 +128,30 @@ class Subscribers extends React.Component {
                       className="btn-round"
                       style={{'marginRight':'7px'}}
                       color="info"
-                      onClick={() => this.openModal(index)}
+                      onClick={e=> this.openModal(index)}
                       title="to details Modal"
                       type="button"
+                      id="details"
+                      name="details"
                   >
                       Details
+                  </Button>
+                  <Button
+                      className="btn-round btn-warning"
+                      style={{'marginRight':'7px'}}
+                      type="button"
+                      onClick={()=>this.openModal2(company._id)}                      
+                  >
+                    <i className="pencil icon"/>
+                    Edit
+                  </Button>
+                  <Button
+                      className="btn-round btn-danger"
+                      style={{'marginRight':'7px'}}
+                      type="button"
+                      onClick={()=>this.onDeleteClick(company._id)}
+                  >
+                    Delete
                   </Button>
               </td>
             </tr>
@@ -83,17 +164,39 @@ class Subscribers extends React.Component {
       }
     });
   }
-
-
   openModal(index){
     this.setState({
       modal: !this.state.modal,
       index: index,
-      company:this.state.companies[index] 
+      company:this.state.companies[index],
+      btnName:"details"
     });
     console.log(this.state.companies[index].company_name)
   }
 
+  showModal(){
+    return(
+      <div>
+              <div  className="modal-header">
+          <button
+            aria-label="Close"
+            className="close"
+            type="button"
+            onClick={this.toggleModal}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+                  <h5
+                      className="modal-title text-center"
+                      id="exampleModalLabel"
+                  >
+                  <h4>New Subscriber</h4>
+                  </h5>
+              </div>
+              <RegModal/>
+              </div>
+    );
+  }
   displayDetails() {
     console.log(this.state.company)
     return(
@@ -128,43 +231,18 @@ class Subscribers extends React.Component {
           <label>
             <strong>Description:</strong> {this.state.company.description}
           </label><br></br>
-        </div>
-        <div className="modal-footer">
-          <div>
-            <Button
-              className="btn-round"
-              outline
-              color="default"
-              type="button"
-            >
-              <i className="nc-icon nc-ruler-pencil" style={{fontSize: "15px", color: "info"}}/>
-              Edit
-            </Button>
-          </div>
-          <div>
-            <Button 
-              className="btn-round" 
-              outline
-              color="danger" 
-              type="button">
-              <i className="nc-icon nc-basket" style={{fontSize: "15px", color: "danger"}}/>  
-              Delete
-            </Button>
-          </div>
-        </div>
+        </div>        
       </>
     )
       
   }
-
   toggleModal(e){
     e.preventDefault();
       this.setState({
-        modal: !this.state.modal,
+        modal: false,
         index: ""
       });
   };
-
   render() {
     return (
       <>
@@ -179,6 +257,16 @@ class Subscribers extends React.Component {
                   </p>
                 </CardHeader>
                 <CardBody>
+                <Button
+                      className="btn-round"
+                      style={{'marginRight':'12px'}}
+                      color="success"
+                      name="createNew"
+                      id="createNew"
+                      onClick={()=>this.openModal1()}
+                  >
+                    Create New
+                  </Button>   
                   <Table responsive>
                     <thead>
                       <tr>
@@ -196,13 +284,18 @@ class Subscribers extends React.Component {
             </Col>
           </Row>
         </div>
-        <Modal isOpen={this.state.modal} toggle={this.toggleModal} size="m">
-        {this.displayDetails()}
+        <Modal isOpen={this.state.modal} toggle={this.toggleModal} size="xl">
+          {(()=>{
+            switch(this.state.btnName){
+              case "details": return this.displayDetails()
+              case "":return this.showModal()
+              case "edit": return <Policies subscriberId={this.state.subscriberId}/>
+              default : return <RegModal/>
+            }
+          })()}
         </Modal>
       </>
     );
   }
 }
-
 export default Subscribers;
- 

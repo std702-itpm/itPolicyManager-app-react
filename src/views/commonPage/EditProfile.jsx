@@ -1,4 +1,3 @@
-
 import React from "react";
 import Axios from "axios";
 import { toast } from "react-toastify";
@@ -13,6 +12,7 @@ import {
   InputGroup,
   Button
 } from "reactstrap";
+import Subscribers from "views/dashboardAdminSubPage/Subscribers";
 
 class Policies extends React.Component {
   constructor(props) {
@@ -37,11 +37,13 @@ class Policies extends React.Component {
     const idInfo = {
       user_id: localStorage.getItem("session_id")
     };
+    const subscriberId={
+      id:this.props.subscriberId
+    };
+    console.log("SubscriberID:"+this.props.subscriberId);
     console.log("ID: " + idInfo.user_id);
-
-    Axios.get("http://localhost:5000/editprofile", {
-      params: { _id: localStorage.getItem("session_id") }
-    })
+    console.log(subscriberId.id);
+    Axios.get("http://localhost:5000/editprofile/"+this.props.subscriberId)
       .then(response => {
         console.log("response", response);
         this.setState({

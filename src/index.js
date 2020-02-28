@@ -21,6 +21,7 @@ import Modal from "views/landingSubPage/RegModal.js";
 import Dashboard from "views/Dashboard.jsx";
 import PaySubscription from 'views/commonPage/PaySubscription.js';
 import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
+import editSubscriber from "views/commonPage/addNewSubscriber.jsx";
 // others
 
 ReactDOM.render(
@@ -61,6 +62,7 @@ ReactDOM.render(
         </StripeProvider>
         )}
       />
+      
       <Route
         path="/review-policy/:companyId/:policyName/:userId"
         render={props => <DisplayReviewPolicy key = {props.match.params.userId} {...props} />}

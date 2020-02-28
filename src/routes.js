@@ -6,6 +6,7 @@ import EditProfile from "views/commonPage/EditProfile.jsx";
 import DashboardContent from "views/dashboardAdminSubPage/DashboardContent.jsx";
 import Policies from "views/dashboardAdminSubPage/Policies.jsx";
 import Subscribers from "views/dashboardAdminSubPage/Subscribers.jsx";
+import inactiveSubscribers from "views/dashboardAdminSubPage/Inactive_Subscribers.jsx";
 // import KeyPerson from "views/dashboardAdminSubPage/AddKeyContact.jsx";
 import Questions from "views/dashboardAdminSubPage/Questions.jsx";
 
@@ -51,6 +52,17 @@ var routesAdmin = [{
     sidebar: true,
     layout: "/dashboard"
   },
+
+  {
+    path:"/inactiveSubscribers",
+    name:"Inactive Subscribers",
+    name2:"Subscribers",
+    icon:"nc-icon nc-single-02",
+    component:inactiveSubscribers,
+    sidebar:true,
+    layout:"/dashboard"
+  },
+  
   {
     path: "/edit-profile/" + localStorage.getItem("session_id"),
     name: "Edit Profile",
@@ -77,6 +89,7 @@ var routesAdmin = [{
     sidebar: true,
     layout: "/dashboard"
   },
+
 ];
 
 var routesClient = [

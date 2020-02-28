@@ -79,7 +79,7 @@ class PaymentForm extends React.Component {
               <br></br>
               <br></br>
               <span>
-                Your card will be charge for an annual subscriboption to the
+                Your card will be charge for an annual subscription to the
                 service and you will be notified before your subscription ends
                 for renewal to continue using the service.
               </span>
