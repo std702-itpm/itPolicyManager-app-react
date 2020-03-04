@@ -20,6 +20,7 @@ class Policies extends React.Component {
 
     this.onChangeInput = this.onChangeInput.bind(this);
     this.handleSaveProfile = this.handleSaveProfile.bind(this);
+    this.fillData=this.fillData.bind(this);
 
     this.state = {
       companyDetails: [],
@@ -34,33 +35,45 @@ class Policies extends React.Component {
   }
 
   componentDidMount() {
-    const idInfo = {
-      user_id: localStorage.getItem("session_id")
-    };
-    const subscriberId={
-      id:this.props.subscriberId
-    };
-    console.log("SubscriberID:"+this.props.subscriberId);
-    console.log("ID: " + idInfo.user_id);
-    console.log(subscriberId.id);
-    Axios.get("http://localhost:5000/editprofile/"+this.props.subscriberId)
+    const idInfo={id:localStorage.getItem('session_id')};
+    console.log("ID:"+idInfo.id);
+    if(this.props.subscriberId===undefined){
+      console.log("IF: "+idInfo.id);
+      Axios.get("http://localhost:5000/edituserprofile/"+idInfo.id)
       .then(response => {
         console.log("response", response);
-        this.setState({
-          companyDetails: response.data.companyDetails,
-          bNameInput: response.data.companyDetails.company_name,
-          nzbnInput: response.data.companyDetails.nzbn,
-          bEmail: response.data.companyDetails.company_email,
-          bContact: response.data.companyDetails.contact,
-          bAddr: response.data.companyDetails.address,
-          bDescription: response.data.companyDetails.description,
-          bLogo : response.data.logo
-        });
-        console.log("companyDetails", this.state.companyDetails);
+        this.fillData(response);
       })
       .catch(function(error) {
         console.log(error);
       });
+    }
+    else{
+      console.log("Else: "+this.props.subscriberId);
+      Axios.get("http://localhost:5000/editprofile/"+this.props.subscriberId)
+      .then(response => {
+        console.log("response", response);
+        this.fillData(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
+    
+  }
+
+  fillData(response){
+    this.setState({
+      companyDetails: response.data.companyDetails,
+      bNameInput: response.data.companyDetails.company_name,
+      nzbnInput: response.data.companyDetails.nzbn,
+      bEmail: response.data.companyDetails.company_email,
+      bContact: response.data.companyDetails.contact,
+      bAddr: response.data.companyDetails.address,
+      bDescription: response.data.companyDetails.description,
+      bLogo : response.data.logo
+    });
+    console.log("companyDetails", this.state.companyDetails);
   }
 
   onChangeInput(e) {
@@ -262,5 +275,4 @@ class Policies extends React.Component {
     );
   }
 }
-
 export default Policies;

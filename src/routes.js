@@ -23,6 +23,7 @@ import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
   const userType = localStorage.getItem('session_type');
   const userLogo = localStorage.getItem('session_logo');
   console.log("userLogo" + userLogo);
+  
 
 var routesAdmin = [{
     path: "/dashboardcontent",
