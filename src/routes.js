@@ -8,6 +8,7 @@ import Policies from "views/dashboardAdminSubPage/Policies.jsx";
 import Subscribers from "views/dashboardAdminSubPage/Subscribers.jsx";
 // import KeyPerson from "views/dashboardAdminSubPage/AddKeyContact.jsx";
 import Questions from "views/dashboardAdminSubPage/Questions.jsx";
+import Assessment from "views/dashboardAdminSubPage/Assessment.jsx";
 
 //client
 import SurveyResult from "views/dashboardUserSubPage/SurveyResult.jsx";
@@ -19,7 +20,8 @@ import ReviewPage from "views/dashboardUserSubPage/reviewPage.jsx";
 import DisplayPolicy from "views/commonPage/DisplayPolicy.jsx";
 import printPreview from "views/commonPage/printPreview.jsx";
 import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
-import Assessment from "views/dashboardAdminSubPage/Assessment";
+import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
+// import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
   const userType = localStorage.getItem('session_type');
   const userLogo = localStorage.getItem('session_logo');
   console.log("userLogo" + userLogo);
@@ -121,6 +123,24 @@ var routesClient = [
     sidebar: true,
     layout: "/dashboard"
   },
+  {
+    path: "/PolicyDashboard",
+    name: "Policy Dashboard",
+    name2:"Policy Dashboard",
+    icon: "nc-icon nc-paper",
+    component: PolicyDashboard,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+  // {
+  //   path: "/PolicyDashboardView",
+  //   name: "Policy Dashboard View",
+  //   name2:"Policy Dashboard View",
+  //   icon: "nc-icon nc-paper",
+  //   component: PolicyDashboardView,
+  //   sidebar: true,
+  //   layout: "/dashboard"
+  // },
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",
