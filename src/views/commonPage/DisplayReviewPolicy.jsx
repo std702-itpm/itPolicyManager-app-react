@@ -2,6 +2,7 @@ import React from "react";
 import Axios from "axios";
 import { toast } from "react-toastify";
 
+
 // reactstrap components
 import {
     Col,
@@ -17,6 +18,7 @@ import {
 // core components
 import NavbarPlain from "components/Navbars/navbarPlain.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
+import moment from "moment";
 
 toast.configure();
 // import  styles from "assets/scss/paper-kit.scss";
@@ -27,6 +29,7 @@ class Policies extends React.Component {
         this.commentHandler = this.commentHandler.bind(this);
         this.rejectHandler = this.rejectHandler.bind(this);
         this.acceptHandler = this.acceptHandler.bind(this);
+        //this.getDateReviewed = this.getDateReviewed.bind(this);
         this.commentBtnHandler = this.commentBtnHandler.bind(this);
         this.processBtnReq = this.processBtnReq.bind(this);
         this.state = ({
@@ -155,9 +158,20 @@ class Policies extends React.Component {
     }
 
     acceptHandler() {
+        let reviewed = new Date;
+        let reviewDate = reviewed.getFullYear() + '-' + (reviewed.getMonth() + 1) + '-' + reviewed.getDate();
+        //getDateReviewed() {
+        //var moment = require('moment');
+        //var reviewDate = new Date();
+        //var review = reviewDate.getFullYear() + '-' + (reviewDate.getMonth() + 1) + '-' + reviewDate.getDate();
+        //return review;
+        //console.log(reviewDate);
+        //}
+
         Axios.get("http://localhost:5000/company", {
             params: { _id: this.props.match.params.userId, type: "user"}
         }).then(response => {
+            //var moment = require('moment');
             const data = {
                 fname: response.data.fname,
                 lname: response.data.lname,
@@ -165,6 +179,7 @@ class Policies extends React.Component {
                 companyId: this.props.match.params.companyId,
                 userId: this.props.match.params.userId,
                 review: "ACCEPTED",
+                //date_review: reviewDate,
                 index: this.state.index
             }
             this.processBtnReq(data);
@@ -220,6 +235,7 @@ class Policies extends React.Component {
                         rows="8"
                         onChange={this.commentHandler}
                         />
+                    
                     </InputGroup>  
                 </FormGroup>
                 <span style={{color: "red"}}>Note: </span>
