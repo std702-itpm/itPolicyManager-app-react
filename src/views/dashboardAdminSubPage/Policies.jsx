@@ -1,6 +1,7 @@
 
 import React from "react";
 import Axios from "axios";
+import EditPolicy from '../commonPage/EditPolicy.jsx';
 
 // reactstrap components
 import {
@@ -11,15 +12,24 @@ import {
   CardTitle,
   Table,
   Row,
-  Col
+  Col,
+  Modal
 } from "reactstrap";
 
 class Policies extends React.Component {
   constructor(props){
     super(props);
     this.displayPolicies = this.displayPolicies.bind(this);
+    this.addPolicy=this.addPolicy.bind(this);
+    this.editPolicy=this.editPolicy.bind(this);
+    this.DeletePolicy=this.DeletePolicy.bind(this);
+    this.toggleModal=this.toggleModal.bind(this);
+
     this.state = {
-      policies: []
+      policies: [],
+      policyId:"",
+      btnName:"",
+      modal:false
     };
   }
 
@@ -40,7 +50,7 @@ class Policies extends React.Component {
   displayPolicies(policies){
     return policies.map((policy, index) => {
       return (
-        <tr>
+        <tr>          
           <td>{policy.policy_name}</td>
           <td className="text-center">
               <Button
@@ -48,9 +58,8 @@ class Policies extends React.Component {
                 outline
                 color="info"
                 href="#pablo"
-                onClick={e => e.preventDefault()}
+                onClick={e => this.editPolicy(policy._id)}
               >
-                <i className="nc-icon nc-ruler-pencil" style={{fontSize: "15px", color: "info"}}/>
                 Edit
               </Button>
               {" "}
@@ -59,9 +68,8 @@ class Policies extends React.Component {
                 outline
                 color="danger"
                 href="#pablo"
-                onClick={e => e.preventDefault()}
+                onClick={e => this.DeletePolicy()}
               >
-                <i className="nc-icon nc-basket" style={{fontSize: "15px", color: "danger"}}/>
                 Delete
               </Button>
           </td>
@@ -70,6 +78,27 @@ class Policies extends React.Component {
     })
   }
 
+  addPolicy(){
+    this.setState({modal:true});
+  }
+
+  editPolicy(id){
+    this.setState({btnName:"edit",policyId:id,modal:true});
+      //this.props.history.push('editPolicy');
+      //<AddOrEditPolicy/>
+  }
+
+  toggleModal(e){
+    e.preventDefault();
+    this.setState({
+      modal:false,
+      policyId:""
+    })
+  }
+
+  DeletePolicy(){
+    alert("HI");
+  }
 
   render() {
     return (
@@ -87,6 +116,7 @@ class Policies extends React.Component {
                 <CardBody>
                   <Table responsive>
                     <thead>
+                    <tr><Button outline color="success" className="btn-round" onClick={e=>this.addPolicy()}>Add Policy</Button></tr>
                       <tr>
                         <th className="text-center">Policy Name</th>
                         <th className="text-center">Action</th>
@@ -101,6 +131,9 @@ class Policies extends React.Component {
             </Col>
           </Row>
         </div>
+        <Modal isOpen={this.state.modal} toggle={this.toggleModal} size="xl">
+           <EditPolicy policyId={this.state.policyId}/>
+        </Modal>
       </>
     );
   }

@@ -7,6 +7,7 @@ import DashboardContent from "views/dashboardAdminSubPage/DashboardContent.jsx";
 import Policies from "views/dashboardAdminSubPage/Policies.jsx";
 import Subscribers from "views/dashboardAdminSubPage/Subscribers.jsx";
 import inactiveSubscribers from "views/dashboardAdminSubPage/Inactive_Subscribers.jsx";
+import EditPolicy from "views/commonPage/EditPolicy.jsx";
 // import KeyPerson from "views/dashboardAdminSubPage/AddKeyContact.jsx";
 import Questions from "views/dashboardAdminSubPage/Questions.jsx";
 import Assessment from "views/dashboardAdminSubPage/Assessment.jsx";
@@ -45,6 +46,14 @@ var routesAdmin = [{
     icon: "nc-icon nc-paper",
     component: Policies,
     sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/editPolicy",
+    name2:"Edit",
+    component: EditPolicy,
+    logo: userLogo,
+    sidebar: false,
     layout: "/dashboard"
   },
   {

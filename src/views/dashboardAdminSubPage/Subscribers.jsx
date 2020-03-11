@@ -173,7 +173,6 @@ onDeleteClick(subscriberId){
     });
     console.log(this.state.companies[index].company_name)
   }
-
   showModal(){
     return(
       <div>

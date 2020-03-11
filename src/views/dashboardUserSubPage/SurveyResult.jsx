@@ -22,6 +22,7 @@ class MatchedPolicies extends React.Component {
     this.policy = this.policy.bind(this);
     this.subscribeBtn = this.subscribeBtn.bind(this)
     this.checkboxHandler = this.checkboxHandler.bind(this);
+    this.displayAllPolicies=this.displayAllPolicies.bind(this);
 
     this.state = {
       isSelected: false,
@@ -148,10 +149,80 @@ class MatchedPolicies extends React.Component {
     }
   }
 
+  displayAllPolicies(){
+    console.log( this.state.policies.length)
+    const companyDetails={
+      type:"company"
+    };
+
+    Axios.get("http://localhost:5000/company")
+   
+    if(this.state.policies.length === 0){
+      return(
+        <>
+        <p className="text-center">
+        You don't have any match Policies available</p>
+        <p className="text-center">
+          You can <a href="take-survey" style={{color: "blue"}}>
+            TAKE A SURVEY</a> to get suggested policies
+        </p>
+        {/* work on the link and data */}
+        </>
+      )
+    }else{
+      return this.state.policies.map((policy, index) => {
+        return (
+          <>
+          <tbody>
+            <tr>
+              <td key={index}>
+                <label>
+                  <Input
+                    key={policy._id + 2}
+                    type="checkbox"
+                    value={policy._id}
+                    defaultChecked={this.state.isSelected}
+                    onClick={this.checkboxHandler}
+                  />
+                  {policy.policy_name}
+                </label>
+              </td>
+            </tr>
+            </tbody>
+          </>
+        );
+      });
+    }
+  }
+
   render() {
     return (
       <>
         <div className="content">
+          <Row>
+            <Col className="ml-auto mr-auto" md="10">
+              <Card className="card-upgrade" style={{ transform: "none" }}>
+                <CardHeader className="text-center">
+                  <CardTitle tag="h4">Survey Result</CardTitle>
+                  <p className="card-category">
+                    List of all policies.
+                  </p>
+                </CardHeader>
+                <CardBody>
+                  <Table responsive>
+                    <thead>
+                      <tr>
+                        <th className="text-center">Policy Name</th>
+                      </tr>
+                    </thead>
+                    {this.displayAllPolicies()}
+                    <tfooter>{this.subscribeBtn()}</tfooter>
+                  </Table>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
           <Row>
             <Col className="ml-auto mr-auto" md="10">
               <Card className="card-upgrade" style={{ transform: "none" }}>
@@ -175,6 +246,7 @@ class MatchedPolicies extends React.Component {
               </Card>
             </Col>
           </Row>
+          
         </div>
       </>
     );
