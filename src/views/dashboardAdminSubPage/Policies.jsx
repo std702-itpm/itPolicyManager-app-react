@@ -21,19 +21,14 @@ class Policies extends React.Component {
   constructor(props){
     super(props);
     this.displayPolicies = this.displayPolicies.bind(this);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     this.addPolicy=this.addPolicy.bind(this);
     this.editPolicy=this.editPolicy.bind(this);
     this.DeletePolicy=this.DeletePolicy.bind(this);
     this.toggleModal=this.toggleModal.bind(this);
 
-=======
     this.AssessmentBtn = this.AssessmentBtn.bind(this);
->>>>>>> Stashed changes
-=======
-    this.AssessmentBtn = this.AssessmentBtn.bind(this);
->>>>>>> Stashed changes
+
+
     this.state = {
       policies: [],
       policyId:"",
