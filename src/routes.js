@@ -103,12 +103,12 @@ var routesAdmin = [{
     layout: "/dashboard"
   },
   {
-    path: "/edit-assessment",
+    path: "/edit-assessment/:id",
     name: "Assessment",
     name2:"Assessment",
     icon: "nc-icon nc-paper",
     component: Assessment,
-    sidebar: true,
+    sidebar: false,
     layout: "/dashboard"
   },
 ];

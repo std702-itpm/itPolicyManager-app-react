@@ -46,6 +46,7 @@ class Questions extends React.Component {
         console.log('response', response)
         this.setState({
             policies: response.data
+
         });
     })
     .catch(function (error) {
@@ -60,6 +61,8 @@ class Questions extends React.Component {
     const questionDetails = {
       questionInputs: this.state.questions
     };
+
+    console.log(this.state.questions);
     
     Axios.post('http://localhost:5000/questions', questionDetails)
     .then(res => {console.log(res.data);

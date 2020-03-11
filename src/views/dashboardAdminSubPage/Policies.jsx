@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom"
 import Axios from "axios";
 import EditPolicy from '../commonPage/EditPolicy.jsx';
 
@@ -20,11 +21,19 @@ class Policies extends React.Component {
   constructor(props){
     super(props);
     this.displayPolicies = this.displayPolicies.bind(this);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     this.addPolicy=this.addPolicy.bind(this);
     this.editPolicy=this.editPolicy.bind(this);
     this.DeletePolicy=this.DeletePolicy.bind(this);
     this.toggleModal=this.toggleModal.bind(this);
 
+=======
+    this.AssessmentBtn = this.AssessmentBtn.bind(this);
+>>>>>>> Stashed changes
+=======
+    this.AssessmentBtn = this.AssessmentBtn.bind(this);
+>>>>>>> Stashed changes
     this.state = {
       policies: [],
       policyId:"",
@@ -47,6 +56,16 @@ class Policies extends React.Component {
       });
   }
 
+  AssessmentBtn(policy_id){
+    //  get the id
+
+    // display the information for specific policy using policy id
+
+
+    // Redirect to page
+    // this.props.history.push('/dashboard/inactiveSubscribers');
+  }
+
   displayPolicies(policies){
     return policies.map((policy, index) => {
       return (
@@ -54,9 +73,7 @@ class Policies extends React.Component {
           <td>{policy.policy_name}</td>
           <td className="text-center">
               <Button
-                className="btn-round"
-                outline
-                color="info"
+                className="btn-warning btn-round"
                 href="#pablo"
                 onClick={e => this.editPolicy(policy._id)}
               >
@@ -64,14 +81,20 @@ class Policies extends React.Component {
               </Button>
               {" "}
               <Button
-                className="btn-round"
-                outline
-                color="danger"
+                className="btn-danger btn-round"
                 href="#pablo"
                 onClick={e => this.DeletePolicy()}
               >
                 Delete
               </Button>
+              {" "}
+              <Link
+                to={`/dashboard/edit-assessment/${policy._id}`}
+                className="btn-success btn-round"
+                onClick={()=>this.AssessmentBtn()}
+              >
+                Assessment                
+              </Link>
           </td>
         </tr>
       );
@@ -120,6 +143,7 @@ class Policies extends React.Component {
                       <tr>
                         <th className="text-center">Policy Name</th>
                         <th className="text-center">Action</th>
+                        
                       </tr>
                     </thead>
                     <tbody>

@@ -1,5 +1,6 @@
 import React from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -23,6 +24,7 @@ class Assessment extends React.Component {
     this.state = {
       assessment: [],
       policies: [],
+      currentPolicy: [],
     };
 
     document.documentElement.classList.remove("nav-open");
@@ -30,6 +32,20 @@ class Assessment extends React.Component {
 
   componentDidMount() {
     document.body.classList.add("register-page");
+    let policy_id = this.props.match.params.id;
+    
+    Axios.get("http://localhost:5000/getOnePolicy/"+ policy_id) 
+    .then(response => {
+        console.log(response)
+        this.setState({
+            currentPolicy: response.data,
+            assessment: response.data.assessments
+        });
+        // console.log(this.state.contents);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
     Axios.get("http://localhost:5000/assessment")
       .then(response => {
         console.log("response", response);
@@ -41,63 +57,73 @@ class Assessment extends React.Component {
         console.log(error);
       });
 
-    Axios.get('http://localhost:5000/policies')
+
+   Axios.get('http://localhost:5000/policies')
     .then(response => {
-        //console.log('response', response)
-        this.setState({
-            //policies: response.data
-        });
-    })
+      console.log('response', response)
+       this.setState({
+           //policies: response.data
+       });
+     })
     .catch(function (error) {
         console.log(error);
-    })
+   })
+
+    Axios.get("")
   }
   
   onSaveClick(e) {
     e.preventDefault();
+    let policy_id = this.props.match.params.id;
     // this.toggleModal();
-    console.log("onSaveClick clicked! ");
+    // console.log("onSaveClick clicked! ");
     const assessmentDetails = {
+      policy_id: policy_id,
+      // _id:"",
       assessmentInputs: this.state.assessment
     };
-    
-    Axios.post('http://localhost:5000/assessment', assessmentDetails)
-    .then(res => {console.log(res.data);
-      console.log(assessmentDetails);
-     //notification
-     if (res.data.result === "success") {
-      toast("Assessment questions updated!", {
-        type: "success",
-        position: toast.POSITION.TOP_CENTER,
-        onClose: () => {
-          window.location.reload();
-        }
-      });
-    } else {
-      toast("Unable to update the Assessment questions!", {
-        type: "error",
-        position: toast.POSITION.TOP_CENTER,
-        onClose: () => {
-          window.location.reload();
-        }
+    console.log(assessmentDetails.policy_id);
+
+    console.log(this.state.assessment);
+
+    Axios.post("http://localhost:5000/assessment",assessmentDetails)
+      .then(res => {
+        console.log(res.status);
+        alert("test");
+          
+         if (res.data.result === "success") {
+           toast("Assessment questions updated!", {
+             type: "success",
+            position: toast.POSITION.TOP_CENTER,
+            onClose: () => {
+              window.location.reload();
+            }
+           });
+         } else {
+          toast("Unable to update the Assessment questions!", {
+            type: "error",
+            position: toast.POSITION.TOP_CENTER,
+            onClose: () => {
+              window.location.reload();
+            }
+           });
+         }
       });
     }
-    });
-  }
 
   componentDidUpdate() {
     document.body.classList.remove("register-page");
-}
+  }
 
   renderAssessment(assessment, assessmentIndex) {
     const handleChange = e => {
-      const assessment = this.state.assessment
-      assessment[assessmentIndex].assessment_content = e.target.value
+      const assessment = this.state.assessment;
+      assessment[assessmentIndex].assessment_content = e.target.value;
       this.setState({ assessment: assessment })
     };
 
     const addOption = () => {
-      const newOption = { name: '', policy: null }
+      const newOption = { name: '' }
       const assessment = this.state.assessment[assessmentIndex]
       assessment.options.push(newOption)
       this.setState({ assessment: this.state.assessment })
@@ -184,8 +210,7 @@ class Assessment extends React.Component {
           assessment_content: '',
           options: [
               {
-                  name: '',
-                  policy: null,
+                  name: ''
               }
           ],
       }
@@ -205,19 +230,24 @@ class Assessment extends React.Component {
                 <CardHeader className="text-center">
                   <CardTitle tag="h4">Assessment Questions</CardTitle>
                   <p className="card-category">
-                    Assessment Questions
+                    Assessment Questions for <b>{this.state.currentPolicy.policy_name}</b>
                   </p>
+                  <Link to="/dashboard/policies" className="btn btn-danger">
+                   &#8592; Go Back to Policies
+                  </Link>
                 </CardHeader>
                 <CardBody>
                     <ul style={{listStyleType: "none"}}>
                         {this.state.assessment.map((assessment, assessmentIndex) => (
-                            <>
+                            <React.Fragment>
                             <br></br>
                             <Button className="btn-round" color="danger"  onClick={() => deleteAssessment(assessmentIndex)}>delete assessment</Button>
-                            <li style={{listStyleType: "none"}}>{this.renderAssessment(assessment, assessmentIndex)}</li>
-                            </>
+                            <li style={{listStyleType: "none"}} key={assessmentIndex}>{this.renderAssessment(assessment, assessmentIndex)}</li>
+                            </React.Fragment>
                         ))}
                     </ul>
+
+
                     <Button className="btn-round" color="success" onClick={addAssessment}>add assessment</Button>
                     <Button className="btn-round" color="success" onClick={this.onSaveClick}>Save</Button>
                 </CardBody>
@@ -225,6 +255,7 @@ class Assessment extends React.Component {
             </Col>
           </Row>
       </div>
+
     </>
     )
   }
