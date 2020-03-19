@@ -42,7 +42,7 @@ class MatchedPolicies extends React.Component {
       .then(response => {
         // console.log("response.data: " + response.data.match_policy);
         if(response.data.match_policy !== 0){
-          console.log("here" + response.data.match_policy)
+          // console.log("here" + response.data.match_policy)
           this.setState({
             matchedPolicies: response.data.match_policy
           });
@@ -50,7 +50,7 @@ class MatchedPolicies extends React.Component {
         }
       })
       .catch(function(error) {
-        console.log(error);
+        // console.log(error);
       });
   }
 
@@ -70,7 +70,7 @@ class MatchedPolicies extends React.Component {
               });
             })
             .catch(function(error) {
-              console.log(error);
+              // console.log(error);
             });
 
             return this.state.policies.map((policy,index) => 
@@ -123,7 +123,7 @@ class MatchedPolicies extends React.Component {
     if (e.target.checked) {
       policyPurchase.push(e.target.value);
     } else {
-      console.log("policyPurchase: " + policyPurchase);
+      // console.log("policyPurchase: " + policyPurchase);
       for (let index = 0; index < policyPurchase.length; index++) {
         if (e.target.value === policyPurchase[index]) {
           policyPurchase = policyPurchase.splice(index, 1);
@@ -251,51 +251,6 @@ class MatchedPolicies extends React.Component {
     }
   }
 
-  // displayAllPolicies(){
-  //   console.log( this.state.policies.length)
-  //   const companyDetails={
-  //     type:"company"
-  //   };
-
-  //   Axios.get("http://localhost:5000/company")
-   
-  //   if(this.state.policies.length === 0){
-  //     return(
-  //       <>
-  //       <p className="text-center">
-  //       You don't have any match Policies available</p>
-  //       <p className="text-center">
-  //         You can <a href="take-survey" style={{color: "blue"}}>
-  //           TAKE A SURVEY</a> to get suggested policies
-  //       </p>
-  //       {/* work on the link and data */}
-  //       </>
-  //     )
-  //   }else{
-  //     return this.state.policies.map((policy, index) => {
-  //       return (
-  //         <>
-  //         <tbody>
-  //           <tr>
-  //             <td key={index}>
-  //               <label>
-  //                 <Input
-  //                   key={policy._id + 2}
-  //                   type="checkbox"
-  //                   value={policy._id}
-  //                   defaultChecked={this.state.isSelected}
-  //                   onClick={this.checkboxHandler}
-  //                 />
-  //                 {policy.policy_name}
-  //               </label>
-  //             </td>
-  //           </tr>
-  //           </tbody>
-  //         </>
-  //       );
-  //     });
-  //   }
-  // }
 
   /*To display list policies and suggested policies*/
   render() {

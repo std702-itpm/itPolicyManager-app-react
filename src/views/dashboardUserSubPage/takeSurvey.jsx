@@ -52,7 +52,7 @@ class takeSurvey extends React.Component {
         newPolicyList.push(policy);
       }
     });
-  console.log("newpolicylist"+newPolicyList);
+  // console.log("newpolicylist"+newPolicyList);
 
   const company = {
     name: localStorage.getItem("session_name"),
@@ -61,7 +61,7 @@ class takeSurvey extends React.Component {
   };
   Axios.post("http://localhost:5000/company", company)
     .then(response => {
-      console.log("response", response);
+      // console.log("response", response);
       if (response.data.result === "success") {
           toast("Survey Submitted. We'll provide suggestion shortly.", {
             type: "success",
@@ -81,7 +81,7 @@ class takeSurvey extends React.Component {
         }
     })
     .catch(function(error) {
-      console.log(error);
+      // console.log(error);
     });
 }
 
@@ -90,25 +90,20 @@ class takeSurvey extends React.Component {
   var newMatchPolicy = [];
   var len2 = matchedPolicies.length;
   var len = sdgtedPolicies.length;
-console.log("MatchedPolicies"+matchedPolicies);
+// console.log("MatchedPolicies"+matchedPolicies);
+// console.log("sdgtedPolicies"+sdgtedPolicies);
     //loop matchPolicies list from Db and Suggested Policies from survey
     //Filter/remove matching policy for duplication
     if(!(len2===0)){
-      matchedPolicies.map((policy) => {
-        for(var i=0;i<len;i++){
-          if(policy == sdgtedPolicies[i]){
-            console.log("match" + policy +"=>" + "policy" + sdgtedPolicies[len])
-            break;
-          }
-        }
-        newMatchPolicy.push(policy);
-      })  
-    }
-    else{
+      newMatchPolicy = sdgtedPolicies.filter(function(policy){
+        return !matchedPolicies.includes(policy);
+      })
+      // console.log("newMatchPolicy ==> " + newMatchPolicy);
+    }else{
       newMatchPolicy=sdgtedPolicies;
     }
     
-    console.log("newMatchPolicy2 ==> " + newMatchPolicy);
+    // console.log("newMatchPolicy2 ==> " + newMatchPolicy);
 
     //Get Updated List
     this.updateMatchPolicyList(newMatchPolicy);
@@ -126,7 +121,7 @@ console.log("MatchedPolicies"+matchedPolicies);
 
   submitToDB() 
   {
-    console.log("submitToDB");
+    // console.log("submitToDB");
     const matchPolicies = [];
     //const surveyTakenDate = [];
     
