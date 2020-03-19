@@ -20,48 +20,127 @@ class takeSurvey extends React.Component {
   constructor(props) {
     super(props);
 
+    this.updateMatchPolicyList = this.updateMatchPolicyList.bind(this);
+    this.filterMatchPolicy = this.filterMatchPolicy.bind(this);
     this.submitToDB = this.submitToDB.bind(this);
     this.state = {
-      policies: []
+      policies: [],
+      matchedPolicies:[]
     };
   }
 
-  submitToDB() {
-    const matchPolicies = [];
-    this.state.policies.forEach(match => {
-      if (match !== "5df2a662c550f92dd4c02274") {
-        matchPolicies.push(match);
+  componentDidMount(){
+    var company={
+      type:"company",
+      _id:localStorage.getItem('session_name')
+    }
+    Axios.get("http://localhost:5000/company",{params:company})
+    .then(response=>{
+      this.state.matchedPolicies.push(response.data.match_policy);
+      //this.setState({matchedPolicies:response.data.match_policy});
+    })
+  }
+
+  /*! remove "No match Policy ID" and update the list */
+  async updateMatchPolicyList(newMatchPolicy){
+    var len = newMatchPolicy.length;
+    var newPolicyList =[];
+   
+    //check for "No Match Policy and remove from the list"
+    newMatchPolicy.forEach(policy => {
+      if(policy !== "5df2a662c550f92dd4c02274" && policy !==""){
+        newPolicyList.push(policy);
       }
     });
-    const company = {
-      name: localStorage.getItem("session_name"),
-      policies: matchPolicies
-    };
-    Axios.post("http://localhost:5000/company", company)
-      .then(response => {
-        console.log("response", response);
-        if (response.data.result === "success") {
-            toast("Survey Submitted. We'll provide suggestion shortly.", {
-              type: "success",
-              position: toast.POSITION.TOP_CENTER,
-              onClose: () => {
-                window.location.href = "survey-result";
-              }
-            });
-          } else {
-            toast("Survey not submitted! Something went wrong.", {
-              type: "error",
-              position: toast.POSITION.TOP_CENTER,
-              onClose: () => {
-                window.location.reload();
-              }
-            });
+  console.log("newpolicylist"+newPolicyList);
+
+  const company = {
+    name: localStorage.getItem("session_name"),
+    policies: newPolicyList ,
+
+  };
+  Axios.post("http://localhost:5000/company", company)
+    .then(response => {
+      console.log("response", response);
+      if (response.data.result === "success") {
+          toast("Survey Submitted. We'll provide suggestion shortly.", {
+            type: "success",
+            position: toast.POSITION.TOP_CENTER,
+            onClose: () => {
+              window.location.href = "survey-result";
+            }
+          });
+        } else {
+          toast("Survey not submitted! Something went wrong.", {
+            type: "error",
+            position: toast.POSITION.TOP_CENTER,
+            onClose: () => {
+              window.location.reload();
+            }
+          });
+        }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+}
+
+ /*! Filter the list by removing duplicated suggested Policy as a survey result */
+ filterMatchPolicy(matchedPolicies, sdgtedPolicies){
+  var newMatchPolicy = [];
+  var len2 = matchedPolicies.length;
+  var len = sdgtedPolicies.length;
+console.log("MatchedPolicies"+matchedPolicies);
+    //loop matchPolicies list from Db and Suggested Policies from survey
+    //Filter/remove matching policy for duplication
+    if(!(len2===0)){
+      matchedPolicies.map((policy) => {
+        for(var i=0;i<len;i++){
+          if(policy == sdgtedPolicies[i]){
+            console.log("match" + policy +"=>" + "policy" + sdgtedPolicies[len])
+            break;
           }
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+        }
+        newMatchPolicy.push(policy);
+      })  
+    }
+    else{
+      newMatchPolicy=sdgtedPolicies;
+    }
+    
+    console.log("newMatchPolicy2 ==> " + newMatchPolicy);
+
+    //Get Updated List
+    this.updateMatchPolicyList(newMatchPolicy);
   }
+
+
+
+  /**
+   * SubmitToDB method:
+   * after clicking on submit button it should direct to survey result page
+   * with the suggested policies.
+   */
+
+  /*! Submit Button handler function to call API to procexs Survey answers */
+
+  submitToDB() 
+  {
+    console.log("submitToDB");
+    const matchPolicies = [];
+    //const surveyTakenDate = [];
+    
+    var matchedPolicies=this.state.matchedPolicies.toString().split(",");
+    var sdgtedPolicies=this.state.policies;
+    // console.log("sdgtedPolicies ==>" + sdgtedPolicies);
+    // console.log("matchedPolicies ==> " +  matchedPolicies);
+
+    //Filter the result suggested policy to not duplicate call server API
+    this.filterMatchPolicy(matchedPolicies, sdgtedPolicies);
+    
+   
+  }
+
 
   render() {
     return (
