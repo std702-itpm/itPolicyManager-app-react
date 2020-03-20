@@ -21,7 +21,7 @@ class MatchedPolicies extends React.Component {
 
     this.policy = this.policy.bind(this);
     this.subscribeBtn = this.subscribeBtn.bind(this);
-    this.filterSubscribedPolicy = this.filterSubscribedPolicy.bind(this);
+    // this.filterSubscribedPolicy = this.filterSubscribedPolicy.bind(this);
     // this.updateMatchPolicyList = this.updateMatchPolicyList.bind(this);
     this.checkboxHandler = this.checkboxHandler.bind(this);
     //this.displayAllPolicies=this.displayAllPolicies.bind(this);
@@ -51,11 +51,11 @@ class MatchedPolicies extends React.Component {
             // dbSubscribedPolicies: response.data.subscribed_policy,
 
           });
-          response.data.subscribed_policy.forEach((policy, index) => {
-          this.state.subscribedPolicies.push(policy.policy_id);
-          })
+          // response.data.subscribed_policy.forEach((policy, index) => {
+          // this.state.subscribedPolicies.push(policy.policy_id);
+          // })
           this.getMatchedPolicy();
-          this.filterSubscribedPolicy()
+          // this.filterSubscribedPolicy()
         }
       })
       .catch(function(error) {
@@ -65,24 +65,24 @@ class MatchedPolicies extends React.Component {
 
 
  /*! Filter the list by removing duplicated suggested Policy as a survey result */
- filterSubscribedPolicy(policies){
-  var newPolicy = [];
-  var subscribedPolicy = this.state.subscribedPolicies;
-  // console.log("policies"+ policies);
-  // console.log("subscribedPolicy"+subscribedPolicy);
+//  filterSubscribedPolicy(policies){
+//   var newPolicy = [];
+//   var subscribedPolicy = this.state.subscribedPolicies;
+//   // console.log("policies"+ policies);
+//   // console.log("subscribedPolicy"+subscribedPolicy);
 
-    //loop Policies list from Db and Subscribed Policies from survey
-    //Filter/remove matching policy for duplication
-      if(!(subscribedPolicy.length === 0)){
-        //filter suggested policies based on the subscribed policies
-        newPolicy = subscribedPolicy.filter(function(policy){
-         return policies._id.includes(policy);
-       });
-       console.log("policies"+ policies);
-     }else{
-      newPolicy = policies;
-     }
-    }
+//     //loop Policies list from Db and Subscribed Policies from survey
+//     //Filter/remove matching policy for duplication
+//       if(!(subscribedPolicy.length === 0)){
+//         //filter suggested policies based on the subscribed policies
+//         newPolicy = subscribedPolicy.filter(function(policy){
+//          return policies._id.includes(policy);
+//        });
+//       //  console.log("policies"+ policies);
+//      }else{
+//       newPolicy = policies;
+//      }
+  //  }
     
 //     //console.log("newMatchPolicy ==> " + newMatchPolicy);
 //   }else{
@@ -120,6 +120,22 @@ class MatchedPolicies extends React.Component {
       })
       .then(response => {
             
+
+      //   var newPolicy = [];
+      //   var subscribedPolicy = this.state.subscribedPolicies;
+      //   var policies = this.state.policies;
+
+      //   //todo codes here
+      //   if(!(subscribedPolicy.length === 0)){
+      //     //filter suggested policies based on the subscribed policies
+      //     newPolicy = subscribedPolicy.filter(function(policy){
+      //      return policies._id.includes(policy);
+      //    });
+      //   //  console.log("policies"+ policies);
+      //  }else{
+      //     newPolicy = policies;
+      //  }
+
               // console.log( response.data);
               this.setState({
                 policies: response.data,
@@ -306,7 +322,7 @@ class MatchedPolicies extends React.Component {
             title="to Payment Page"
             tag={Link}
           >
-         <tfooter> Subscribe </tfooter>
+         Subscribe 
           </Button>
       )
     }
@@ -357,7 +373,7 @@ class MatchedPolicies extends React.Component {
                     </thead>
                     {/* <tbody>{this.displaySuggestedPolicies()}</tbody> */}
                     {this.policy()}
-                    <tfooter>{this.subscribeBtnForMatchedPolicy()}</tfooter>
+                    {this.subscribeBtnForMatchedPolicy()}
                   </Table>
                 </CardBody>
               </Card>
