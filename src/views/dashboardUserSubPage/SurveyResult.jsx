@@ -20,7 +20,9 @@ class MatchedPolicies extends React.Component {
     super(props);
 
     this.policy = this.policy.bind(this);
-    this.subscribeBtn = this.subscribeBtn.bind(this)
+    this.subscribeBtn = this.subscribeBtn.bind(this);
+    this.filterSubscribedPolicy = this.filterSubscribedPolicy.bind(this);
+    // this.updateMatchPolicyList = this.updateMatchPolicyList.bind(this);
     this.checkboxHandler = this.checkboxHandler.bind(this);
     //this.displayAllPolicies=this.displayAllPolicies.bind(this);
 
@@ -40,19 +42,73 @@ class MatchedPolicies extends React.Component {
       params: { _id: localStorage.getItem("session_name"), type: "company" }
     })
       .then(response => {
+        
         // console.log("response.data: " + response.data.match_policy);
         if(response.data.match_policy !== 0){
           // console.log("here" + response.data.match_policy)
           this.setState({
-            matchedPolicies: response.data.match_policy
+            matchedPolicies: response.data.match_policy,
+            // dbSubscribedPolicies: response.data.subscribed_policy,
+
           });
+          response.data.subscribed_policy.forEach((policy, index) => {
+          this.state.subscribedPolicies.push(policy.policy_id);
+          })
           this.getMatchedPolicy();
+          this.filterSubscribedPolicy()
         }
       })
       .catch(function(error) {
         // console.log(error);
       });
   }
+
+
+ /*! Filter the list by removing duplicated suggested Policy as a survey result */
+ filterSubscribedPolicy(policies){
+  var newPolicy = [];
+  var subscribedPolicy = this.state.subscribedPolicies;
+  // console.log("policies"+ policies);
+  // console.log("subscribedPolicy"+subscribedPolicy);
+
+    //loop Policies list from Db and Subscribed Policies from survey
+    //Filter/remove matching policy for duplication
+      if(!(subscribedPolicy.length === 0)){
+        //filter suggested policies based on the subscribed policies
+        newPolicy = subscribedPolicy.filter(function(policy){
+         return policies._id.includes(policy);
+       });
+       console.log("policies"+ policies);
+     }else{
+      newPolicy = policies;
+     }
+    }
+    
+//     //console.log("newMatchPolicy ==> " + newMatchPolicy);
+//   }else{
+//     newMatchPolicy=subscribedPolicies;
+//   }
+//     //Get Updated List
+//     this.updateMatchPolicyList(newMatchPolicy);
+ //  }
+
+  
+  // submitToDB() 
+  // {
+  //   // console.log("submitToDB");
+  //   const matchPolicies = [];
+  //   //const surveyTakenDate = [];
+    
+  //   var subscribedPolicies=this.state.subscribedPolicies.toString().split(",");
+  //   var writtenPolicies=this.state.policies;
+  //   // console.log("subscribedPolicies ==>" + subscribedPolicies);
+  //   // console.log("matchedPolicies ==> " +  matchedPolicies);
+
+  //   //Filter the result suggested policy to not duplicate call server API
+  //   this.filterMatchPolicy(subscribedPolicies, writtenPolicies);
+    
+   
+  // }
 
   /*To display the list of policies*/
   displayPolicies()
@@ -63,11 +119,14 @@ class MatchedPolicies extends React.Component {
 
       })
       .then(response => {
+            
+              // console.log( response.data);
               this.setState({
                 policies: response.data,
-                isChecked: this.state.isChecked
-                          
+                writtenPolicies: response.data,
+                isChecked: this.state.isChecked         
               });
+              
             })
             .catch(function(error) {
               // console.log(error);
@@ -78,7 +137,7 @@ class MatchedPolicies extends React.Component {
               {
               if(!(policy.policy_name==="No match policy")){
                 return(
-               
+               <tbody>
                   <tr>
                   <td key={index}>
                     <label>
@@ -86,7 +145,7 @@ class MatchedPolicies extends React.Component {
                         key={policy._id + 2}
                         type="checkbox"
                         value={policy._id}
-                        defaultChecked={this.state.isSelected}
+                        defaultChecked={this.state.isChecked}
                         onClick={this.checkboxHandler}
                       />
                       <a href={"PolicyDashboardView/" + policy._id} style={{color: "blue"}}> {policy.policy_name} </a>
@@ -97,6 +156,7 @@ class MatchedPolicies extends React.Component {
 
                   </td>
                 </tr>
+                </tbody>
                  )                
                }
               }
@@ -221,8 +281,9 @@ class MatchedPolicies extends React.Component {
             tag={Link}
           >
             
-            Subscribe
+            <tfooter>  Subscribe </tfooter>
           </Button>
+          
       )
     }
   }
@@ -245,7 +306,7 @@ class MatchedPolicies extends React.Component {
             title="to Payment Page"
             tag={Link}
           >
-            Subscribe
+         <tfooter> Subscribe </tfooter>
           </Button>
       )
     }
@@ -295,7 +356,7 @@ class MatchedPolicies extends React.Component {
                       </tr>
                     </thead>
                     {/* <tbody>{this.displaySuggestedPolicies()}</tbody> */}
-                    <tbody>{this.policy()}</tbody>
+                    {this.policy()}
                     <tfooter>{this.subscribeBtnForMatchedPolicy()}</tfooter>
                   </Table>
                 </CardBody>

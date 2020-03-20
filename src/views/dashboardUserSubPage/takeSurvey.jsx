@@ -21,11 +21,13 @@ class takeSurvey extends React.Component {
     super(props);
 
     this.updateMatchPolicyList = this.updateMatchPolicyList.bind(this);
+    // this.getSubscribePolicyIdList = this.getSubscribePolicyIdList.bind(this);
     this.filterMatchPolicy = this.filterMatchPolicy.bind(this);
     this.submitToDB = this.submitToDB.bind(this);
     this.state = {
       policies: [],
-      matchedPolicies:[]
+      matchedPolicies:[],
+      subscribedPolicies: []
     };
   }
 
@@ -37,6 +39,9 @@ class takeSurvey extends React.Component {
     Axios.get("http://localhost:5000/company",{params:company})
     .then(response=>{
       this.state.matchedPolicies.push(response.data.match_policy);
+      response.data.subscribed_policy.forEach((policy, index) => {
+        this.state.subscribedPolicies.push(policy.policy_id);
+      })
       //this.setState({matchedPolicies:response.data.match_policy});
     })
   }
@@ -54,6 +59,7 @@ class takeSurvey extends React.Component {
     });
   // console.log("newpolicylist"+newPolicyList);
 
+  //Call back-end API to save new suggested policy list
   const company = {
     name: localStorage.getItem("session_name"),
     policies: newPolicyList ,
@@ -88,23 +94,37 @@ class takeSurvey extends React.Component {
  /*! Filter the list by removing duplicated suggested Policy as a survey result */
  filterMatchPolicy(matchedPolicies, sdgtedPolicies){
   var newMatchPolicy = [];
+  var matchPolicy = [];
+  var subscribedPolicy = this.state.subscribedPolicies;
   var len2 = matchedPolicies.length;
-  var len = sdgtedPolicies.length;
-// console.log("MatchedPolicies"+matchedPolicies);
-// console.log("sdgtedPolicies"+sdgtedPolicies);
+  // var len = sdgtedPolicies.length;
+  // console.log("MatchedPolicies"+matchedPolicies);
+  // console.log("sdgtedPolicies"+sdgtedPolicies);
+  // console.log("subscribedPolicy"+subscribedPolicy);
+
+
     //loop matchPolicies list from Db and Suggested Policies from survey
     //Filter/remove matching policy for duplication
     if(!(len2===0)){
-      newMatchPolicy = sdgtedPolicies.filter(function(policy){
+       //filter suggested policies based on the existing match policies saved
+       matchPolicy = sdgtedPolicies.filter(function(policy){
         return !matchedPolicies.includes(policy);
       })
       // console.log("newMatchPolicy ==> " + newMatchPolicy);
+      if(!(subscribedPolicy.length === 0)){
+        //filter suggested policies based on the subscribed policies
+       newMatchPolicy = matchPolicy.filter(function(policy){
+         return !subscribedPolicy.includes(policy);
+       })
     }else{
-      newMatchPolicy=sdgtedPolicies;
+      newMatchPolicy = matchPolicy;
     }
     
     // console.log("newMatchPolicy2 ==> " + newMatchPolicy);
 
+  }else{
+    newMatchPolicy=sdgtedPolicies;
+  }
     //Get Updated List
     this.updateMatchPolicyList(newMatchPolicy);
   }
@@ -135,7 +155,6 @@ class takeSurvey extends React.Component {
     
    
   }
-
 
   render() {
     return (
