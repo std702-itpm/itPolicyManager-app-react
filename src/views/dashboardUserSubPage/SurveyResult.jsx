@@ -31,10 +31,8 @@ class MatchedPolicies extends React.Component {
       isChecked:false,
       matchedPolicies: [],
       policies: [],
-<<<<<<< HEAD
-=======
+
       suggestedPolicies: [],
->>>>>>> 8074a0d21b5092d9f37091269875ba06e5e7b6aa
       subscribedPolicies: [],
     };
   }
@@ -351,8 +349,7 @@ class MatchedPolicies extends React.Component {
                         <th className="text-center">Policy Name</th>
                       </tr>
                     </thead>
-<<<<<<< HEAD
-=======
+
                       {this.displayPolicies()} 
                       {this.subscribeBtn()}
                   </Table>
@@ -377,7 +374,6 @@ class MatchedPolicies extends React.Component {
                       </tr>
                     </thead>
                     {/* <tbody>{this.displaySuggestedPolicies()}</tbody> */}
->>>>>>> 8074a0d21b5092d9f37091269875ba06e5e7b6aa
                     {this.policy()}
                     {this.subscribeBtnForMatchedPolicy()}
                   </Table>
@@ -385,12 +381,7 @@ class MatchedPolicies extends React.Component {
               </Card>
             </Col>
           </Row>
-<<<<<<< HEAD
 
-         
-          
-=======
->>>>>>> 8074a0d21b5092d9f37091269875ba06e5e7b6aa
         </div>
       </>
     );

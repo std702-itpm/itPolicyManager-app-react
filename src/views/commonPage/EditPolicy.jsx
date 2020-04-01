@@ -66,7 +66,7 @@ export default class EditPolicy extends Component {
           res => {
             console.log(res.data);
             console.log(res);
-            if (res.status == 204) {
+            if (res.status === 204) {
               toast("Updated successfully", { 
                 type: "success", 
                 position: toast.POSITION.TOP_CENTER,
