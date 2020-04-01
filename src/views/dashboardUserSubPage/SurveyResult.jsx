@@ -198,7 +198,7 @@ class MatchedPolicies extends React.Component {
   render() {
     return (
       <>
-        <div className="content">
+        <div className="container">
           <Row>
             <Col className="ml-auto mr-auto" md="10">
               <Card className="card-upgrade" style={{ transform: "none" }}>

@@ -104,7 +104,6 @@ onDeleteClick(subscriberId){
   else{
     window.location.reload();
   }
-
 }
 
   displaySubscribers() {

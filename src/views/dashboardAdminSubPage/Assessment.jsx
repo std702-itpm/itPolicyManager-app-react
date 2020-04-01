@@ -62,7 +62,7 @@ class Assessment extends React.Component {
     .then(response => {
       console.log('response', response)
        this.setState({
-           //policies: response.data
+           policies: response.data
        });
      })
     .catch(function (error) {
@@ -79,19 +79,20 @@ class Assessment extends React.Component {
     // console.log("onSaveClick clicked! ");
     const assessmentDetails = {
       policy_id: policy_id,
-      // _id:"",
+      //_id:"",
       assessmentInputs: this.state.assessment
     };
-    console.log(assessmentDetails.policy_id);
 
-    console.log(this.state.assessment);
+    console.log("PolicyId: "+assessmentDetails.policy_id)
+    // console.log(assessmentDetails.policy_id);
 
-    Axios.post("http://localhost:5000/assessment",assessmentDetails)
+    // console.log(this.state.assessment);
+
+    Axios.put("http://localhost:5000/assessment",assessmentDetails)
       .then(res => {
         console.log(res.status);
-        alert("test");
           
-         if (res.data.result === "success") {
+         if (res.data.status === "success") {
            toast("Assessment questions updated!", {
              type: "success",
             position: toast.POSITION.TOP_CENTER,
@@ -207,6 +208,7 @@ class Assessment extends React.Component {
     const addAssessment = () => {
       const assessment = this.state.assessment
       const newAssessment = {
+          _id:null,
           assessment_content: '',
           options: [
               {
@@ -217,10 +219,23 @@ class Assessment extends React.Component {
       assessment.push(newAssessment)
       this.setState({ assessment: assessment })
     }
-    const deleteAssessment = (assessmentIndex) => {
-        this.state.assessment.splice(assessmentIndex, 1)
+   
+    const deleteAssessment = (assessmentId,AssessmentIndex) => {
+      console.log(AssessmentIndex);
+        this.state.assessment.splice(AssessmentIndex, 1)
         this.setState({ assessment: this.state.assessment })
+        Axios.post("http://localhost:5000/deleteassessment",{_id:assessmentId})
+        .then(response=>{
+          console.log("Deleted");
+        })
+        .catch(err=>{
+          console.log("Erros is: "+err);
+        })
     }
+
+
+
+
     return (
     <>
       <div className="content">
@@ -241,14 +256,12 @@ class Assessment extends React.Component {
                         {this.state.assessment.map((assessment, assessmentIndex) => (
                             <React.Fragment>
                             <br></br>
-                            <Button className="btn-round" color="danger"  onClick={() => deleteAssessment(assessmentIndex)}>delete assessment</Button>
+                            <Button className="btn-round" color="danger"  onClick={() => deleteAssessment(assessmentIndex)}>Delete Question</Button>
                             <li style={{listStyleType: "none"}} key={assessmentIndex}>{this.renderAssessment(assessment, assessmentIndex)}</li>
                             </React.Fragment>
                         ))}
                     </ul>
-
-
-                    <Button className="btn-round" color="success" onClick={addAssessment}>add assessment</Button>
+                    <Button className="btn-round" color="success" onClick={addAssessment}>Add Question</Button>
                     <Button className="btn-round" color="success" onClick={this.onSaveClick}>Save</Button>
                 </CardBody>
               </Card>

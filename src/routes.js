@@ -11,6 +11,7 @@ import EditPolicy from "views/commonPage/EditPolicy.jsx";
 // import KeyPerson from "views/dashboardAdminSubPage/AddKeyContact.jsx";
 import Questions from "views/dashboardAdminSubPage/Questions.jsx";
 import Assessment from "views/dashboardAdminSubPage/Assessment.jsx";
+import addAccountablePerson from "views/dashboardUserSubPage/companyAdmin.jsx"
 
 //client
 import SurveyResult from "views/dashboardUserSubPage/SurveyResult.jsx";
@@ -23,6 +24,7 @@ import DisplayPolicy from "views/commonPage/DisplayPolicy.jsx";
 import printPreview from "views/commonPage/printPreview.jsx";
 import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
 import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
+import RegModal from "views/commonPage/addNewSubscriber";
 // import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
   const userType = localStorage.getItem('session_type');
   const userLogo = localStorage.getItem('session_logo');
@@ -125,6 +127,16 @@ var routesClient = [
     layout: "/dashboard"
   },
   {
+    path: "/Company_Admin",
+    name: "Company Admin",
+     name2:"Company Admin",
+    icon: "nc-icon nc-single-02",
+    component: addAccountablePerson,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+  
+  {
     path: "/edit-profile/" + localStorage.getItem("session_id"),
     name: "Edit Profile",
     name2:"Edit Profile",
@@ -162,6 +174,7 @@ var routesClient = [
   //   sidebar: true,
   //   layout: "/dashboard"
   // },
+  
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",

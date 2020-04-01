@@ -64,7 +64,7 @@ class Policies extends React.Component {
   displayPolicies(policies){
     return policies.map((policy, index) => {
       return (
-        <tr>          
+        <tr>
           <td>{policy.policy_name}</td>
           <td className="text-center">
               <Button
@@ -86,7 +86,9 @@ class Policies extends React.Component {
               <Link
                 to={`/dashboard/edit-assessment/${policy._id}`}
                 className="btn-success btn-round"
+                
                 onClick={()=>this.AssessmentBtn()}
+                style={{fontSize: "22px", color: "black"}}
               >
                 Assessment                
               </Link>
@@ -138,7 +140,6 @@ class Policies extends React.Component {
                       <tr>
                         <th className="text-center">Policy Name</th>
                         <th className="text-center">Action</th>
-                        
                       </tr>
                     </thead>
                     <tbody>

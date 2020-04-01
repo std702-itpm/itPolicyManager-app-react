@@ -23,6 +23,7 @@ class Questions extends React.Component {
     this.state = {
       questions: [],
       policies: [],
+      deletedId:[]
     };
 
     document.documentElement.classList.remove("nav-open");
@@ -30,6 +31,7 @@ class Questions extends React.Component {
 
   componentDidMount() {
     document.body.classList.add("register-page");
+    
     Axios.get("http://localhost:5000/questions")
       .then(response => {
         console.log("response", response);
@@ -52,22 +54,24 @@ class Questions extends React.Component {
     .catch(function (error) {
         console.log(error);
     })
+    Axios.get("")
   }
   
   onSaveClick(e) {
     e.preventDefault();
     // this.toggleModal();
-    console.log("onSaveClick clicked! ");
+    // console.log("onSaveClick clicked! ");
     const questionDetails = {
-      questionInputs: this.state.questions
+      questionInputs: this.state.questions,
+      deletedId:this.state.deletedId      
     };
 
-    console.log(this.state.questions);
+    // console.log(this.state.questions);
     
     Axios.post('http://localhost:5000/questions', questionDetails)
     .then(res => {console.log(res.data);
      //notification
-     if (res.data.result === "success") {
+     if (res.data.status === "success") {
       toast("Survey questions updated!", {
         type: "success",
         position: toast.POSITION.TOP_CENTER,
@@ -183,6 +187,7 @@ class Questions extends React.Component {
     const addQuestion = () => {
       const questions = this.state.questions
       const newQuestion = {
+          _id:null,
           question_content: '',
           options: [
               {
@@ -194,10 +199,15 @@ class Questions extends React.Component {
       questions.push(newQuestion)
       this.setState({ questions: questions })
     }
-    const deleteQuestion = (questionIndex) => {
+    const deleteQuestion = (questionId,questionIndex) => {
+      console.log(questionIndex);
         this.state.questions.splice(questionIndex, 1)
         this.setState({ questions: this.state.questions })
+        this.state.deletedId.push(questionId);
+        alert(this.state.deletedId);        
     }
+
+
     return (
     <>
       <div className="content">
@@ -215,7 +225,7 @@ class Questions extends React.Component {
                         {this.state.questions.map((question, questionIndex) => (
                             <>
                             <br></br>
-                            <Button className="btn-round" color="danger"  onClick={() => deleteQuestion(questionIndex)}>delete question</Button>
+                            <Button className="btn-round" color="danger"  onClick={() => deleteQuestion(question._id,questionIndex)}>Delete question</Button>
                             <li style={{listStyleType: "none"}}>{this.renderQuestion(question, questionIndex)}</li>
                             </>
                         ))}
