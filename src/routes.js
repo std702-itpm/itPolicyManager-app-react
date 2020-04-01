@@ -144,24 +144,6 @@ var routesClient = [
     sidebar: true,
     layout: "/dashboard"
   },
-  // {
-  //   path: "/PolicyDashboard",
-  //   name: "Policy Dashboard",
-  //   name2:"Policy Dashboard",
-  //   icon: "nc-icon nc-paper",
-  //   component: PolicyDashboard,
-  //   sidebar: true,
-  //   layout: "/dashboard"
-  // },
-  {
-    path: "/PolicyDashboardView/:id",
-    name: "Policy Dashboard View",
-    name2:"Policy Dashboard View",
-    icon: "nc-icon nc-paper",
-    component: PolicyDashboardView,
-    sidebar: true,
-    layout: "/dashboard"
-  },
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",
@@ -170,6 +152,15 @@ var routesClient = [
     component: keyContactPerson,
     logo: userLogo,
     sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/PolicyDashboardView/:id",
+    name: "Policy Dashboard View",
+    name2:"Policy Dashboard View",
+    icon: "nc-icon nc-paper",
+    component: PolicyDashboardView,
+    sidebar: false,
     layout: "/dashboard"
   },
   {

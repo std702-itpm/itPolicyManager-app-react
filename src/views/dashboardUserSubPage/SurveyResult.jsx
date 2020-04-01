@@ -21,7 +21,7 @@ class MatchedPolicies extends React.Component {
 
     this.policy = this.policy.bind(this);
     this.subscribeBtn = this.subscribeBtn.bind(this);
-    // this.filterSubscribedPolicy = this.filterSubscribedPolicy.bind(this);
+    //this.filterSubscribedPolicy = this.filterSubscribedPolicy.bind(this);
     // this.updateMatchPolicyList = this.updateMatchPolicyList.bind(this);
     this.checkboxHandler = this.checkboxHandler.bind(this);
     //this.displayAllPolicies=this.displayAllPolicies.bind(this);
@@ -33,6 +33,7 @@ class MatchedPolicies extends React.Component {
       policies: [],
 
       suggestedPolicies: [],
+      filterSubscribedPolicy:[],
       subscribedPolicies: [],
     };
   }
@@ -69,58 +70,60 @@ class MatchedPolicies extends React.Component {
 //  filterSubscribedPolicy(policies){
 //   var newPolicy = [];
 //   var subscribedPolicy = this.state.subscribedPolicies;
+  
 //   // console.log("policies"+ policies);
 //   // console.log("subscribedPolicy"+subscribedPolicy);
+  
+//   var company={
+//     type:"company",
+//     _id:localStorage.getItem('session_name')
+//   }
+//  Axios.get("http://localhost:5000/company",{params:company})
+//  .then(response=>{
+//    response.data.subscribed_policy.forEach((policy, index) => {
+//      this.state.subscribedPolicies.push(policy.policy_id);
+//    })
+//    //this.setState({matchedPolicies:response.data.match_policy});
+//  })
 
-//     //loop Policies list from Db and Subscribed Policies from survey
+
+//    //loop Policies list from Db and Subscribed Policies from survey
 //     //Filter/remove matching policy for duplication
 //       if(!(subscribedPolicy.length === 0)){
 //         //filter suggested policies based on the subscribed policies
 //         newPolicy = subscribedPolicy.filter(function(policy){
-//          return policies._id.includes(policy);
-//        });
+//          return subscribedPolicy._id.includes(policy);
+//        })
 //       //  console.log("policies"+ policies);
 //      }else{
-//       newPolicy = policies;
-//      }
-  //  }
-    
+//       newPolicy = subscribedPolicy;
+//      } 
 //     //console.log("newMatchPolicy ==> " + newMatchPolicy);
-//   }else{
-//     newMatchPolicy=subscribedPolicies;
-//   }
+//   // }else{
+//   //   newMatchPolicy=subscribedPolicies;
+//   // }
 //     //Get Updated List
-//     this.updateMatchPolicyList(newMatchPolicy);
- //  }
-
+//     this.updateMatchPolicyList(newPolicy);
+//     alert("already subscribed");
+//   }
   
-  // submitToDB() 
-  // {
-  //   // console.log("submitToDB");
-  //   const matchPolicies = [];
-  //   //const surveyTakenDate = [];
-    
-  //   var subscribedPolicies=this.state.subscribedPolicies.toString().split(",");
-  //   var writtenPolicies=this.state.policies;
-  //   // console.log("subscribedPolicies ==>" + subscribedPolicies);
-  //   // console.log("matchedPolicies ==> " +  matchedPolicies);
-
-  //   //Filter the result suggested policy to not duplicate call server API
-  //   this.filterMatchPolicy(subscribedPolicies, writtenPolicies);
-    
-   
-  // }
 
   /*To display the list of policies*/
   displayPolicies()
   {
-    
+    var nPolicy = [];
+    var nMatchPolicy = [];
+    var filteredPolicy = [];
+    var matchedPolicies = this.state.matchedPolicies;
+    var subscribePolicy = this.state.subscribedPolicies;
+    var suggestedPolicies =   this.state.policies;
+
       Axios.get("http://localhost:5000/policies", {
       params: {type: "all" }
 
       })
       .then(response => {
-            
+             
 
       //   var newPolicy = [];
       //   var subscribedPolicy = this.state.subscribedPolicies;
@@ -137,20 +140,56 @@ class MatchedPolicies extends React.Component {
       //     newPolicy = policies;
       //  }
 
-              // console.log( response.data);
+              //console.log( response.data);
               this.setState({
                 policies: response.data,
-                writtenPolicies: response.data,
+                //filterSubscribedPolicy: response.data,
                 isChecked: this.state.isChecked         
               });
-              
+              // this.filterSubscribedPolicy();
             })
             .catch(function(error) {
               // console.log(error);
             });
 
+            // if(subscribedPolicy === sdgtedPolicies){
+            //   //filter suggested policies based on the subscribed policies
+            //   newPolicy = subscribedPolicy.filter(function(policy){
+            //    return !newPolicy._id.includes(policy);
+            //  });
+
+             if(!(subscribePolicy.length === 0)){
+              //filter suggested policies based on the subscribed policies
+              nMatchPolicy = suggestedPolicies.filter((policy) => {
+               return !nMatchPolicy.includes(policy);
+             });
+            
+            
+            // if(!(subscribePolicy.length === 0)){
+            //   //filter suggested policies based on the subscribed policies
+            //   filteredPolicy = this.state.policies.filter((policy) => {
+            //     let matchExists = false;
+
+            //     subscribePolicy.foreach((subscribedPolicy) => {
+            //       matchExists = filteredPolicy === subscribedPolicy._id
+            //     });
+            //    return matchExists;
+            //   //}
+             //})
+             
+            //  .catch(function(error) {
+              // console.log(error);
+            //});
+
+            // }else{
+            //   newPolicy = newMatchPolicy;
+            
+            
+           }else
+           {
+
             return this.state.policies.map((policy,index) => 
-            {
+            { 
               {
               if(!(policy.policy_name==="No match policy")){
                 return(
@@ -180,6 +219,8 @@ class MatchedPolicies extends React.Component {
              });         
                      
   }
+  }
+
 
   /*To get the matched policies from the survey taken*/
   getMatchedPolicy() {
@@ -307,6 +348,7 @@ class MatchedPolicies extends React.Component {
 
 /*Subscribe button for list of policies*/
   subscribeBtn(){
+    
     if(!(this.state.policies.length === 0)){
       
       return(

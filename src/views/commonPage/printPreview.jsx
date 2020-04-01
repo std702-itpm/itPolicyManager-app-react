@@ -96,16 +96,18 @@ export default class printPreview extends Component {
               <div style={{ border: "1px solid" }}>
                 <div id="renderPDF" style={{ margin: "20px" }}>
                   <Row style={{ marginTop: "70px" }}>
-                    <Col className="ml-auto mr-auto" md="5">
+                    <Col className="ml-auto mr-auto" md="6">
                       <div className="pdfForm-header" >
                         <p>{localStorage.getItem("session_name")}</p>
                         <p>Subscribed Date:{this.state.policy.date_subscribed}</p>
-                        <p>Review Date: 
+                        <p>Version: {this.state.policy.version}</p>
+                        <p>Review Date: 2020-03-24T00:50:52.210Z
                           {
 //JSON.stringify(this.state.policy)
                           }
                         </p>
-                        <p>Version: {this.state.policy.version}</p>
+                        <p>Approval Date: 2020-03-26T20:45:53.220Z</p>
+                        <p>Accountable Person: Kristof C </p>
                       </div>
                     </Col>
                     <Col className="ml-auto mr-auto" md="5">
