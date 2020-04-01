@@ -48,6 +48,7 @@ class Subscribers extends React.Component {
         this.setState({
           companies: response.data
         });
+        console.log("Companies: "+this.state.companies)
       })
       .catch(function(error) {
         console.log(error);

@@ -28,7 +28,7 @@ class MatchedPolicies extends React.Component {
       isSelected: false,
       matchedPolicies: [],
       policies: [],
-      subscribedPolicies: []
+      subscribedPolicies: [],
     };
   }
 
@@ -113,7 +113,7 @@ class MatchedPolicies extends React.Component {
                     value={policy._id}
                     defaultChecked={this.state.isSelected}
                     onClick={this.checkboxHandler}
-                  />
+                  />                  
                   {policy.policy_name}
                 </label>
               </td>
@@ -215,30 +215,6 @@ class MatchedPolicies extends React.Component {
                         <th className="text-center">Policy Name</th>
                       </tr>
                     </thead>
-                    {this.displayAllPolicies()}
-                    <tfooter>{this.subscribeBtn()}</tfooter>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col className="ml-auto mr-auto" md="10">
-              <Card className="card-upgrade" style={{ transform: "none" }}>
-                <CardHeader className="text-center">
-                  <CardTitle tag="h4">Survey Result</CardTitle>
-                  <p className="card-category">
-                    List of suggested policy/s based on your survey result.
-                  </p>
-                </CardHeader>
-                <CardBody>
-                  <Table responsive>
-                    <thead>
-                      <tr>
-                        <th className="text-center">Policy Name</th>
-                      </tr>
-                    </thead>
                     {this.policy()}
                     <tfooter>{this.subscribeBtn()}</tfooter>
                   </Table>
@@ -246,6 +222,8 @@ class MatchedPolicies extends React.Component {
               </Card>
             </Col>
           </Row>
+
+         
           
         </div>
       </>
