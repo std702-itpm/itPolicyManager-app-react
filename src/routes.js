@@ -22,8 +22,8 @@ import ReviewPage from "views/dashboardUserSubPage/reviewPage.jsx";
 import DisplayPolicy from "views/commonPage/DisplayPolicy.jsx";
 import printPreview from "views/commonPage/printPreview.jsx";
 import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
-import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
-// import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
+//import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
+import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
   const userType = localStorage.getItem('session_type');
   const userLogo = localStorage.getItem('session_logo');
   console.log("userLogo" + userLogo);
@@ -116,8 +116,8 @@ var routesAdmin = [{
 var routesClient = [
   {
     path: "/survey-result",
-    name: "Survey Result",
-    name2:"Survey Result",
+    name: "Policy Dashboard",
+    name2:"Policy Dashboard & Survey Result",
     icon: "nc-icon nc-alert-circle-i",
     component: SurveyResult,
     logo: userLogo,
@@ -144,24 +144,24 @@ var routesClient = [
     sidebar: true,
     layout: "/dashboard"
   },
-  {
-    path: "/PolicyDashboard",
-    name: "Policy Dashboard",
-    name2:"Policy Dashboard",
-    icon: "nc-icon nc-paper",
-    component: PolicyDashboard,
-    sidebar: true,
-    layout: "/dashboard"
-  },
   // {
-  //   path: "/PolicyDashboardView",
-  //   name: "Policy Dashboard View",
-  //   name2:"Policy Dashboard View",
+  //   path: "/PolicyDashboard",
+  //   name: "Policy Dashboard",
+  //   name2:"Policy Dashboard",
   //   icon: "nc-icon nc-paper",
-  //   component: PolicyDashboardView,
+  //   component: PolicyDashboard,
   //   sidebar: true,
   //   layout: "/dashboard"
   // },
+  {
+    path: "/PolicyDashboardView/:id",
+    name: "Policy Dashboard View",
+    name2:"Policy Dashboard View",
+    icon: "nc-icon nc-paper",
+    component: PolicyDashboardView,
+    sidebar: true,
+    layout: "/dashboard"
+  },
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",

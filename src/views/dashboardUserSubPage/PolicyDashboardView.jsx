@@ -48,27 +48,44 @@ export default class PolicyDashboardView extends React.Component {
         });
     }
 
+     /*To show the content of the policy*/  
     render() {
         return (
             <div>
                 
-                <div className="section text-center">
-                <Container>
-                <Row>
-                <img src={ITPMLogo}
-                width="200px"
-                height="100px"
-                style={{ float: "right" }}
-                />
-                <p>
-                    Policy ID:  {this.state.currentPolicy._id}<br/> 
-                    Policy Name: {this.state.currentPolicy.policy_name}<br/><br/>
-                    Content: <br/> {this.state.currentPolicy.content} <br/><br/>
-                </p>
-                </Row>
-                </Container>
-                </div>
+            <div className="section text-center">
+            {/* <Container>
+            <Row>
+            <img src={ITPMLogo}
+            width="150px"
+            height="50px"
+            style={{ float: "right" }}
+            />  
+            </Row>
+            </Container> */}
+            <p>
+            <br/> 
+            <center> 
+                Policy ID:  {this.state.currentPolicy._id}<br/>
+                Policy Name: {this.state.currentPolicy.policy_name}<br/><br/>
+                Content: <br/><br/> {this.state.currentPolicy.content} <br/><br/>
+                
+            </center>
+            </p>           
+            <Button> 
+              <a href="/dashboard/survey-result" 
+              className="btn-round" 
+              color="success" 
+              style={{ float: "right" }} > 
+              
+              Home
+            </a>
+            </Button>
+            
+            {/* <tfooter>{this.subscribeBtn()}</tfooter> */}
             </div>
-        )
-    }
+        </div>
+        
+    )
+        }
 }
