@@ -23,8 +23,8 @@ import ReviewPage from "views/dashboardUserSubPage/reviewPage.jsx";
 import DisplayPolicy from "views/commonPage/DisplayPolicy.jsx";
 import printPreview from "views/commonPage/printPreview.jsx";
 import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
-import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
-import RegModal from "views/commonPage/addNewSubscriber";
+// import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
+// import RegModal from "views/commonPage/addNewSubscriber";
 // import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
 //import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
@@ -158,25 +158,6 @@ var routesClient = [
     sidebar: true,
     layout: "/dashboard"
   },
-  {
-    path: "/PolicyDashboard",
-    name: "Policy Dashboard",
-    name2:"Policy Dashboard",
-    icon: "nc-icon nc-paper",
-    component: PolicyDashboard,
-    sidebar: true,
-    layout: "/dashboard"
-  },
-  // {
-  //   path: "/PolicyDashboardView",
-  //   name: "Policy Dashboard View",
-  //   name2:"Policy Dashboard View",
-  //   icon: "nc-icon nc-paper",
-  //   component: PolicyDashboardView,
-  //   sidebar: true,
-  //   layout: "/dashboard"
-  // },
-  
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",

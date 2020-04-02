@@ -376,8 +376,6 @@ class MatchedPolicies extends React.Component {
   render() {
     return (
       <>
-        <div className="container">
-
                <div className="content">
           <Row>
             <Col className="ml-auto mr-auto" md="10">
@@ -425,7 +423,6 @@ class MatchedPolicies extends React.Component {
               </Card>
             </Col>
           </Row>
-          </div>
 
         </div>
       </>
