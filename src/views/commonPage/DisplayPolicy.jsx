@@ -18,6 +18,7 @@ export default class DisplayPolicyTest extends Component {
       super(props);
       this.renderContent = this.renderContent.bind(this);
       this.handleSaveContent = this.handleSaveContent.bind(this);
+      this.saveSubscribedPolicy=this.saveSubscribedPolicy.bind(this);
       // this.handlePrint = this.handlePrint.bind(this);
       // this.renderPDF = this.renderPDF.bind(this);
       // this.getDate = this.getDate.bind(this);
@@ -46,6 +47,25 @@ export default class DisplayPolicyTest extends Component {
           console.log(error);
         });
     }
+
+//Add data to Subscribed Policy Table
+saveSubscribedPolicy(updatedContent){
+  Axios.post('http://localhost:5000/updateSubscribedPolicy',updatedContent)
+  .then(response=>{
+    if(response.data.status==="success"){
+      toast("Saved successfully!",{
+        type:"success",
+        position:toast.position.TOP_CENTER,
+        onClose:()=>{
+          window.location.href = 'DisplayPolicyTest';
+        }
+      });
+    }
+  })
+}   
+
+
+
 //handle save button
     handleSaveContent(e) {
         e.preventDefault();
@@ -53,9 +73,11 @@ export default class DisplayPolicyTest extends Component {
         const updatedContent = {
           updatedcontent: this.state.contents,
           company_name: localStorage.getItem("session_name"), 
-          policy_name: localStorage.getItem('reviewPolicy')
+          policy_name: localStorage.getItem('reviewPolicy'),
+          policy_id:localStorage.getItem('reviewPolicyId')
         };
-    
+        alert(localStorage.getItem('reviewPolicyId'));
+        this.saveSubscribedPolicy(updatedContent);
         Axios.post("http://localhost:5000/subscribedPolicy", updatedContent).then(
           res => {
             console.log(res.data);

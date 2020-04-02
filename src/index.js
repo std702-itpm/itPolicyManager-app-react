@@ -23,6 +23,8 @@ import PaySubscription from 'views/commonPage/PaySubscription.js';
 import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
 import editSubscriber from "views/commonPage/addNewSubscriber.jsx";
 import PolicyView from "views/PolicyView";
+import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
+
 
 // others
 
@@ -35,6 +37,9 @@ ReactDOM.render(
       <Route 
         exact path="/policy-view/:id" 
         render={props => <PolicyView  {...props} />} />
+      <Route 
+        exact path="/PolicyDashboardView/:id" 
+        render={props => <PolicyDashboardView  {...props} />} />  
       {/* <Route
         path="/profile-page"
         render={props => <ProfilePage {...props} />}

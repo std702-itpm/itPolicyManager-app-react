@@ -30,15 +30,18 @@ class SubscribedPolicies extends React.Component {
     localStorage.removeItem('reviewPolicy');
     // console.log("ID: " + localStorage.getItem("session_id"));
 
-    Axios.get("http://localhost:5000/subscribedPolicy", {
-      params: { company_name: localStorage.getItem("session_name") }
+    Axios.get("http://localhost:5000/getSubscribedPolicy", {
+      params: { 
+        company_id: localStorage.getItem("session_id"),
+        policy_id:""
+    }
     })
       .then(response => {
         // console.log("response", response);
         this.setState({
           sub_policy: response.data
         });
-        // console.log(this.state.sub_policy);
+        console.log(this.state.sub_policy);
       })
       .catch(function(error) {
         console.log(error);
@@ -51,35 +54,37 @@ class SubscribedPolicies extends React.Component {
     });
   };
 
-  reviewButtonHandler(e) {
-    debugger;
+  reviewButtonHandler(e,id) {
+    localStorage.setItem('reviewPolicyId',id);
     localStorage.setItem('reviewPolicy', e.target.value)
     // console.log(localStorage.getItem('reviewPolicy')); //Testing
     this.props.history.push("subscribed-policy-action");
   }
 
   tableDataDisplay(){
-    return this.state.sub_policy.map(policy => {
-      // console.log("policies: " + policy.version);
-      return (
-        <>
-          <tr>
-            <td key={policy.name}>{policy.name}</td>
-            <td key={policy.status}>{policy.status}</td>
-            <td key={policy.version} className="text-center">{policy.version}</td>
-            <td key={policy._id + 0} className="text-center">
-              <Button className="btn-round"
-                style={{'marginRight':'7px'}}
-                color="success"
-                value= {policy.name}
-                onClick={this.reviewButtonHandler}>
-                  Details
-              </Button>
-            </td>
-          </tr>
-        </>
-      )
-    })
+    
+      return this.state.sub_policy.map((policy,index) =>{
+        //console.log("policies: " + policy.version);
+        return (
+          <>
+            <tr key={index}>
+              <td key={policy.policy_name}>{policy.policy_name}</td>
+              <td key={policy.status}>{policy.status}</td>
+              <td key={policy.version}>{policy.version}</td>
+              <td key={policy.policy_id + 0} className="text-center">
+                <Button className="btn-round"
+                  style={{'marginRight':'7px'}}
+                  color="success"
+                  value= {policy.policy_name}
+                  onClick={(e)=>this.reviewButtonHandler(e,policy.policy_id)}>
+               Details
+                </Button>
+              </td> 
+            </tr>
+          </>
+        )
+      })
+   
   }
 
   tableDisplay(){
@@ -96,7 +101,7 @@ class SubscribedPolicies extends React.Component {
           <tbody>
             {
               this.tableDataDisplay()
-            }
+            } 
           </tbody>
         </Table>  
     )

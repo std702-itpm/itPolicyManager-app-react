@@ -25,7 +25,9 @@ import {
             policyName: localStorage.getItem('reviewPolicy'),
             companyDetails: [],
             reviewers:[],
-            status: ""
+            status: "",
+            reviewer_list:[],
+            reviewersData:[]
           });
       }
 
@@ -36,16 +38,36 @@ import {
                 this.setState({
                     companyDetails: response.data
                 });
-                Axios.get("http://localhost:5000/reviewPolicy", {
-                    params: { company_name: localStorage.getItem("session_name"),
-                        policy_name:  this.state.policyName}
-                }).then(response => {
-                    this.setState({
-                        reviewers: response.data.singlePolicy.reviewer,
-                        status: response.data.singlePolicy.status
-                    })
-                    this.getPolicyData();
+                Axios.get("http://localhost:5000/getSubscribedPolicy",
+                {params:
+                    {
+                        company_id:localStorage.getItem("session_id"),
+                        policy_id:localStorage.getItem("reviewPolicyId")
+                    }
                 })
+                .then(response=>{
+                    this.setState({
+                        // reviewers: response.data.singlePolicy.reviewer,
+                        // status: response.data.singlePolicy.status
+                        reviewer_list:response.data.reviewer_list,
+                        status:response.data.status
+                    })
+                    this.state.reviewer_list.map(reviewer=>{
+                        this.state.reviewers.push(reviewer.reviewer_id)
+                        console.log("Reviewer_list: "+this.state.reviewers)
+                        this.getPolicyData();
+
+                    })
+                })
+                // Axios.get("http://localhost:5000/reviewPolicy", {
+                //     params: { company_name: localStorage.getItem("session_name"),
+                //         policy_name:  this.state.policyName}
+                // }).then(response => {
+                //     this.setState({
+                //         reviewers: response.data.singlePolicy.reviewer,
+                //         status: response.data.singlePolicy.status
+                //     })
+                // })
                 .catch(function(error) {
                     console.log(error);
                 });  
@@ -56,19 +78,21 @@ import {
       }
 
       getPolicyData(){
+          
         let requests = this.state.reviewers.map(reviewer =>
             Axios.get("http://localhost:5000/company", {
                 params: { _id: reviewer, type: "user" }
             })
           );
           Promise.all(requests).then(reviewerData => {
-            this.setState({ reviewers: reviewerData.map(x => x.data) });
+            this.setState({ reviewersData: reviewerData.map(x => x.data) });
           });
+          console.log("reviewersData:"+this.state.reviewersData)
       }
 
       renderReviewDetails(){  
-        return this.state.reviewers.map(user => {
-            // console.log("this.state.reviewers ===>" + user)
+        return this.state.reviewersData.map(user => {
+             console.log("this.state.reviewers ===>" + user)
             return(
                 <span key={user._id}><strong> - {
                     user.fname + " " + user.lname}</strong>
@@ -78,9 +102,11 @@ import {
       }
 
       displayStartWorkflowBtn(){
+          console.log("sttus: "+this.state.status)
         //   console.log("this.state.reviewers.legnth" + this.state.reviewers.legnth)
           if(this.state.reviewers.length === 0 && 
                 (this.state.status === "done" || this.state.status === "awareness" || this.state.status === "reporting")){
+                    console.log("I am in if")
             return(
                 <><br></br>
                 <span style={{color: "red"}}>
@@ -105,13 +131,27 @@ import {
                             </Button>
                         </li>
                     );
-          }else{
+          }else if(this.state.status==="not reviewed"){
             return(
-                <><br></br>
-                <span style={{color: "red"}}>
-                    <strong>Please do follow-up the reviewers</strong>
-                </span></>
-            )
+                <li> 
+                            <Button
+                                className="btn-round"
+                                color="primary"
+                                style={{fontSize: "16px", fontWeight: "bold"}}
+                                to={{
+                                    pathname: "subscribed-policy-action-start-workflow"
+                                }}
+                                title="to review page"
+                                tag={Link}>
+                                    Add more reviewers
+                            </Button>
+                </li>
+                
+                // <><br></br>
+                // <span style={{color: "red"}}>
+                //     <strong>Please do follow-up the reviewers</strong>
+                // </span></>
+            );
           }
       }
 

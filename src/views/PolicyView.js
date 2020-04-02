@@ -65,6 +65,16 @@ export default class policyView extends React.Component {
                     Policy Name: {this.state.currentPolicy.policy_name}<br/><br/>
                     Content: <br/> {this.state.currentPolicy.content} <br/><br/>
                 </p>
+            
+            <Button> 
+              <a href="/landing-page" 
+              className="btn-round" 
+              color="success" 
+              style={{ float: "left" }} > 
+              
+              Home
+            </a>
+            </Button>            
                 </Row>
                 </Container>
                 </div>

@@ -20,7 +20,8 @@ class PaymentForm extends React.Component {
     this.state = {
       name: localStorage.getItem('session_name'),
       amount: 100.0, 
-      policyList: []
+      policyIdList: [],
+      policyList:[]
     };
 
     this.handleSubscribed = this.handleSubscribed.bind(this);
@@ -30,7 +31,7 @@ class PaymentForm extends React.Component {
 
   componentDidMount() {
     const subscribedPolicies = localStorage.getItem('subscribedPolicies') || ''
-    this.setState({policyList: subscribedPolicies.split(',')})
+    this.setState({policyIdList: subscribedPolicies.split(',')})    
   }
   
   async handleSubscribed (token, addresses){
@@ -38,11 +39,18 @@ class PaymentForm extends React.Component {
     const product = {
       name: this.state.name,
       amount: this.state.amount,
-      policies: this.state.policyList
-
-    };
-    const response = await Axios.post("http://localhost:5000/create_paymentintent", { token, product });
+      policies: this.state.policyIdList
+    };    
     
+    for(var i=0;i<this.state.policyIdList.length;i++){
+      Axios.get("http://localhost:5000/policies",
+      {params: {type:"one",_id:this.state.policyIdList[i] }})
+      .then(response=>{ 
+        alert(response.data);       
+        this.addData(response.data);
+      });
+    }   
+    const response = await Axios.post("http://localhost:5000/create_paymentintent", { token, product });
       console.log("Response:", response.data.status);
       if (response.data.status === "success") {
         toast("Payment successful! Check your email for details", { 
@@ -59,6 +67,26 @@ class PaymentForm extends React.Component {
         });
       }
   };
+
+  addData(data){
+    var policyData={
+      companyId:localStorage.getItem('session_id'),
+      policyId:data._id,
+      content:data.content,
+      name:data.policy_name,
+      reviewed_date:"",
+      status: false,
+      version:1   
+      // reviewer_list:[{
+      //   review_status: false,
+      //   review_reminder_email_sent:false,
+      //   review_reminder_email_error:false,
+      //   review_first_email_sent_time:"",
+      // }]
+    }
+    console.log("PolicyData: "+policyData)
+    Axios.post("http://localhost:5000/addSubscribedPolicy",policyData);
+  }
 
   render() {
     return (
