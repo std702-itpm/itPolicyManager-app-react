@@ -53,14 +53,6 @@ var routesAdmin = [{
     layout: "/dashboard"
   },
   {
-    path: "/editPolicy",
-    name2:"Edit",
-    component: EditPolicy,
-    logo: userLogo,
-    sidebar: false,
-    layout: "/dashboard"
-  },
-  {
     path: "/subscribers",
     name: "Subscribers",
     name2:"Subscribers",
@@ -69,7 +61,6 @@ var routesAdmin = [{
     sidebar: true,
     layout: "/dashboard"
   },
-
   {
     path:"/inactiveSubscribers",
     name:"Inactive Subscribers",
@@ -79,7 +70,6 @@ var routesAdmin = [{
     sidebar:true,
     layout:"/dashboard"
   },
-  
   {
     path: "/edit-profile/" + localStorage.getItem("session_id"),
     name: "Edit Profile",
@@ -104,6 +94,14 @@ var routesAdmin = [{
     icon: "nc-icon nc-paper",
     component: Questions,
     sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/editPolicy",
+    name2:"Edit",
+    component: EditPolicy,
+    logo: userLogo,
+    sidebar: false,
     layout: "/dashboard"
   },
   {
