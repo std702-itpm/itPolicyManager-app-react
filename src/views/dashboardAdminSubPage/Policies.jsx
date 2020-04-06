@@ -63,6 +63,7 @@ class Policies extends React.Component {
 
   displayPolicies(policies){
     return policies.map((policy, index) => {
+      if(!(policy.policy_name==="No match policy"))
       return (
         <tr>
           <td>{policy.policy_name}</td>
@@ -88,9 +89,9 @@ class Policies extends React.Component {
                 className="btn-success btn-round"
                 
                 onClick={()=>this.AssessmentBtn()}
-                style={{fontSize: "22px", color: "black"}}
+                style={{fontSize: "20px", color: "white"}}
               >
-                Assessment                
+                <strong>Assessment</strong>                
               </Link>
           </td>
         </tr>
@@ -117,7 +118,7 @@ class Policies extends React.Component {
   }
 
   DeletePolicy(){
-    alert("HI");
+    alert("Please click on OK to delete the policy.");
   }
 
   render() {
