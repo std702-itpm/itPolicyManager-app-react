@@ -194,31 +194,40 @@ import { textSpanIsEmpty } from 'typescript';
       return(<span className="text-primary">{status}</span>)
     }     
 
-      saveSubscribedPolicy(data){
+    //   saveSubscribedPolicy(data){
         
-        Axios.post('http://localhost:5000/updateSubscribedPolicy',data)
-        .then(response=>{
-          if(response.data.status==="success")
-          {
-            toast("Saved successfully!",{
-              type:"success",
-              position:toast.POSITION.TOP_CENTER,
-              onClose:()=>{
-                this.props.history.push("subscribed-policies");
-              }
-            });            
-          }   
-        })                           
-      }
+    //     Axios.post('http://localhost:5000/updateSubscribedPolicy',data)
+    //     .then(response=>{
+    //       if(response.data.status==="success")
+    //       {
+    //         toast("Saved successfully!",{
+    //           type:"success",
+    //           position:toast.POSITION.TOP_CENTER,
+    //           onClose:()=>{
+    //             this.props.history.push("subscribed-policies");
+    //          }
+    //         });            
+    //      }   
+    //    })                           
+    // }
 
 
       startReviewButtonHandler(e){
         let newReviewerList=[];
         let reviewer_list=[];
         var isPolicyBlocked=false;
-        if(window.confirm("Do you still need to add more reviewers in future?")){
-          isPolicyBlocked=true;
-        }
+        if(//window.confirm("Do you still need to add more reviewers in future?")
+        isPolicyBlocked=true)
+          {
+            toast("The Policy will be sent to the reviewer/s to start the review workflow.",{
+              type:"success",
+              position:toast.POSITION.TOP_CENTER,
+              onClose:()=>{
+              this.props.history.push("subscribed-policies");
+              }
+            }); 
+          }
+        
         if(this.state.reviewerList!==undefined){
           this.state.reviewerList.forEach(reviewer=>{
              newReviewerList={
@@ -233,7 +242,7 @@ import { textSpanIsEmpty } from 'typescript';
              reviewer_list.push(newReviewerList);
           })
         }
-        
+      
         e.preventDefault()
          console.log("#####" + this.state.singlePolicy.status);
             const data = {
@@ -249,7 +258,7 @@ import { textSpanIsEmpty } from 'typescript';
         };
         
         console.log("Data Reviewer List: "+data.policy_id)
-          this.saveSubscribedPolicy(data);
+          //this.saveSubscribedPolicy(data);
 
           // Axios.post("http://localhost:5000/reviewPolicy", {data} ).then(
           //   res => {
@@ -284,14 +293,13 @@ import { textSpanIsEmpty } from 'typescript';
                   <CardTitle tag="h4">
                     <span> Choose <strong> Key Contacts </strong> to start </span>
                     <span className="text-primary">{this.state.policyName}</span><br></br>
-                    <span><strong>{this.renderDisplayPolicyStatus()}review.</strong></span>
+                    <span><strong>{this.renderDisplayPolicyStatus()} review.</strong></span>
                   </CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Table responsive>
                     <thead>
-                      <tr>
-                        <th></th>
+                      <tr>                        
                         <th>Name</th>
                         <th>Email</th>
                         <th>Position</th>

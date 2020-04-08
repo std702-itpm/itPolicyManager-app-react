@@ -21,6 +21,7 @@ class MatchedPolicies extends React.Component {
 
     this.policy = this.policy.bind(this);
     this.subscribeBtn = this.subscribeBtn.bind(this);
+    this.subscribeBtnForMatchedPolicy = this.subscribeBtnForMatchedPolicy.bind(this);
     //this.filterSubscribedPolicy = this.filterSubscribedPolicy.bind(this);
     // this.updateMatchPolicyList = this.updateMatchPolicyList.bind(this);
     this.checkboxHandler = this.checkboxHandler.bind(this);
