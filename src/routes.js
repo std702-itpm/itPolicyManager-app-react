@@ -226,12 +226,26 @@ var routesClient = [
   },
 ];
 
+var routesAccountablePerson = [{
+  path: "/dashboardcontent",
+  pro: "true",
+  name: "Dashboard",
+  name2:"Dashboard",
+  icon: "nc-icon nc-bank",
+  component: DashboardContent,
+  sidebar: true,
+  layout: "/dashboard"
+},
+];
 
 var routes= []
 
 if(userType === "admin"){
   routes = routesAdmin;
-}else{
+}else if(userType==="Accountable Person"){
+  routes=routesAccountablePerson;
+}
+else{
   routes = routesClient;
 }
  
