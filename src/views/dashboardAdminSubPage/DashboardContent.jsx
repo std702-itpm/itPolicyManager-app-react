@@ -131,7 +131,7 @@ class Dashboard extends React.Component {
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Followers</p>
+                        <p className="card-category">Subscribers</p>
                         <CardTitle tag="p">+45K</CardTitle>
                         <p />
                       </div>
