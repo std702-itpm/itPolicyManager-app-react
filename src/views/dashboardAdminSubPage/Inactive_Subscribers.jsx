@@ -71,6 +71,16 @@ class inactiveSubscribers extends React.Component {
                       onClick={()=>this.activeClient(company._id)}
                   >
                       Activate
+                  </Button> 
+                  <Button
+                      className="btn-round"
+                      style={{'marginRight':'7px'}}
+                      color="danger"
+                      title="to details Modal"
+                      type="button"
+                      onClick={()=>this.deleteClient(company._id)}
+                  >
+                      Delete Permanantly
                   </Button>                  
               </td>
             </tr>
@@ -110,6 +120,18 @@ class inactiveSubscribers extends React.Component {
                }
             }
         );
+    }
+
+    deleteClient(id){
+      var data={
+        companyId:id
+      }
+      Axios.delete("http://localhost:5000/deleteCompany",data)
+      .then(response=>{
+        toast("The subscriber details deleted permanantly!",{
+          status:"success"
+        })
+      })
     }
   
    render() {

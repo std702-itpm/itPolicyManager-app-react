@@ -193,22 +193,22 @@ import { textSpanIsEmpty } from 'typescript';
       return(<span className="text-primary">{status}</span>)
     }     
 
-    //   saveSubscribedPolicy(data){
+      saveSubscribedPolicy(data){
         
-    //     Axios.post('http://localhost:5000/updateSubscribedPolicy',data)
-    //     .then(response=>{
-    //       if(response.data.status==="success")
-    //       {
-    //         toast("Saved successfully!",{
-    //           type:"success",
-    //           position:toast.POSITION.TOP_CENTER,
-    //           onClose:()=>{
-    //             this.props.history.push("subscribed-policies");
-    //          }
-    //         });            
-    //      }   
-    //    })                           
-    // }
+        Axios.post('http://localhost:5000/updateSubscribedPolicy',data)
+        .then(response=>{
+          if(response.data.status==="success")
+          {
+            toast("Saved successfully!",{
+              type:"success",
+              position:toast.POSITION.TOP_CENTER,
+              onClose:()=>{
+                this.props.history.push("subscribed-policies");
+             }
+            });            
+         }   
+       })                           
+    }
 
 
       startReviewButtonHandler(e){
@@ -257,7 +257,7 @@ import { textSpanIsEmpty } from 'typescript';
         };
         
         console.log("Data Reviewer List: "+data.policy_id)
-          //this.saveSubscribedPolicy(data);
+          this.saveSubscribedPolicy(data);
 
           // Axios.post("http://localhost:5000/reviewPolicy", {data} ).then(
           //   res => {
