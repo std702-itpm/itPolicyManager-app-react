@@ -23,6 +23,12 @@ import ReviewPage from "views/dashboardUserSubPage/reviewPage.jsx";
 import DisplayPolicy from "views/commonPage/DisplayPolicy.jsx";
 import printPreview from "views/commonPage/printPreview.jsx";
 import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
+
+//Accountable person
+import policyToSendAssessment from "views/dashboardAccountablePersonSubPage/PolicyToSendAssessment.jsx";
+import sendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessment.jsx";
+import KeyContactPeople from "views/dashboardAccountablePersonSubPage/KeyContactPeopleForAssessment.jsx"
+
 // import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
 // import RegModal from "views/commonPage/addNewSubscriber";
 // import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
@@ -226,12 +232,78 @@ var routesClient = [
   },
 ];
 
+var routesAccountablePerson=[
+  {
+    path: "/dashboardcontent",
+    pro: "true",
+    name: "Dashboard",
+    name2:"Dashboard",
+    icon: "nc-icon nc-bank",
+    component: DashboardContent,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/subscribed-policies",
+    name: "Subscribed Policies",
+    name2:"Subscribed Policies",
+    icon: "nc-icon nc-book-bookmark",
+    component: SubscribedPolicy,
+    logo: userLogo,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/keyContactPerson",
+    name: "Key Contact Person",
+    name2:"Key Contact Person",
+    icon: "nc-icon nc-simple-add",
+    component: keyContactPerson,
+    logo: userLogo,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/sendassessment",
+    name: "Send Assessment",
+    name2:"Send Assessment",
+    icon: "nc-icon nc-simple-add",
+    component: policyToSendAssessment,
+    logo: userLogo,
+    sidebar: true,
+    layout: "/dashboard"
+  },
+  {
+    path: "/send-assessment-action",
+    name2:"Assessment Details",
+    component: sendAssessment,
+    logo: userLogo,
+    sidebar: false,
+    layout: "/dashboard"
+  },
+  {
+    path: "/keyContactPeople-ForAssessment",
+    name: "Key Contact People",
+    name2:"Key Contact People",
+    icon: "nc-icon nc-simple-add",
+    component: KeyContactPeople,
+    logo: userLogo,
+    sidebar: false,
+    layout: "/dashboard"
+  },
+]
+
+
 
 var routes= []
 
 if(userType === "admin"){
   routes = routesAdmin;
-}else{
+}
+else if(userType==="Accountable Person"){
+  routes=routesAccountablePerson
+}
+else{
   routes = routesClient;
 }
  

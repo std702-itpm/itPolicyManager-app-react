@@ -35,21 +35,18 @@ class addAccountablePerson extends Component {
 
       this.onChangeInput = this.onChangeInput.bind(this);
       this.onRegisterClick = this.onRegisterClick.bind(this);
+      this.getData=this.getData.bind(this);
      // this.toggleModal = this.toggleModal.bind(this);
      // this.routeChange = this.routeChange.bind(this);
       
       this.state = {
-        modal: true,
+        user:[],
         fNameInput: '',
         // nzbnInput: '',
         lNameInput: '',
         AEmail: '',
         AContact: '',
-        AAddr: '',
-        AAddr2: '',
-        ACity: '',
-        AState: '',
-        AZip: '',
+        AAddress: ''        
         // bDescription: '',
       }
 
@@ -57,93 +54,48 @@ class addAccountablePerson extends Component {
   }
 
   componentDidMount() {
-    const idInfo={id:localStorage.getItem('session_id')};
-    console.log("ID:"+idInfo.id);
-    if(this.props.userId===undefined){
-      console.log("IF: "+idInfo.id);
-      Axios.get("http://localhost:5000/companyAdmin/"+idInfo.id)
-      .then(response => {
-        console.log("response", response);
-        this.fillData(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    }
-    else{
-      console.log("Else: "+this.props.userId);
-      Axios.get("http://localhost:5000/companyAdmin/"+this.props.userId)
-      .then(response => {
-        console.log("response", response);
-        this.fillData(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    }
+    Axios.get("http://localhost:5000/user",
+    {params:
+      {
+        companyId:localStorage.getItem("session_id"),
+        user_type:'Accountable Person'
+      }
+    })
+    .then(response=>{
+      if(response.data!==null){
+        console.log("I am in if");
+        this.setState({
+          user:response.data                
+        })
+      }
+      else{
+        console.log("I am in else")
+      }
+      this.getData();    
+    })
   }
-  // componentDidMount() {
-  //   Axios.get("http://localhost:5000/Company_Admin", {
-  //     params: { _id: localStorage.getItem("session_id") }
-  //   })
-  //     .then(response => {
-  //       console.log("response", response);
-  //       this.setState({
-  //         AdminDetails: response.data.AdminDetails,
-  //         fNameInput: response.data.AdminDetails.first_name,
-  //         // nzbnInput: response.data.companyDetails.nzbn,
-  //         lNameInput: response.data.AdminDetails.last_name,
-  //         AEmail: response.data.AdminDetails.Admin_email,
-  //         AContact: response.data.AdminDetails.contact,
-  //         AAddr: response.data.AdminDetails.address,
-  //         // bDescription: response.data.companyDetails.description,
-  //         ALogo : response.data.logo
-  //       });
-  //       console.log("AdminDetails", this.state.AdminDetails);
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error);
-  //     });
-  //   document.body.classList.add("register-page");
-  //   document.addEventListener('mousedown', this.handleClickOutside, true);
-  // }
 
-// componentDidUpdate() {    document.body.classList.remove("register-page");
-//   }
-
-  // routeChange() {
-  //   let path = `/signin-page`;
-  //   this.props.history.push(path);
-  // }
-
-//   componentWillUnmount() {
-//     document.removeEventListener('mousedown', this.handleClickOutside, true);
-// }
-
-  // toggleModal(){
-  //   this.setState({
-  //     modal: false
-  //   });
-  //   window.location.reload();
-  // };
-
-
+  getData(){
+    this.setState({
+      fNameInput:this.state.user.fname,
+      lNameInput: this.state.user.lname,
+      AEmail: this.state.user.email,
+      AContact: this.state.user.contact,
+      AAddress: this.state.user.address      
+    })
+  }
+  
+  
   //button handler
   onRegisterClick(e) {
     e.preventDefault();
-    // this.toggleModal();
     console.log("onRegisterClick clicked! ");
     const RegisterDetails = {
       fNameInput: this.state.fNameInput,
-      // nzbnInput: this.state.nzbnInput,
       lNameInput: this.state.lNameInput,
       AEmail: this.state.AEmail,
       AContact: this.state.AContact,
-      AAddr: this.state.AAddr,
-      AAddr2: this.state.AAddr2,
-      ACity: this.state.ACity,
-      AState: this.state.AState,
-      AZip: this.state.AZip,
+      AAddress: this.state.AAddress,     
       company:localStorage.getItem("session_id")
             // bDescription: this.state.bDescription
     };
@@ -161,30 +113,7 @@ class addAccountablePerson extends Component {
     })
     .catch(error=>{
       console.log(error);
-    })
-
-      
-
-    // Axios.post('http://localhost:5000/register', RegisterDetails)
-    // .then(res => {console.log(res.data);
-    //   if(res.data.value === true){
-    //     toast("Thank You for registering!\n Please check your email for your login credentials and update you password.", { 
-    //       type: "success", 
-    //       position: toast.POSITION.TOP_CENTER,
-    //       onClose: ()=> {
-    //         window.location.reload();
-    //       }
-    //     });
-    //   }else{
-    //     toast("Registration Failed!\n Admin already exist, login instead.", { 
-    //       type: "error", 
-    //       position: toast.POSITION.TOP_CENTER,
-    //       onClose: ()=> {
-    //         window.location.reload();
-    //       }
-    //     });
-    //   }
-    // });
+    }) 
   }
 
   onChangeInput(e) {
@@ -209,10 +138,8 @@ class addAccountablePerson extends Component {
               <FormGroup>
                 <label><h6>First Name</h6></label>
                 <InputGroup className="form-group-no-border">
-                <Col className="car-register-nzbn" lg="8">
                 <Input placeholder="first name" type="text"  name="fNameInput"  value={this.state.fNameInput}
                        onChange={this.onChangeInput}/>
-                 </Col>                                 
                 </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -245,45 +172,11 @@ class addAccountablePerson extends Component {
                           <FormGroup>
                               <label><h6>Address</h6></label>
                               <InputGroup className="form-group-no-border">
-                                  <Input placeholder="Address1" type="text" 
-                                  name="AAddr"  value={this.state.AAddr}
+                                  <Input placeholder="Address" type="text" 
+                                  name="AAddress"  value={this.state.AAddress}
                                   onChange={this.onChangeInput}/>
                               </InputGroup>
                           </FormGroup>
-                          <FormGroup>
-                              <label><h6>Address 2</h6></label>
-                              <InputGroup className="form-group-no-border">
-                                  <Input placeholder="Address2" type="text" 
-                                  name="AAddr2"  value={this.state.AAddr2}
-                                  onChange={this.onChangeInput}/>
-                              </InputGroup>
-                          </FormGroup>
-                          <FormGroup>
-                              <Row>
-                                  <InputGroup className="form-group-no-border">
-                                      <Col md="6">
-                                          <label for="city">City</label>
-                                          <Input type="text" id="city"
-                                          name="ACity"  value={this.state.ACity}
-                                          onChange={this.onChangeInput}/>
-                                      </Col>
-                                      <Col md="4">
-                                          <label for="state">State</label>
-                                          <Input type="text" id="state"
-                                          name="AState"  value={this.state.AState}
-                                          onChange={this.onChangeInput}/>
-                                      </Col>
-                                      <Col md="2">
-                                          <label for="zip">Zip</label>
-                                          <Input type="text" id="zip"
-                                          name="AZip"  value={this.state.AZip}
-                                          onChange={this.onChangeInput}/>
-                                      </Col>
-                                  </InputGroup>
-                              </Row>
-                          </FormGroup>
-
-        
               </CardBody>
               <CardFooter>
            

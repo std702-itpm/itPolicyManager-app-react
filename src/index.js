@@ -24,6 +24,7 @@ import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
 import editSubscriber from "views/commonPage/addNewSubscriber.jsx";
 import PolicyView from "views/PolicyView";
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
+import SendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessment.jsx";
 
 
 // others
@@ -77,7 +78,12 @@ ReactDOM.render(
         path="/review-policy/:companyId/:policyName/:userId"
         render={props => <DisplayReviewPolicy key = {props.match.params.userId} {...props} />}
       />
-      <Redirect to="/landing-page" />
+
+      <Route
+        path="/send-assessment/:policyId/:userId"
+        render={props => <SendAssessment key = {props.match.params.userId} {...props} />} 
+      /> 
+      <Redirect to="/landing-page" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

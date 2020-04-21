@@ -33,7 +33,8 @@ import { textSpanIsEmpty } from 'typescript';
         reviewers:[],
         singlePolicy:[],
         reviewerList:[],
-        newUserList:[]
+        newUserList:[],
+        reviewersForNotReviewedStatus:[]
       };
     }
 
@@ -66,8 +67,8 @@ import { textSpanIsEmpty } from 'typescript';
               this.state.reviewerList.push(reviewer.reviewer_id)
             })
             this.setState({reviewerList:this.state.reviewerList})
+            console.log("getSubscribedPolicy: "+this.state.reviewers)
 
-            console.log("getSubscribedPolicy: "+this.state.reviewerList)
           })
           
           
@@ -96,9 +97,6 @@ import { textSpanIsEmpty } from 'typescript';
       })
     }
       
-       
-
-    
     renderDisplayReviewers(){  
       let newUserList=[];       
         let newUsers=[];
@@ -130,8 +128,9 @@ import { textSpanIsEmpty } from 'typescript';
                           value={keyContact._id}
                           defaultChecked={this.state.isSelected}
                           onClick={this.keyContactsCheckboxHandler}
-                      />{keyContact.fname + " " + keyContact.lname}
+                      />
                       </td>
+                      <td>{keyContact.fname + " " + keyContact.lname}</td>
                       <td>{keyContact.email}</td>
                       <td>{keyContact.position}</td>
                   </tr>
@@ -235,12 +234,12 @@ import { textSpanIsEmpty } from 'typescript';
         }
         
         e.preventDefault()
-         console.log("#####" + this.state.singlePolicy.status);
             const data = {
             isPolicyBlocked:isPolicyBlocked,
             policy_name:localStorage.getItem('reviewpolicy'),
             policy_id:localStorage.getItem('reviewPolicyId'),
             company_name: localStorage.getItem("session_name"),
+            companyId:localStorage.getItem('session_companyId'),
             policyName: this.state.singlePolicy.name,
             status: this.state.singlePolicy.status,
             content:null,

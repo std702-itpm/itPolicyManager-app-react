@@ -9,6 +9,7 @@ import {
   Col,
   Input,
   Button,
+  Label,
   Card,
   CardHeader,
   CardBody,
@@ -123,6 +124,12 @@ class Assessment extends React.Component {
       this.setState({ assessment: assessment })
     };
 
+    const handleAnswerChange = e => {
+      const assessment = this.state.assessment;
+      assessment[assessmentIndex].correct_answer = e.target.value;
+      this.setState({ assessment: assessment })
+    };
+
     const addOption = () => {
       const newOption = { name: '' }
       const assessment = this.state.assessment[assessmentIndex]
@@ -159,6 +166,15 @@ class Assessment extends React.Component {
           ))}
         </ul>
         <Button className="btn-round" color="success"  onClick={addOption}>add new option</Button>
+        <Row>
+        <b><Label>Correct Answer(Option Number): </Label></b>
+        <Input
+          type="textbox"
+          value={assessment.correct_answer}
+          onChange={handleAnswerChange} 
+        />
+        </Row>
+        
         <br></br><br></br><hr></hr>
       </div>
     );
@@ -215,6 +231,7 @@ class Assessment extends React.Component {
                   name: ''
               }
           ],
+          correct_answer:''
       }
       assessment.push(newAssessment)
       this.setState({ assessment: assessment })

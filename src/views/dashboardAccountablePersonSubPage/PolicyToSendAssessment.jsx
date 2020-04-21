@@ -14,7 +14,7 @@ import {
   Col
 } from "reactstrap";
 
-class SubscribedPolicies extends React.Component {
+class policyToSendAssessment extends React.Component {
   constructor(props){
     super(props);
     this.tableDisplay = this.tableDisplay.bind(this);
@@ -28,8 +28,6 @@ class SubscribedPolicies extends React.Component {
   }
 
   componentDidMount() {
-    console.log("#####" + localStorage.getItem("session_companyId"));
-
     localStorage.removeItem('reviewPolicy');
      console.log("ID: " + localStorage.getItem("session_userId"));
     var companyId;
@@ -68,32 +66,34 @@ class SubscribedPolicies extends React.Component {
   reviewButtonHandler(e,id) {
     localStorage.setItem('reviewPolicyId',id);
     localStorage.setItem('reviewPolicy', e.target.value)
-    // console.log(localStorage.getItem('reviewPolicy')); //Testing
-    this.props.history.push("subscribed-policy-action");
+    this.props.history.push("keyContactPeople-ForAssessment");
   }
 
   tableDataDisplay(){
     
       return this.state.sub_policy.map((policy,index) =>{
+          if(policy.status==="awareness"){
+            return (
+                <>
+                  <tr key={index}>
+                    <td key={policy.policy_name}>{policy.policy_name}</td>
+                    <td key={policy.status}>{policy.status}</td>
+                    <td key={policy.version}>{policy.version}</td>
+                    <td key={policy.policy_id + 0} className="text-center">
+                      <Button className="btn-round"
+                        style={{'marginRight':'7px'}}
+                        color="success"
+                        value= {policy.policy_name}
+                        onClick={(e)=>this.reviewButtonHandler(e,policy.policy_id)}>
+                      Send Assessment
+                      </Button>
+                    </td> 
+                  </tr>
+                </>
+              ) 
+          }
         //console.log("policies: " + policy.version);
-        return (
-          <>
-            <tr key={index}>
-              <td key={policy.policy_name}>{policy.policy_name}</td>
-              <td key={policy.status}>{policy.status}</td>
-              <td key={policy.version}>{policy.version}</td>
-              <td key={policy.policy_id + 0} className="text-center">
-                <Button className="btn-round"
-                  style={{'marginRight':'7px'}}
-                  color="success"
-                  value= {policy.policy_name}
-                  onClick={(e)=>this.reviewButtonHandler(e,policy.policy_id)}>
-               Details
-                </Button>
-              </td> 
-            </tr>
-          </>
-        )
+        
       })
    
   }
@@ -146,4 +146,4 @@ class SubscribedPolicies extends React.Component {
   }
 }
 
-export default SubscribedPolicies;
+export default policyToSendAssessment;
