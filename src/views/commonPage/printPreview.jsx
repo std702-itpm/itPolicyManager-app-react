@@ -21,26 +21,40 @@ export default class printPreview extends Component {
       tempcontents: [],
       policy: [],
       updatedContent: [],
-      company: {}
+      company: {},
+      review_date:"",
+      approval_date:""
     };
   }
   componentDidMount() {
     console.log(localStorage.getItem("session_name"));
-    Axios.get("http://localhost:5000/reviewPolicy", {
-      params: { company_name: localStorage.getItem("session_name"), policy_name: localStorage.getItem('reviewPolicy') }
-    })
-      .then(response => {
-        console.log(response)
-        this.setState({
-          company: response.data.company,
-          policy: response.data.singlePolicy,
-          contents: response.data.singlePolicy.content,
-        });
+
+    Axios.get("http://localhost:5000/getSubscribedPolicy",
+       {
+          params:{policy_id: localStorage.getItem('reviewPolicyId'),company_id: localStorage.getItem('session_id')}
+        }).then(response=>{
+         this.setState({review_date:response.data.reviewed_date,approval_date:response.data.approval_date});
+          console.log("Response: "+response.data.reviewed_date)
+          this.setState({
+            //company: localStorage.getItem("session_name"),
+            policy: response.data,
+            contents: response.data.content,
+          });
+        })
+    
+    // Axios.get("http://localhost:5000/reviewPolicy", {
+    //   params: { company_name: localStorage.getItem("session_name"), policy_name: localStorage.getItem('reviewPolicy') }
+    // })
+    //   .then(response => {       
+    //     console.log(response)
+        
+        
         // console.log(this.state.contents);
-      })
+      //)
       .catch(function (error) {
         console.log(error);
       });
+      
   }
 
   //handle print button
@@ -101,12 +115,12 @@ export default class printPreview extends Component {
                         <p>{localStorage.getItem("session_name")}</p>
                         <p>Subscribed Date:{this.state.policy.date_subscribed}</p>
                         <p>Version: {this.state.policy.version}</p>
-                        <p>Review Date: 2020-03-24T00:50:52.210Z
+                        <p>Review Date:{this.state.review_date}
                           {
 //JSON.stringify(this.state.policy)
                           }
                         </p>
-                        <p>Approval Date: 2020-03-26T20:45:53.220Z</p>
+                        <p>Approval Date: {this.state.approval_date}</p>
                         <p>Accountable Person: Kristof C </p>
                       </div>
                     </Col>

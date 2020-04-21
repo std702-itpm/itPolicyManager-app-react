@@ -75,6 +75,8 @@ class PaymentForm extends React.Component {
       content:data.content,
       name:data.policy_name,
       reviewed_date:"",
+      approval_date:"",
+      date_subscribed:Date.now(),
       status: "not reviewed",
       version:1   
       // reviewer_list:[{

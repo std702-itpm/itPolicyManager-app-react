@@ -70,7 +70,7 @@ class inactiveSubscribers extends React.Component {
                       type="button"
                       onClick={()=>this.activeClient(company._id)}
                   >
-                      Active
+                      Activate
                   </Button>                  
               </td>
             </tr>
