@@ -51,7 +51,7 @@ class PaymentForm extends React.Component {
       });
     }   
     const response = await Axios.post("http://localhost:5000/create_paymentintent", { token, product });
-      console.log("Response:", response.data.status);
+      //console.log("Response:", response.data.status);
       if (response.data.status === "success") {
         toast("Payment successful! Check your email for details", { 
           type: "success", 
