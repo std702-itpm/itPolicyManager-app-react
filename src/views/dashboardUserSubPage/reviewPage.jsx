@@ -199,13 +199,13 @@ import { textSpanIsEmpty } from 'typescript';
         .then(response=>{
           if(response.data.status==="success")
           {
-            toast("Saved successfully!",{
-              type:"success",
-              position:toast.POSITION.TOP_CENTER,
-              onClose:()=>{
-                this.props.history.push("subscribed-policies");
-             }
-            });            
+            // toast("Saved successfully!",{
+            //   type:"success",
+            //   position:toast.POSITION.TOP_CENTER,
+            //   onClose:()=>{
+            //     this.props.history.push("subscribed-policies");
+            //  }
+            // });            
          }   
        })                           
     }

@@ -126,11 +126,18 @@ class inactiveSubscribers extends React.Component {
       var data={
         companyId:id
       }
-      Axios.delete("http://localhost:5000/deleteCompany",data)
+      Axios.post("http://localhost:5000/deleteCompany",data)
       .then(response=>{
-        toast("The subscriber details deleted permanantly!",{
-          status:"success"
-        })
+        if(response.data.status==="success"){
+          toast("The subscriber details deleted permanantly!",{
+            type:"success",
+            position:toast.POSITION.TOP_CENTER,
+            onClose:()=>{
+              window.location.reload();
+            }
+          })
+        }
+        
       })
     }
   
