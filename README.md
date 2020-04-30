@@ -1,6 +1,13 @@
 # itPolicyManager-app-react
 An Industry Project for IT Psychiatrist
 
+# Template being used:
+# Dashboard: Paper Dashboard 2 by Creative Tim
+    https://demos.creative-tim.com/paper-dashboard/docs/1.0/getting-started/introduction.html
+# Landing Page: Paper Kit by Creative Tim
+    https://demos.creative-tim.com/paper-kit-react/#/documentation/introduction
+
+
 Build Setup
 # install dependencies
 node, 
