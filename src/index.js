@@ -17,7 +17,7 @@ import LandingPage from "views/LandingPage.js";
 import ContactUsPage from "views/landingSubPage/ContactUsPage.js";
 import SurveyPage from "views/landingSubPage/SurveyPage.js";
 import SignIn from "views/landingSubPage/SignIn.js";
-import Modal from "views/landingSubPage/RegModal.js";
+import RegisterModal from "views/landingSubPage/RegisterModal.js";
 import Dashboard from "views/Dashboard.jsx";
 import PaySubscription from 'views/commonPage/PaySubscription.js';
 import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
@@ -51,7 +51,7 @@ ReactDOM.render(
       />
       <Route
         path="/register-modal"
-        render={props => <Modal {...props} />}
+        render={props => <RegisterModal {...props} />}
       />
       <Route
         path="/contactus-page"
