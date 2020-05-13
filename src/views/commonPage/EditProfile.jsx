@@ -39,6 +39,7 @@ class Policies extends React.Component {
     console.log("ID:"+idInfo.id);
     if(this.props.subscriberId===undefined){
       console.log("IF: "+idInfo.id);
+      //if logged in user wants to edit his profile
       Axios.get("http://localhost:5000/edituserprofile/"+idInfo.id)
       .then(response => {
         console.log("response", response);
@@ -49,6 +50,7 @@ class Policies extends React.Component {
       });
     }
     else{
+      //if logged in super admin wants to edit the other subscriber's profile
       console.log("Else: "+this.props.subscriberId);
       Axios.get("http://localhost:5000/editprofile/"+this.props.subscriberId)
       .then(response => {
@@ -62,6 +64,7 @@ class Policies extends React.Component {
     
   }
 
+  //assign the values to the form to edit profile
   fillData(response){
     this.setState({
       companyDetails: response.data.companyDetails,
@@ -76,6 +79,7 @@ class Policies extends React.Component {
     console.log("companyDetails", this.state.companyDetails);
   }
 
+  //input changes handler
   onChangeInput(e) {
     const target = e.target;
     const value = target.value;

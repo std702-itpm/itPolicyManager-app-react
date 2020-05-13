@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import { toast } from "react-toastify";
 
+//reactstrap components
 import {
       Button,
       Row,
@@ -34,6 +35,7 @@ export default class EditPolicy extends Component {
   }
     componentDidMount() {
     if(!(this.props.policyId===undefined)) {
+      //if policy id is available then user can get policy from id in the database
         Axios.get("http://localhost:5000/policies", {
         params: {type:"one",_id:this.props.policyId }//localStorage.getItem('reviewPolicy')}
       })
@@ -83,6 +85,8 @@ export default class EditPolicy extends Component {
           }
         );
       }
+
+      //Input changes handler
     onInputChange(e){
         const target=e.target;
         const name=target.name;
@@ -90,6 +94,7 @@ export default class EditPolicy extends Component {
         this.setState({[name]:value});
     }
 
+    //get contents for policy
     renderContent (content,contentIndex){
       const onChangeInput = (e) => {
           // console.log( "bbbb " +e.target.value)

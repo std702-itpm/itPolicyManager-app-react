@@ -127,7 +127,7 @@ import { textSpanIsEmpty } from 'typescript';
                           type="checkbox"
                           value={keyContact._id}
                           defaultChecked={this.state.isSelected}
-                          onClick={this.keyContactsCheckboxHandler}
+                          onClick={(e)=>this.keyContactsCheckboxHandler}
                       />
                       </td>
                       <td>{keyContact.fname + " " + keyContact.lname}</td>
@@ -154,7 +154,8 @@ import { textSpanIsEmpty } from 'typescript';
         reviewers=this.state.reviewerList;
       }      
       console.log("this.state.isSelected: "+this.state.isSelected);
-      if(e.target.checked){        
+      if(e.target.checked){  
+        this.setState({isSelected: !this.state.isSelected });     
         reviewers.push(e.target.value);
         console.log("Reviewers: "+reviewers)
       }
@@ -215,9 +216,9 @@ import { textSpanIsEmpty } from 'typescript';
         let newReviewerList=[];
         let reviewer_list=[];
         var isPolicyBlocked=false;
-        if(//window.confirm("Do you still need to add more reviewers in future?")
-        isPolicyBlocked=true)
-          {
+        if(!(window.confirm("Do you still need to add more reviewers in future?")))
+            {
+              isPolicyBlocked=true;       
             toast("The Policy will be sent to the reviewer/s to start the review workflow.",{
               type:"success",
               position:toast.POSITION.TOP_CENTER,
@@ -298,7 +299,8 @@ import { textSpanIsEmpty } from 'typescript';
                 <CardBody>
                   <Table responsive>
                     <thead>
-                      <tr>                        
+                      <tr> 
+                        <th></th>                       
                         <th>Name</th>
                         <th>Email</th>
                         <th>Position</th>
