@@ -157,6 +157,7 @@ class keyContactPerson extends React.Component {
                   <Table responsive>
                     <thead>
                       <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Postion</th>

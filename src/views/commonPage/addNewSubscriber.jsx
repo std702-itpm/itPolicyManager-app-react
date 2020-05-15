@@ -52,6 +52,7 @@ class RegModal extends Component {
   }
 
   componentDidMount() {
+    //edit profile for the subscriber list at super admin side
     Axios.get("http://localhost:5000/editprofile", {
       params: { _id: localStorage.getItem("session_id") }
     })
@@ -97,7 +98,7 @@ class RegModal extends Component {
   };
 
 
-  //button handler
+  //Register button handler
   onRegisterClick(e) {
     e.preventDefault();
     this.toggleModal();

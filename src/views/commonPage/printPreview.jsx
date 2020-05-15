@@ -28,7 +28,7 @@ export default class printPreview extends Component {
   }
   componentDidMount() {
     console.log(localStorage.getItem("session_name"));
-
+    //get subscribed policy from policy id and company id
     Axios.get("http://localhost:5000/getSubscribedPolicy",
        {
           params:{policy_id: localStorage.getItem('reviewPolicyId'),company_id: localStorage.getItem('session_id')}
@@ -71,6 +71,7 @@ export default class printPreview extends Component {
       });
   }
 
+  //get current date
   getDate() {
     let tempDate = new Date();
     let date = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
@@ -78,6 +79,7 @@ export default class printPreview extends Component {
     
   }
   
+  //get review date
   getDateReviewed() {
     let reviewDate = new Date();
     let review = reviewDate.getFullYear() + '-' + (reviewDate.getMonth() + 1) + '-' + reviewDate.getDate();
@@ -88,7 +90,7 @@ export default class printPreview extends Component {
 
   }
 
-  
+  //render pdf file
   renderPDF() {
     return this.state.contents.map((content) => {
       return (
@@ -103,6 +105,7 @@ export default class printPreview extends Component {
 
   render() {
     return (
+      //layout for pdf file
       <>
         <div className="content" id="policy">
           <Row>

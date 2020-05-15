@@ -66,6 +66,7 @@ class Policies extends React.Component {
         }
     }
 
+    //handles comment from reviewers
     commentHandler(e) {
         const target = e.target;
         const value = target.value;
@@ -76,6 +77,7 @@ class Policies extends React.Component {
         });
     }
 
+    //if reviewer reject the policy
     rejectHandler() {
         Axios.get("http://localhost:5000/company", {
             params: { _id: this.props.match.params.userId, type: "user"}
@@ -157,6 +159,7 @@ class Policies extends React.Component {
         }
     }
 
+    //saves in the database if reviewer reject the policy
     acceptHandler() {
         let reviewed = new Date;
         let reviewDate = reviewed.getFullYear() + '-' + (reviewed.getMonth() + 1) + '-' + reviewed.getDate();

@@ -1,3 +1,4 @@
+//This component is layout for assessment
 import React, {
     Component
 } from "react";

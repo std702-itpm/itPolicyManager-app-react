@@ -33,6 +33,7 @@ class RegisterModal extends Component {
     this.onRegisterClick = this.onRegisterClick.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.routeChange = this.routeChange.bind(this);
+    this.handleClickOutside=this.handleClickOutside.bind(this);
 
     this.state = {
       modal: true,
@@ -74,6 +75,13 @@ class RegisterModal extends Component {
       modal: !this.state.modal
     });
   };
+
+  handleClickOutside(){
+    this.setState({
+      modal:!this.state.modal
+    })
+    window.location.href='/landing-page';
+  }
 
 
   //button handler

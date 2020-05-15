@@ -30,6 +30,7 @@ class PaymentForm extends React.Component {
   }
 
   componentDidMount() {
+    //assign value for subscribed policies and get from the localstorage 
     const subscribedPolicies = localStorage.getItem('subscribedPolicies') || ''
     this.setState({policyIdList: subscribedPolicies.split(',')})    
   }
@@ -43,6 +44,7 @@ class PaymentForm extends React.Component {
     };    
     
     for(var i=0;i<this.state.policyIdList.length;i++){
+      //get policy list from policies collection from the database by id 
       Axios.get("http://localhost:5000/policies",
       {params: {type:"one",_id:this.state.policyIdList[i] }})
       .then(response=>{ 
@@ -87,11 +89,13 @@ class PaymentForm extends React.Component {
       // }]
     }
     console.log("PolicyData: "+policyData)
+    //inserted subscribed policies in subscribed policy collection in the database
     Axios.post("http://localhost:5000/addSubscribedPolicy",policyData);
   }
 
   render() {
     return (
+      //layout for payment form for policy subscription
       <Elements>
         <Row>
           <Col lg="6">
