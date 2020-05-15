@@ -21,6 +21,8 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "components/Headers/LandingPageHeader.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
 
+import styles from "./register.module.css";
+
 toast.configure();
 
 class RegisterModal extends Component {
@@ -31,7 +33,6 @@ class RegisterModal extends Component {
     this.onRegisterClick = this.onRegisterClick.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.routeChange = this.routeChange.bind(this);
-    this.handleClickOutside=this.handleClickOutside.bind(this);
 
     this.state = {
       modal: true,
@@ -52,7 +53,6 @@ class RegisterModal extends Component {
 
   componentDidMount() {
     document.body.classList.add("register-page");
-    document.addEventListener('mousedown', this.handleClickOutside, true);
   }
 
   componentDidUpdate() {
@@ -65,7 +65,6 @@ class RegisterModal extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside, true);
   }
 
   toggleModal() {
@@ -74,18 +73,10 @@ class RegisterModal extends Component {
     });
   };
 
-  handleClickOutside(){
-    this.setState({
-      modal:!this.state.modal
-    })
-    window.location.href='/landing-page';
-  }
-
-
   //button handler
   onRegisterClick(e) {
     e.preventDefault();
-    this.toggleModal();
+
     console.log("onRegisterClick clicked! ");
     const RegisterDetails = {
       bNameInput: this.state.bNameInput,
@@ -99,11 +90,17 @@ class RegisterModal extends Component {
       bZip: this.state.bZip,
       bDescription: this.state.bDescription
     };
+    if (this.validateInput(RegisterDetails)) {
 
+      return;
+    }
     Axios.post('http://localhost:5000/register', RegisterDetails)
       .then(res => {
         console.log(res.data);
         if (res.data.value === true) {
+
+          this.toggleModal();
+
           toast("Thank You for registering!\n Please check your email for your login credentials and update you password.", {
             type: "success",
             position: toast.POSITION.TOP_CENTER,
@@ -112,15 +109,57 @@ class RegisterModal extends Component {
             }
           });
         } else {
-          toast("Registration Failed!\n Company already exist, login instead.", {
+          toast(res.data.message, {
             type: "error",
             position: toast.POSITION.TOP_CENTER,
-            onClose: () => {
-              window.location.href = '/signin-page'
-            }
+            
           });
         }
       });
+  }
+
+  validateInput(registerDetails) {
+    const keys = Object.keys(registerDetails)
+    for (const key of keys) {
+      console.log(key, registerDetails[key])
+      switch (key) {
+        case "bNameInput":
+          if (!registerDetails[key]) {
+            this.toastError("Please fill the business name");
+            return true;
+          }
+          break;
+        case "nzbnInput":
+          if (!registerDetails[key]) {
+            this.toastError("Please fill your business NZBN");
+            return true;
+          }
+          break;
+        case "bEmail":
+          if (!registerDetails[key]) {
+            this.toastError("Please fill your email address");
+            return true;
+          }
+          break;
+        case "bContact":
+          if (!registerDetails[key]) {
+            this.toastError("Please fill your contact number");
+            return true;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    return false;
+  }
+
+  toastError(message) {
+    toast(message, {
+      type: "error",
+      position: toast.POSITION.TOP_CENTER,
+    });
+
   }
 
   onChangeInput(e) {
@@ -158,14 +197,11 @@ class RegisterModal extends Component {
                 >
                   <span aria-hidden={true}>×</span>
                 </NavLink>
-                <h5
-                  className="modal-title text-center"
-                  id="exampleModalLabel"
-                >
-                  <h4>Sign Up</h4>
+                <h5 className="modal-title text-center" id="exampleModalLabel">
+                  Sign Up
                 </h5>
               </div>
-              <div className="modal-body">
+              <div className={[styles.modalBody, "modal-body"].join(' ')}>
                 <Form className="register-form">
                   <Row>
                     <Col md="6">
@@ -228,19 +264,19 @@ class RegisterModal extends Component {
                         <Row>
                           <InputGroup className="form-group-no-border">
                             <Col md="6">
-                              <label for="city">City</label>
+                              <label htmlFor="city">City</label>
                               <Input type="text" id="city"
                                 name="bCity"
                                 onChange={this.onChangeInput} />
                             </Col>
                             <Col md="4">
-                              <label for="state">State</label>
+                              <label htmlFor="state">State</label>
                               <Input type="text" id="state"
                                 name="bState"
                                 onChange={this.onChangeInput} />
                             </Col>
                             <Col md="2">
-                              <label for="zip">Zip</label>
+                              <label htmlFor="zip">Zip</label>
                               <Input type="text" id="zip"
                                 name="bZip"
                                 onChange={this.onChangeInput} />
