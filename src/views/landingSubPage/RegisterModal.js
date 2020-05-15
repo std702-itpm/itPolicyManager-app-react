@@ -21,6 +21,8 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "components/Headers/LandingPageHeader.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
 
+import styles from "./register.module.css";
+
 toast.configure();
 
 class RegisterModal extends Component {
@@ -91,7 +93,10 @@ class RegisterModal extends Component {
       bZip: this.state.bZip,
       bDescription: this.state.bDescription
     };
+    if(this.validateInput(RegisterDetails)){
 
+      return false;
+    }
     Axios.post('http://localhost:5000/register', RegisterDetails)
       .then(res => {
         console.log(res.data);
@@ -104,7 +109,7 @@ class RegisterModal extends Component {
             }
           });
         } else {
-          toast("Registration Failed!\n Company already exist, login instead.", {
+          toast(res.data.message, {
             type: "error",
             position: toast.POSITION.TOP_CENTER,
             onClose: () => {
@@ -113,6 +118,18 @@ class RegisterModal extends Component {
           });
         }
       });
+  }
+
+  validateInput(registerDetails) {
+    const keys = Object.keys(registerDetails)
+    for (const key of keys) {
+      console.log(key, registerDetails[key])
+    }
+    toast("Please enter all the fields", {
+      type: "error",
+      position: toast.POSITION.TOP_CENTER,
+      
+    });
   }
 
   onChangeInput(e) {
@@ -150,14 +167,11 @@ class RegisterModal extends Component {
                 >
                   <span aria-hidden={true}>×</span>
                 </NavLink>
-                <h5
-                  className="modal-title text-center"
-                  id="exampleModalLabel"
-                >
-                  <h4>Sign Up</h4>
+                <h5 className="modal-title text-center" id="exampleModalLabel">
+                  Sign Up
                 </h5>
               </div>
-              <div className="modal-body">
+              <div className={[styles.modalBody, "modal-body"].join(' ')}>
                 <Form className="register-form">
                   <Row>
                     <Col md="6">
@@ -220,19 +234,19 @@ class RegisterModal extends Component {
                         <Row>
                           <InputGroup className="form-group-no-border">
                             <Col md="6">
-                              <label for="city">City</label>
+                              <label htmlFor="city">City</label>
                               <Input type="text" id="city"
                                 name="bCity"
                                 onChange={this.onChangeInput} />
                             </Col>
                             <Col md="4">
-                              <label for="state">State</label>
+                              <label htmlFor="state">State</label>
                               <Input type="text" id="state"
                                 name="bState"
                                 onChange={this.onChangeInput} />
                             </Col>
                             <Col md="2">
-                              <label for="zip">Zip</label>
+                              <label htmlFor="zip">Zip</label>
                               <Input type="text" id="zip"
                                 name="bZip"
                                 onChange={this.onChangeInput} />
