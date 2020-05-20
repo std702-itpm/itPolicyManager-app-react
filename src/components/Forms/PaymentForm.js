@@ -72,7 +72,7 @@ class PaymentForm extends React.Component {
 
   addData(data){
     var policyData={
-      companyId:localStorage.getItem('session_id'),
+      companyId:localStorage.getItem('session_companyId'),
       policyId:data._id,
       content:data.content,
       name:data.policy_name,
