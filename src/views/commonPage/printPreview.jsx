@@ -110,9 +110,6 @@ export default class printPreview extends Component {
                         <p>Subscribed Date:{this.state.policy.date_subscribed}</p>
                         <p>Version: {this.state.policy.version}</p>
                         <p>Review Date:{this.state.review_date}
-                          {
-                            //JSON.stringify(this.state.policy)
-                          }
                         </p>
                         <p>Approval Date: {this.state.approval_date}</p>
                         <p>Accountable Person: Kristof C </p>
