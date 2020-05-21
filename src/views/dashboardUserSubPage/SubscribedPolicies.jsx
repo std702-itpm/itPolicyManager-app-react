@@ -1,6 +1,7 @@
 
 import React from "react";
 import Axios from "axios";
+import Api from "services/Api"
 
 // reactstrap components
 import {
@@ -25,25 +26,19 @@ class SubscribedPolicies extends React.Component {
       modal: false,
       reviewers: []
     });
+    this.api = new Api();
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/getSubscribedPolicy", {
-      params: {
-        company_id: localStorage.getItem("session_companyId"),
-        policy_id: ""
-      }
-    })
-      .then(response => {
-        // console.log("response", response);
-        this.setState({
-          sub_policy: response.data
-        });
-        console.log(this.state.sub_policy);
-      })
-      .catch(function (error) {
-        console.log(error);
+    localStorage.removeItem('reviewPolicy');
+    this.api.fetchSubscribedPolicies(localStorage.getItem("session_companyId"),""
+    ).then(response => {
+      this.setState({
+        sub_policy: response.data
       });
+    }).catch(function (error) {
+      console.log(error);
+    });
   }
 
   toggleModal() {

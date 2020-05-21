@@ -4,8 +4,8 @@ import {
   Col,
 } from "reactstrap";
 import React, { Component } from "react";
-import Axios from "axios";
 import html2canvas from 'html2canvas';
+import Api from "services/Api"
 import jsPDF from 'jspdf';
 import "assets/css/pdf.css";
 
@@ -22,39 +22,30 @@ export default class printPreview extends Component {
       policy: [],
       updatedContent: [],
       company: {},
-      review_date:"",
-      approval_date:""
+      review_date: "",
+      approval_date: ""
     };
+    this.api = new Api();
   }
   componentDidMount() {
     console.log(localStorage.getItem("session_name"));
     //get subscribed policy from policy id and company id
-    Axios.get("http://localhost:5000/getSubscribedPolicy",
-       {
-          params:{policy_id: localStorage.getItem('reviewPolicyId'),company_id: localStorage.getItem('session_id')}
-        }).then(response=>{
-         this.setState({review_date:response.data.reviewed_date,approval_date:response.data.approval_date});
-          console.log("Response: "+response.data.reviewed_date)
-          this.setState({
-            //company: localStorage.getItem("session_name"),
-            policy: response.data,
-            contents: response.data.content,
-          });
-        })
-    
-    // Axios.get("http://localhost:5000/reviewPolicy", {
-    //   params: { company_name: localStorage.getItem("session_name"), policy_name: localStorage.getItem('reviewPolicy') }
-    // })
-    //   .then(response => {       
-    //     console.log(response)
-        
-        
-        // console.log(this.state.contents);
-      //)
-      .catch(function (error) {
-        console.log(error);
+
+    this.api.fetchSubscribedPolicies(
+      localStorage.getItem("session_companyId"),
+      localStorage.getItem('reviewPolicyId')
+    ).then(response => {
+      this.setState({ review_date: response.data.reviewed_date, approval_date: response.data.approval_date });
+      console.log("Response: " + response.data.reviewed_date)
+      this.setState({
+        //company: localStorage.getItem("session_name"),
+        policy: response.data,
+        contents: response.data.content,
       });
-      
+    }).catch(function (error) {
+      console.log(error);
+    });
+
   }
 
   //handle print button
@@ -76,9 +67,9 @@ export default class printPreview extends Component {
     let tempDate = new Date();
     let date = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
     return date;
-    
+
   }
-  
+
   //get review date
   getDateReviewed() {
     let reviewDate = new Date();
@@ -120,7 +111,7 @@ export default class printPreview extends Component {
                         <p>Version: {this.state.policy.version}</p>
                         <p>Review Date:{this.state.review_date}
                           {
-//JSON.stringify(this.state.policy)
+                            //JSON.stringify(this.state.policy)
                           }
                         </p>
                         <p>Approval Date: {this.state.approval_date}</p>
