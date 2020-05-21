@@ -155,8 +155,6 @@ class Questions extends React.Component {
       questions[questionIndex].options[optionIndex].policy = e.target.value
       this.setState({ questions: questions })
     };
-
-   
     return (
       <div>
         <Row style={{marginTop:'12px'}}>

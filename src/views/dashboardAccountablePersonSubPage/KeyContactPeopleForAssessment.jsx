@@ -12,7 +12,6 @@ import {
     CardBody,
     Table,
     Button,
-    Input,
     CardFooter
 } from 'reactstrap';
 
@@ -38,7 +37,7 @@ export default class KeyContactPeople extends Component {
                 reviewers: response.data.reviewer_list
             })
             console.log(this.state.reviewers)
-            this.state.reviewers.map(reviewer => {
+            this.state.reviewers.forEach(reviewer => {
                 Axios.get("http://localhost:5000/user", {
                     params: {
                         _id: reviewer.reviewer_id,
@@ -48,7 +47,7 @@ export default class KeyContactPeople extends Component {
                         this.state.users.push(response.data);
                         this.setState({ users: this.state.users })
                     })
-                this.state.users.map((user, index) => {
+                this.state.users.forEach((user, index) => {
                     console.log("User:" + user)
 
                 })
@@ -79,7 +78,7 @@ export default class KeyContactPeople extends Component {
 
     sendAssessment() {
         if (this.state.users !== undefined) {
-            this.state.users.map(user => {
+            this.state.users.forEach(user => {
                 var data = {
                     userId: user._id,
                     email: user.email,
@@ -99,9 +98,6 @@ export default class KeyContactPeople extends Component {
                     })
             })
         }
-
-
-
     }
 
     render() {

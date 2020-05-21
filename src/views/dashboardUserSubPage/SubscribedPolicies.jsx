@@ -1,6 +1,5 @@
 
 import React from "react";
-import Axios from "axios";
 import Api from "services/Api"
 
 // reactstrap components

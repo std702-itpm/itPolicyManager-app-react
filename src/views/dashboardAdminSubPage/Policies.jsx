@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom"
 import Axios from "axios";
@@ -18,40 +17,40 @@ import {
 } from "reactstrap";
 
 class Policies extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.displayPolicies = this.displayPolicies.bind(this);
-    this.addPolicy=this.addPolicy.bind(this);
-    this.editPolicy=this.editPolicy.bind(this);
-    this.DeletePolicy=this.DeletePolicy.bind(this);
-    this.toggleModal=this.toggleModal.bind(this);
+    this.addPolicy = this.addPolicy.bind(this);
+    this.editPolicy = this.editPolicy.bind(this);
+    this.DeletePolicy = this.DeletePolicy.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
 
     this.AssessmentBtn = this.AssessmentBtn.bind(this);
 
 
     this.state = {
       policies: [],
-      policyId:"",
-      btnName:"",
-      modal:false
+      policyId: "",
+      btnName: "",
+      modal: false
     };
   }
 
   componentDidMount() {
     Axios.get("http://localhost:5000/policies", {
-      params: {type: "all" }
+      params: { type: "all" }
     })
       .then(response => {
         this.setState({
           policies: response.data
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
 
-  AssessmentBtn(policy_id){
+  AssessmentBtn(policy_id) {
     //  get the id
 
     // display the information for specific policy using policy id
@@ -61,13 +60,13 @@ class Policies extends React.Component {
     // this.props.history.push('/dashboard/inactiveSubscribers');
   }
 
-  displayPolicies(policies){
+  displayPolicies(policies) {
     return policies.map((policy, index) => {
-      if(!(policy.policy_name==="No match policy"))
-      return (
-        <tr>
-          <td>{policy.policy_name}</td>
-          <td className="text-center">
+      if (!(policy.policy_name === "No match policy")) {
+        return (
+          <tr>
+            <td>{policy.policy_name}</td>
+            <td className="text-center">
               <Button
                 className="btn-warning btn-round"
                 href="#pablo"
@@ -87,37 +86,40 @@ class Policies extends React.Component {
               <Link
                 to={`/dashboard/edit-assessment/${policy._id}`}
                 className="btn-success btn-round"
-                
-                onClick={()=>this.AssessmentBtn()}
-                style={{fontSize: "20px", color: "white"}}
+
+                onClick={() => this.AssessmentBtn()}
+                style={{ fontSize: "20px", color: "white" }}
               >
-                <strong>Assessment</strong>                
+                <strong>Assessment</strong>
               </Link>
-          </td>
-        </tr>
-      );
+            </td>
+          </tr>
+        );
+      } else {
+        return <tr></tr>;
+      }
     })
   }
 
-  addPolicy(){
-    this.setState({modal:true});
+  addPolicy() {
+    this.setState({ modal: true });
   }
 
-  editPolicy(id){
-    this.setState({btnName:"edit",policyId:id,modal:true});
-      //this.props.history.push('editPolicy');
-      //<AddOrEditPolicy/>
+  editPolicy(id) {
+    this.setState({ btnName: "edit", policyId: id, modal: true });
+    //this.props.history.push('editPolicy');
+    //<AddOrEditPolicy/>
   }
 
-  toggleModal(e){
+  toggleModal(e) {
     e.preventDefault();
     this.setState({
-      modal:false,
-      policyId:""
+      modal: false,
+      policyId: ""
     })
   }
 
-  DeletePolicy(){
+  DeletePolicy() {
     alert("Please click on OK to delete the policy.");
   }
 
@@ -137,14 +139,14 @@ class Policies extends React.Component {
                 <CardBody>
                   <Table responsive>
                     <thead>
-                    <tr><Button outline color="success" className="btn-round" onClick={e=>this.addPolicy()}>Add Policy</Button></tr>
+                      <tr><Button outline color="success" className="btn-round" onClick={e => this.addPolicy()}>Add Policy</Button></tr>
                       <tr>
                         <th className="text-center">Policy Name</th>
                         <th className="text-center">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                     {this.displayPolicies(this.state.policies)}
+                      {this.displayPolicies(this.state.policies)}
                     </tbody>
                   </Table>
                 </CardBody>
@@ -153,7 +155,7 @@ class Policies extends React.Component {
           </Row>
         </div>
         <Modal isOpen={this.state.modal} toggle={this.toggleModal} size="xl">
-           <EditPolicy policyId={this.state.policyId}/>
+          <EditPolicy policyId={this.state.policyId} />
         </Modal>
       </>
     );

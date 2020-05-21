@@ -70,7 +70,6 @@ class MatchedPolicies extends React.Component {
   /*To display the list of policies*/
   displayPolicies() {
     var nMatchPolicy = [];
-    var matchedPolicies = this.state.matchedPolicies;
     var subscribePolicy = this.state.subscribedPolicies;
     var suggestedPolicies = this.state.policies;
 
@@ -80,28 +79,31 @@ class MatchedPolicies extends React.Component {
       });
     } else {
       return this.state.policies.map((policy, index) => {
-        {
-          if (!(policy.policy_name === "No match policy")) {
-            return (
-              <tr>
-                <td key={index}>
-                  <label>
-                    <Input
-                      key={policy._id + 2}
-                      type="checkbox"
-                      value={policy._id}
-                      defaultChecked={this.state.isChecked}
-                      onClick={this.checkboxHandler}
-                    />
-                    <a href={"PolicyDashboardView/" + policy._id} style={{ color: "blue" }} target="_blank">
-                      {policy.policy_name}
-                    </a>
-                  </label>
-                </td>
-              </tr>
-            )
-          }
+
+        if (!(policy.policy_name === "No match policy")) {
+          return (
+            <tr>
+              <td key={index}>
+                <label>
+                  <Input
+                    key={policy._id + 2}
+                    type="checkbox"
+                    value={policy._id}
+                    defaultChecked={this.state.isChecked}
+                    onClick={this.checkboxHandler}
+                  />
+                  <a href={"PolicyDashboardView/" + policy._id} style={{ color: "blue" }}
+                    target="_blank" rel="noopener noreferrer" >
+                    {policy.policy_name}
+                  </a>
+                </label>
+              </td>
+            </tr>
+          )
+        }else{
+          return <tr></tr>;
         }
+
       });
     }
   }
@@ -169,28 +171,26 @@ class MatchedPolicies extends React.Component {
     else if (this.state.suggestedPolicies.length > 0) {
       //Return map of suggested policies with policy, index
       return this.state.suggestedPolicies/*policies*/.map((policy, index) => {
-        {
-          return (
-            <>
-              <tbody>
-                <tr>
-                  <td key={index}>
-                    <label>
-                      <Input
-                        key={policy._id + 2}
-                        type="checkbox"
-                        value={policy._id}
-                        defaultChecked={this.state.isSelected}
-                        onClick={this.checkboxHandler}
-                      />
-                      {policy.policy_name}
-                    </label>
-                  </td>
-                </tr>
-              </tbody>
-            </>
-          );
-        }
+        return (
+          <>
+            <tbody>
+              <tr>
+                <td key={index}>
+                  <label>
+                    <Input
+                      key={policy._id + 2}
+                      type="checkbox"
+                      value={policy._id}
+                      defaultChecked={this.state.isSelected}
+                      onClick={this.checkboxHandler}
+                    />
+                    {policy.policy_name}
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </>
+        );
       });
     }
   }

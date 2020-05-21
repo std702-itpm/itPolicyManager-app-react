@@ -48,7 +48,6 @@ class takeSurvey extends React.Component {
 
   /*! remove "No match Policy ID" and update the list */
   async updateMatchPolicyList(newMatchPolicy){
-    var len = newMatchPolicy.length;
     var newPolicyList =[];
    
     //check for "No Match Policy and remove from the list"
@@ -142,8 +141,6 @@ class takeSurvey extends React.Component {
   submitToDB() 
   {
     // console.log("submitToDB");
-    const matchPolicies = [];
-    //const surveyTakenDate = [];
     
     var matchedPolicies=this.state.matchedPolicies.toString().split(",");
     var sdgtedPolicies=this.state.policies;

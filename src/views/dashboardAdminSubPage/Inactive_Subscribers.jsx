@@ -1,7 +1,5 @@
 import React from "react";
 import Axios from "axios";
-import Policies from "../commonPage/EditProfile.jsx";
-
 
 // reactstrap components
 import {
@@ -13,10 +11,8 @@ import {
   Table,
   Row,
   Col,
-  Modal,
 } from "reactstrap";
 import { toast } from "react-toastify";
-import { textSpanIsEmpty } from "typescript";
 
 class inactiveSubscribers extends React.Component {
   constructor(props) {
