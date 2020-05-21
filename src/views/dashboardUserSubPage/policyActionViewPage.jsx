@@ -58,7 +58,7 @@ class ReviewPage extends React.Component {
                 reviewer_list: response.data.reviewer_list,
                 status: response.data.status
             })
-            this.state.reviewer_list.map(reviewer => {
+            this.state.reviewer_list.forEach(reviewer => {
                 this.state.reviewers.push(reviewer.reviewer_id)
                 console.log("Reviewer_list: " + this.state.reviewers)
                 this.getPolicyData();

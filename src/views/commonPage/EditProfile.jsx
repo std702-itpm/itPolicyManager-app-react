@@ -12,7 +12,6 @@ import {
   InputGroup,
   Button
 } from "reactstrap";
-import Subscribers from "views/dashboardAdminSubPage/Subscribers";
 
 class Policies extends React.Component {
   constructor(props) {
@@ -20,7 +19,7 @@ class Policies extends React.Component {
 
     this.onChangeInput = this.onChangeInput.bind(this);
     this.handleSaveProfile = this.handleSaveProfile.bind(this);
-    this.fillData=this.fillData.bind(this);
+    this.fillData = this.fillData.bind(this);
 
     this.state = {
       companyDetails: [],
@@ -30,42 +29,42 @@ class Policies extends React.Component {
       bContact: "",
       bAddr: "",
       bDescription: "",
-      bLogo :""
+      bLogo: ""
     };
   }
 
   componentDidMount() {
-    const idInfo={id:localStorage.getItem('session_id')};
-    console.log("ID:"+idInfo.id);
-    if(this.props.subscriberId===undefined){
-      console.log("IF: "+idInfo.id);
+    const idInfo = { id: localStorage.getItem('session_id') };
+    console.log("ID:" + idInfo.id);
+    if (this.props.subscriberId === undefined) {
+      console.log("IF: " + idInfo.id);
       //if logged in user wants to edit his profile
-      Axios.get("http://localhost:5000/edituserprofile/"+idInfo.id)
-      .then(response => {
-        console.log("response", response);
-        this.fillData(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+      Axios.get("http://localhost:5000/edituserprofile/" + idInfo.id)
+        .then(response => {
+          console.log("response", response);
+          this.fillData(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    else{
+    else {
       //if logged in super admin wants to edit the other subscriber's profile
-      console.log("Else: "+this.props.subscriberId);
-      Axios.get("http://localhost:5000/editprofile/"+this.props.subscriberId)
-      .then(response => {
-        console.log("response", response);
-        this.fillData(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+      console.log("Else: " + this.props.subscriberId);
+      Axios.get("http://localhost:5000/editprofile/" + this.props.subscriberId)
+        .then(response => {
+          console.log("response", response);
+          this.fillData(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    
+
   }
 
   //assign the values to the form to edit profile
-  fillData(response){
+  fillData(response) {
     this.setState({
       companyDetails: response.data.companyDetails,
       bNameInput: response.data.companyDetails.company_name,
@@ -74,7 +73,7 @@ class Policies extends React.Component {
       bContact: response.data.companyDetails.contact,
       bAddr: response.data.companyDetails.address,
       bDescription: response.data.companyDetails.description,
-      bLogo : response.data.logo
+      bLogo: response.data.logo
     });
     console.log("companyDetails", this.state.companyDetails);
   }
@@ -94,10 +93,10 @@ class Policies extends React.Component {
   handleSaveProfile(e) {
     e.preventDefault();
     var realpath;
-    if(! document.getElementById('file_upl').files[0]===""){
-      realpath = "/busLogos/"+document.getElementById('file_upl').files[0].name; 
-    }else{
-      realpath ="";
+    if (!document.getElementById('file_upl').files[0] === "") {
+      realpath = "/busLogos/" + document.getElementById('file_upl').files[0].name;
+    } else {
+      realpath = "";
     }
     console.log("handleSaveProfile clicked! ");
     const companyDetails = {
@@ -108,21 +107,21 @@ class Policies extends React.Component {
       contact: this.state.bContact,
       address: this.state.bAddr,
       description: this.state.bDescription,
-      logo : realpath
+      logo: realpath
     };
 
     Axios.post("http://localhost:5000/editprofile", companyDetails).then(
       res => {
         if (res.data.status === "success") {
-          toast("Save successfully", { 
-            type: "success", 
+          toast("Save successfully", {
+            type: "success",
             position: toast.POSITION.TOP_CENTER,
-            onClose: ()=> {
+            onClose: () => {
               window.location.reload()
             }
           });
         } else {
-          toast("Unsuccessful save. Something went wrong, Try again", { 
+          toast("Unsuccessful save. Something went wrong, Try again", {
             type: "error",
             position: toast.POSITION.TOP_CENTER,
           });
@@ -135,7 +134,7 @@ class Policies extends React.Component {
 
   render() {
     //Style
-    const uploadStyle ={
+    const uploadStyle = {
       fontSize: "16px",
       borderRadius: "5px",
       borderStyle: "inherit",

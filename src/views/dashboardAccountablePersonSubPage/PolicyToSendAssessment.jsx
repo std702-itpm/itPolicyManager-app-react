@@ -1,6 +1,4 @@
-
 import React from "react";
-import Axios from "axios";
 import Api from "services/Api"
 
 // reactstrap components
@@ -31,7 +29,7 @@ class policyToSendAssessment extends React.Component {
 
   componentDidMount() {
     localStorage.removeItem('reviewPolicy');
-    
+
     this.api.fetchSubscribedPolicies(localStorage.getItem("session_companyId"), ""
     ).then(response => {
       // console.log("response", response);
@@ -81,11 +79,12 @@ class policyToSendAssessment extends React.Component {
             </tr>
           </>
         )
+      } else {
+        return (
+        <p></p>
+        );
       }
-      //console.log("policies: " + policy.version);
-
     })
-
   }
 
   tableDisplay() {

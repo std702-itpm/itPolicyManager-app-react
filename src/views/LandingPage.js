@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
@@ -21,8 +20,6 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "components/Headers/LandingPageHeader.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
 
-import printPreview from './commonPage/printPreview.jsx';
-
 // styles
 import "assets/css/bootstrap.min.css";
 import styles from "assets/scss/paper-kit.scss";
@@ -30,17 +27,17 @@ import styles from "assets/scss/paper-kit.scss";
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {landingPolicies: []};
+    this.state = { landingPolicies: [] };
     this.onPolicyClick = this.onPolicyClick.bind(this);
   }
 
   onPolicyClick() {
     alert("Hi I am policy!");
-  
-    
+
+
   }
 
-  componentDidMount(){
+  componentDidMount() {
     Axios.get("http://localhost:5000/getAllPolicies/")
       .then(response => {
         this.setState({ landingPolicies: response.data });
@@ -51,9 +48,13 @@ class LandingPage extends React.Component {
   }
 
   policyList() {
-    return this.state.landingPolicies.map(function(policy, index){
-      if(!(policy.policy_name==="No match policy")){
-        return <li><a className="btn btn-primary" href={"policy-view/" + policy._id}> {policy.policy_name}</a></li>;
+    return this.state.landingPolicies.map(function (policy, index) {
+      if (!(policy.policy_name === "No match policy")) {
+        return <li>
+          <a className="btn btn-primary" href={"policy-view/" + policy._id}> {policy.policy_name}</a>
+        </li>;
+      } else {
+        return <li></li>;
       }
     })
   }
@@ -183,16 +184,16 @@ class LandingPage extends React.Component {
               </Button>
             </Container>
           </div>
-         {/* TODO: INSERT CODE HERE */}
+          {/* TODO: INSERT CODE HERE */}
           <div className="section policy-section">
             <div className="policies-list text-center">
               <h1> <center>List of Available Policies</center></h1>
               <ul>
-                { this.policyList() }
+                {this.policyList()}
               </ul>
             </div>
           </div>
-         {/* END TODO: -INSERT CODE */}
+          {/* END TODO: -INSERT CODE */}
 
           {/* Contact Us Area */}
           <div className="section landing-section">

@@ -15,7 +15,6 @@ import {
   Col,
   Table,
 } from "reactstrap";
-import { textSpanIsEmpty } from 'typescript';
 
 toast.configure();
 
@@ -59,7 +58,7 @@ class ReviewPage extends React.Component {
     }).catch(function (error) {
       console.log(error);
     })
-    
+
     this.api.fetchSubscribedPolicies(
       localStorage.getItem("session_companyId"),
       localStorage.getItem('reviewPolicyId')
@@ -68,7 +67,7 @@ class ReviewPage extends React.Component {
         singlePolicy: response.data,
         reviewers: response.data.reviewer_list
       })
-      this.state.reviewers.map(reviewer => {
+      this.state.reviewers.forEach(reviewer => {
         this.state.reviewerList.push(reviewer.reviewer_id)
       })
       this.setState({ reviewerList: this.state.reviewerList })
@@ -89,13 +88,13 @@ class ReviewPage extends React.Component {
       console.log("Review:" + reviewers)
     }
     console.log("reviewers==>: " + reviewers)
-    users.map(user => {
+    users.forEach(user => {
       newUsers.push(user._id);
     })
     if (reviewers !== undefined) {
       console.log("I am in if" + reviewers)
       // newUsers=newUsers.filter((newUser)=>reviewers.includes(newUser));
-      newUsers = newUsers.filter(function (obj) { return reviewers.indexOf(obj) == -1; });
+      newUsers = newUsers.filter(function (obj) { return reviewers.indexOf(obj) === -1; });
       newUserList = newUsers.filter((user) => !reviewers.includes(user));
     }
     console.log("New User List: " + newUserList + "new users" + newUsers)
@@ -117,6 +116,8 @@ class ReviewPage extends React.Component {
               <td>{keyContact.position}</td>
             </tr>
           );
+        } else {
+          return <tr></tr>;
         }
       })
 

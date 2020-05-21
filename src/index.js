@@ -1,8 +1,7 @@
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
-import {StripeProvider} from 'react-stripe-elements';
+import { StripeProvider } from 'react-stripe-elements';
 // styles
 import "assets/css/bootstrap.min.css";
 import "assets/scss/paper-kit.scss";
@@ -21,7 +20,6 @@ import RegisterModal from "views/landingSubPage/RegisterModal.js";
 import Dashboard from "views/Dashboard.jsx";
 import PaySubscription from 'views/commonPage/PaySubscription.js';
 import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
-import editSubscriber from "views/commonPage/addNewSubscriber.jsx";
 import PolicyView from "views/PolicyView";
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
 import SendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessment.jsx";
@@ -32,15 +30,15 @@ import SendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessme
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route 
-        path="/landing-page" 
+      <Route
+        path="/landing-page"
         render={props => <LandingPage  {...props} />} />
-      <Route 
-        exact path="/policy-view/:id" 
+      <Route
+        exact path="/policy-view/:id"
         render={props => <PolicyView  {...props} />} />
-      <Route 
-        exact path="/PolicyDashboardView/:id" 
-        render={props => <PolicyDashboardView  {...props} />} />  
+      <Route
+        exact path="/PolicyDashboardView/:id"
+        render={props => <PolicyDashboardView  {...props} />} />
       {/* <Route
         path="/profile-page"
         render={props => <ProfilePage {...props} />}
@@ -68,21 +66,21 @@ ReactDOM.render(
       <Route
         path="/subscription-payment"
         render={props => (
-        <StripeProvider apiKey="pk_test_8Y0fO0o3fsqMsbciyZKt1YTI" >
-          <PaySubscription {...props} />
-        </StripeProvider>
+          <StripeProvider apiKey="pk_test_8Y0fO0o3fsqMsbciyZKt1YTI" >
+            <PaySubscription {...props} />
+          </StripeProvider>
         )}
       />
-      
+
       <Route
         path="/review-policy/:companyId/:policyName/:userId"
-        render={props => <DisplayReviewPolicy key = {props.match.params.userId} {...props} />}
+        render={props => <DisplayReviewPolicy key={props.match.params.userId} {...props} />}
       />
 
       <Route
         path="/send-assessment/:policyId/:userId"
-        render={props => <SendAssessment key = {props.match.params.userId} {...props} />} 
-      /> 
+        render={props => <SendAssessment key={props.match.params.userId} {...props} />}
+      />
       <Redirect to="/landing-page" /> */}
     </Switch>
   </BrowserRouter>,
