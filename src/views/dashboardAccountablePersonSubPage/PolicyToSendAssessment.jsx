@@ -1,6 +1,7 @@
 
 import React from "react";
 import Axios from "axios";
+import Api from "services/Api"
 
 // reactstrap components
 import {
@@ -15,7 +16,7 @@ import {
 } from "reactstrap";
 
 class policyToSendAssessment extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.tableDisplay = this.tableDisplay.bind(this);
     this.reviewButtonHandler = this.reviewButtonHandler.bind(this);
@@ -23,98 +24,87 @@ class policyToSendAssessment extends React.Component {
     this.state = ({
       sub_policy: [],
       modal: false,
-      reviewers:[]
+      reviewers: []
     });
+    this.api = new Api();
   }
 
   componentDidMount() {
     localStorage.removeItem('reviewPolicy');
-     console.log("ID: " + localStorage.getItem("session_userId"));
-    var companyId;
-    if(localStorage.getItem("session_type")==="Accountable Person"){
-      companyId=localStorage.getItem("session_userId");
-    }
-    else{
-      companyId=localStorage.getItem("session_id");
-    }
-    Axios.get("http://localhost:5000/getSubscribedPolicy", {
-      params: { 
-        company_id: companyId,
-        policy_id:""
-    }
+    
+    this.api.fetchSubscribedPolicies(localStorage.getItem("session_companyId"), ""
+    ).then(response => {
+      // console.log("response", response);
+      this.setState({
+        sub_policy: response.data
+      });
+      console.log(this.state.sub_policy);
     })
-      .then(response => {
-        // console.log("response", response);
-        this.setState({
-          sub_policy: response.data
-        });
-        console.log(this.state.sub_policy);
-      })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
 
- 
 
-  toggleModal(){
+
+  toggleModal() {
     this.setState({
       modal: !this.state.modal
     });
   };
 
-  reviewButtonHandler(e,id) {
-    localStorage.setItem('reviewPolicyId',id);
+  reviewButtonHandler(e, id) {
+    localStorage.setItem('reviewPolicyId', id);
     localStorage.setItem('reviewPolicy', e.target.value)
     this.props.history.push("keyContactPeople-ForAssessment");
   }
 
-  tableDataDisplay(){
-    
-      return this.state.sub_policy.map((policy,index) =>{
-          if(policy.status==="awareness"){
-            return (
-                <>
-                  <tr key={index}>
-                    <td key={policy.policy_name}>{policy.policy_name}</td>
-                    <td key={policy.status}>{policy.status}</td>
-                    <td key={policy.version}>{policy.version}</td>
-                    <td key={policy.policy_id + 0} className="text-center">
-                      <Button className="btn-round"
-                        style={{'marginRight':'7px'}}
-                        color="success"
-                        value= {policy.policy_name}
-                        onClick={(e)=>this.reviewButtonHandler(e,policy.policy_id)}>
-                      Send Assessment
+  tableDataDisplay() {
+
+    return this.state.sub_policy.map((policy, index) => {
+      if (policy.status === "awareness") {
+        return (
+          <>
+            <tr key={index}>
+              <td key={policy.policy_name}>{policy.policy_name}</td>
+              <td key={policy.status}>{policy.status}</td>
+              <td key={policy.version}>{policy.version}</td>
+              <td key={policy.policy_id + 0} className="text-center">
+                <Button className="btn-round"
+                  style={{ 'marginRight': '7px' }}
+                  color="success"
+                  value={policy.policy_name}
+                  onClick={(e) => this.reviewButtonHandler(e, policy.policy_id)}>
+                  Send Assessment
                       </Button>
-                    </td> 
-                  </tr>
-                </>
-              ) 
-          }
-        //console.log("policies: " + policy.version);
-        
-      })
-   
+              </td>
+            </tr>
+          </>
+        )
+      }
+      //console.log("policies: " + policy.version);
+
+    })
+
   }
 
-  tableDisplay(){
-    return(
-        <Table responsive>
-          <thead>
-            <tr>
-              <th>Policy Name</th>
-              <th>Status</th>
-              <th>Version</th>
-              <th className="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              this.tableDataDisplay()
-            } 
-          </tbody>
-        </Table>  
+  tableDisplay() {
+    return (
+      <Table responsive>
+        <thead>
+          <tr>
+            <th>Policy Name</th>
+            <th>Status</th>
+            <th>Version</th>
+            <th className="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            this.tableDataDisplay()
+          }
+        </tbody>
+      </Table>
     )
   }
 
@@ -132,8 +122,8 @@ class policyToSendAssessment extends React.Component {
                   </p>
                 </CardHeader>
                 <CardBody>
-                  {this.state.sub_policy.length !== 0 ? this.tableDisplay():<p>
-                                <span style={{color: "red"}}>No Subscription yet!</span><br></br><br></br>
+                  {this.state.sub_policy.length !== 0 ? this.tableDisplay() : <p>
+                    <span style={{ color: "red" }}>No Subscription yet!</span><br></br><br></br>
                                   You can subscribed to any IT policy you need by taking the survey and purchasing suggested policy/ies.
                   </p>}
                 </CardBody>
