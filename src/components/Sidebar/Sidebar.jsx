@@ -36,67 +36,37 @@ class Sidebar extends React.Component {
     }
   }
   getBrand() {
-    let brandName = "IT Policy Manager";
-    routes.map((prop, key) => {
-      //need to change for the subscriber's company name
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-        //brandName = prop.name;
-        const name = localStorage.getItem('session_name')
-    console.log("companyName" + name);
-        brandName = name
-      }
-      return null;
-    });
-    return brandName;
+    let companyName = localStorage.getItem('session_name');
+    return companyName ? companyName : "IT Policy Manager";
   }
 
   render() {
     return (
-      <div
-        className="sidebar"
-        data-color={this.props.bgColor}
-        data-active-color={this.props.activeColor}
-      >
+      <div className="sidebar" data-color={this.props.bgColor} data-active-color={this.props.activeColor}>
         <div className="logo">
-          <a
-            href="/dashboard/dashboardcontent"
-            className="simple-text logo-mini"
-          >
+          <a href="/dashboard/dashboardcontent" className="simple-text logo-mini">
             <div className="logo-mini">
-              <img src={logo} alt="react-logo"/> 
+              <img src={logo} alt="react-logo" />
             </div>
           </a>
-          <a
-            href="/dashboard/dashboardcontent"
-            className="simple-text logo-normal"
-          >
+          <a href="/dashboard/dashboardcontent" className="simple-text logo-normal">
             {this.getBrand()}
           </a>
         </div>
         <div className="sidebar-wrapper" ref={this.sidebar}>
           <Nav>
-            {this.props.routes.map((prop, key) => {
-              if(prop.sidebar === true){
-                return ( 
-                  <li
-                    className={
-                      this.activeRoute(prop.path) +
-                      (prop.pro ? " active-pro" : "")
-                    }
-                    key={key}
-                  >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      activeClassName="active"
-                    >
-                      <i className={prop.icon} />
-                      <p>{prop.name}</p>
-                    </NavLink>
-                  </li>
-                ); 
-              }
-              return "error sidebar";
+            {this.props.routes.filter(prop => prop.sidebar).map((prop, key) => {
+              return (
+                <li className={this.activeRoute(prop.path) + (prop.pro ? " active-pro" : "")}
+                  key={key}>
+                  <NavLink to={prop.layout + prop.path}
+                    className="nav-link"
+                    activeClassName="active">
+                    <i className={prop.icon} />
+                    <p>{prop.name}</p>
+                  </NavLink>
+                </li>
+              );
             })}
           </Nav>
         </div>
