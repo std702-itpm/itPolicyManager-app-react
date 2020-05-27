@@ -34,9 +34,11 @@ class ReviewPage extends React.Component {
     }
 
     componentDidMount() {
+        console.log("Landed in policy-action");
+        
         Axios.get("http://localhost:5000/company", {
             params: {
-                name: localStorage.getItem("session_name"),
+                _id: localStorage.getItem("session_name"),
                 type: "company"
             }
         }).then(response => {

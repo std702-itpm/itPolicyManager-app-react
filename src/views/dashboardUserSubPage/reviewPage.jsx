@@ -40,21 +40,13 @@ class ReviewPage extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/company", {
-      params: { _id: localStorage.getItem('session_id'), type: "user" }
+
+    Axios.get("http://localhost:5000/user", {
+      params: { companyId: localStorage.getItem("session_companyId") }
     }).then(response => {
-      console.log("CompanyID: " + response.data.company);
-      Axios.get("http://localhost:5000/user", {
-        params: { companyId: response.data.company }
-      }).then(response => {
-        this.setState({
-          users: response.data
-        });
-
-
-      }).catch(function (error) {
-        console.log(error);
-      })
+      this.setState({
+        users: response.data
+      });
     }).catch(function (error) {
       console.log(error);
     })
@@ -63,15 +55,15 @@ class ReviewPage extends React.Component {
       localStorage.getItem("session_companyId"),
       localStorage.getItem('reviewPolicyId')
     ).then(response => {
+      let reviewerIdList;
+      response.data.reviewer_list.forEach(reviewer => {
+        reviewerIdList.push(reviewer.reviewer_id)
+      })
       this.setState({
         singlePolicy: response.data,
-        reviewers: response.data.reviewer_list
+        reviewers: response.data.reviewer_list,
+        reviewerList: reviewerIdList
       })
-      this.state.reviewers.forEach(reviewer => {
-        this.state.reviewerList.push(reviewer.reviewer_id)
-      })
-      this.setState({ reviewerList: this.state.reviewerList })
-      console.log("getSubscribedPolicy: " + this.state.reviewers)
 
     }).catch(function (error) {
       console.log(error);
@@ -85,22 +77,13 @@ class ReviewPage extends React.Component {
     var reviewers = [];
     if (this.state.reviewerList !== undefined) {
       reviewers = this.state.reviewerList;
-      console.log("Review:" + reviewers)
     }
-    console.log("reviewers==>: " + reviewers)
     users.forEach(user => {
       newUsers.push(user._id);
     })
-    if (reviewers !== undefined) {
-      console.log("I am in if" + reviewers)
-      // newUsers=newUsers.filter((newUser)=>reviewers.includes(newUser));
-      newUsers = newUsers.filter(function (obj) { return reviewers.indexOf(obj) === -1; });
-      newUserList = newUsers.filter((user) => !reviewers.includes(user));
-    }
-    console.log("New User List: " + newUserList + "new users" + newUsers)
+
     const displayReviewers = (keyContact) => {
-      return newUserList.map(newUser => {
-        console.log("keyContact.user_type ====>" + newUserList)
+      return newUsers.map(newUser => {
         if (keyContact.user_type === undefined && keyContact._id === newUser) {
           return (
             <tr key={keyContact._id}>
@@ -108,7 +91,7 @@ class ReviewPage extends React.Component {
                 type="checkbox"
                 value={keyContact._id}
                 defaultChecked={this.state.isSelected}
-                onClick={(e) => this.keyContactsCheckboxHandler}
+                onClick={(e) => this.keyContactsCheckboxHandler(e)}
               />
               </td>
               <td>{keyContact.fname + " " + keyContact.lname}</td>
@@ -123,8 +106,7 @@ class ReviewPage extends React.Component {
 
     };
 
-    return this.state.users.map(function (keyContact, keyContactIndex) {
-      console.log("keyContact" + keyContact.fname)
+    return this.state.users.map(function (keyContact) {
       return displayReviewers(keyContact);
     });
 
@@ -138,7 +120,7 @@ class ReviewPage extends React.Component {
     }
     console.log("this.state.isSelected: " + this.state.isSelected);
     if (e.target.checked) {
-      this.setState({ isSelected: !this.state.isSelected });
+      //this.setState({ isSelected: !this.state.isSelected });
       reviewers.push(e.target.value);
       console.log("Reviewers: " + reviewers)
     }
@@ -168,31 +150,13 @@ class ReviewPage extends React.Component {
       status = "reporting";
     } else if (this.state.singlePolicy.status === "awareness") {
       status = "done";
-    }
-    else {
+    } else {
       status = this.state.singlePolicy.status;
     }
     console.log("status==>" + status);
     //this.setState({status:status});
     return (<span className="text-primary">{status}</span>)
   }
-
-  saveSubscribedPolicy(data) {
-
-    Axios.post('http://localhost:5000/updateSubscribedPolicy', data)
-      .then(response => {
-        if (response.data.status === "success") {
-          // toast("Saved successfully!",{
-          //   type:"success",
-          //   position:toast.POSITION.TOP_CENTER,
-          //   onClose:()=>{
-          //     this.props.history.push("subscribed-policies");
-          //  }
-          // });            
-        }
-      })
-  }
-
 
   startReviewButtonHandler(e) {
     let newReviewerList = [];
@@ -240,28 +204,28 @@ class ReviewPage extends React.Component {
 
     console.log("Data Reviewer List: " + data.policy_id)
     this.saveSubscribedPolicy(data);
-
-    // Axios.post("http://localhost:5000/reviewPolicy", {data} ).then(
-    //   res => {
-    //     console.log(res.data);
-    //     if (res.data.value === "success") {
-    //       toast("You have successfully started the review for this policy", { 
-    //         type: "success", 
-    //         position: toast.POSITION.TOP_CENTER,
-    //         onClose: ()=> {
-    //           window.location.href = 'subscribed-policies'
-    //         }
-    //       });
-    //     } else {
-    //       toast("Unsuccessful payment. Something went wrong, Try again", { 
-    //         type: "error",
-    //         position: toast.POSITION.TOP_CENTER,
-    //       });
-    //     }
-    //   }
-    // );
   }
 
+  saveSubscribedPolicy(data) {
+
+    Axios.post('http://localhost:5000/updateSubscribedPolicy', data)
+      .then(response => {
+        if (response.data.status === "success") {
+          toast("Saved successfully!", {
+            type: "success",
+            position: toast.POSITION.TOP_CENTER,
+            onClose: () => {
+              this.props.history.push("subscribed-policies");
+            }
+          });
+        } else {
+          toast("Something went wrong! Please try again", {
+            type: "error",
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+      })
+  }
 
   render() {
     return (
