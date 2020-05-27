@@ -49,7 +49,7 @@ class SubscribedPolicies extends React.Component {
   reviewButtonHandler(e, id) {
     localStorage.setItem('reviewPolicyId', id);
     localStorage.setItem('reviewPolicy', e.target.value)
-    // console.log(localStorage.getItem('reviewPolicy')); //Testing
+    console.log(localStorage.getItem('reviewPolicy')); //Testing
     this.props.history.push("subscribed-policy-action");
   }
 

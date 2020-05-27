@@ -35,9 +35,7 @@ import KeyContactPeople from "views/dashboardAccountablePersonSubPage/KeyContact
 //import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
   const userType = localStorage.getItem('session_type');
-  const userLogo = localStorage.getItem('session_logo');
-  console.log("userLogo" + userLogo);
-  
+  const userLogo = localStorage.getItem('session_logo');  
 
 var routesAdmin = [{
     path: "/dashboardcontent",

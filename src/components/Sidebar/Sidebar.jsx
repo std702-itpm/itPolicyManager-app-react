@@ -8,8 +8,6 @@ import PerfectScrollbar from "perfect-scrollbar";
 import logo from "assets/img/ITPM-03.png";
 //create functionality for getting the company's logo
 
-import routes from "routes.js";
-
 var ps;
 
 class Sidebar extends React.Component {
