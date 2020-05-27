@@ -19,10 +19,6 @@ export default class DisplayPolicyTest extends Component {
     this.renderContent = this.renderContent.bind(this);
     this.handleSaveContent = this.handleSaveContent.bind(this);
     this.saveSubscribedPolicy = this.saveSubscribedPolicy.bind(this);
-    // this.handlePrint = this.handlePrint.bind(this);
-    // this.renderPDF = this.renderPDF.bind(this);
-    // this.getDate = this.getDate.bind(this);
-    //this.getPDF = this.getPDF.bind(this);
     this.state = {
       contents: [],
       tempcontents: [],
