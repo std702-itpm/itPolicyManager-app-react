@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 import {
@@ -28,7 +28,7 @@ export default class DisplayPolicyTest extends Component {
   }
   componentDidMount() {
     console.log(localStorage.getItem("session_name"));
-    Axios.get("http://localhost:5000/reviewPolicy", {
+      Axios.get("/reviewPolicy", {
       params: { company_name: localStorage.getItem("session_name"), policy_name: localStorage.getItem('reviewPolicy') }
     })
       .then(response => {
@@ -46,7 +46,7 @@ export default class DisplayPolicyTest extends Component {
 
   //Add data to Subscribed Policy Table
   saveSubscribedPolicy(updatedContent) {
-    Axios.post('http://localhost:5000/updateSubscribedPolicyContent', updatedContent)
+  Axios.post('/updateSubscribedPolicy',updatedContent)
       .then(response => {
         if (response.data.status === "success") {
           toast("Saved successfully!", {
@@ -81,7 +81,6 @@ export default class DisplayPolicyTest extends Component {
 
   renderContent(content, contentIndex) {
     const onChangeInput = (e) => {
-      // console.log( "bbbb " +e.target.value)
       let content_temp = this.state.contents;
       content_temp[contentIndex] = e.target.value;
       this.setState({ contents: content_temp });

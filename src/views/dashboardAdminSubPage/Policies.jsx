@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom"
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import EditPolicy from '../commonPage/EditPolicy.jsx';
 
 // reactstrap components
@@ -37,7 +37,7 @@ class Policies extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/policies", {
+    Axios.get("/policies", {
       params: { type: "all" }
     })
       .then(response => {

@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -44,7 +44,7 @@ class addAccountablePerson extends Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/user",
+    Axios.get("/user",
       {
         params:
         {
@@ -90,7 +90,7 @@ class addAccountablePerson extends Component {
       company: localStorage.getItem("session_id")
       // bDescription: this.state.bDescription
     };
-    Axios.post("http://localhost:5000/addUser", RegisterDetails)
+    Axios.post("/addUser", RegisterDetails)
       .then(res => {
         console.log(res.data);
         if (res.data.value === true) {

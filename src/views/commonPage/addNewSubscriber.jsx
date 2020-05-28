@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -45,7 +45,7 @@ class RegModal extends Component {
 
   componentDidMount() {
     //edit profile for the subscriber list at super admin side
-    Axios.get("http://localhost:5000/editprofile", {
+    Axios.get("/editprofile", {
       params: { _id: localStorage.getItem("session_id") }
     })
       .then(response => {
@@ -108,7 +108,7 @@ class RegModal extends Component {
       bDescription: this.state.bDescription
     };
 
-    Axios.post('http://localhost:5000/register', RegisterDetails)
+    Axios.post('/register', RegisterDetails)
       .then(res => {
         console.log(res.data);
         if (res.data.value === true) {

@@ -2,7 +2,7 @@
 import React, {
     Component
 } from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 import {
     FormGroup,
@@ -21,7 +21,7 @@ class AssessmentForm extends Component {
     }
 
     componentDidMount() {
-        Axios.get('http://localhost:5000/assessment')
+        Axios.get('/assessment')
             .then(response => {
                 console.log('response', response)
                 this.setState({

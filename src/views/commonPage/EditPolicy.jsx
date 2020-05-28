@@ -1,6 +1,6 @@
 import React, { Component} from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 //reactstrap components
@@ -36,7 +36,7 @@ export default class EditPolicy extends Component {
     componentDidMount() {
     if(!(this.props.policyId===undefined)) {
       //if policy id is available then user can get policy from id in the database
-        Axios.get("http://localhost:5000/policies", {
+        Axios.get("/policies", {
         params: {type:"one",_id:this.props.policyId }//localStorage.getItem('reviewPolicy')}
       })
         .then(response => {
@@ -64,7 +64,7 @@ export default class EditPolicy extends Component {
         };
         console.log("Updated:"+updatedContent)
     
-        Axios.put("http://localhost:5000/edit-policy", updatedContent).then(
+        Axios.put("/edit-policy", updatedContent).then(
           res => {
             console.log(res.data);
             console.log(res);

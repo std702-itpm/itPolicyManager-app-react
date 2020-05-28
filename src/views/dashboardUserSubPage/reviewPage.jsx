@@ -1,5 +1,5 @@
 import React from 'react';
-import Axios from 'axios';
+import Axios from 'configs/AxiosConfig';
 import { toast } from 'react-toastify';
 import Api from "services/Api"
 
@@ -40,8 +40,7 @@ class ReviewPage extends React.Component {
   }
 
   componentDidMount() {
-
-    Axios.get("http://localhost:5000/user", {
+      Axios.get("/user", {
       params: { companyId: localStorage.getItem("session_companyId") }
     }).then(response => {
       this.setState({

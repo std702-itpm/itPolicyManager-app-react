@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import editSubscriber from "../commonPage/addNewSubscriber.jsx";
 import Policies from "../commonPage/EditProfile.jsx";
 
@@ -41,7 +41,7 @@ class Subscribers extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/company", {
+    Axios.get("/company", {
       params: {type: "companyAll" }
     })
       .then(response => {
@@ -83,7 +83,7 @@ onDeleteClick(subscriberId){
     status:false,
   };
   if(window.confirm("Are you sure you want to remove this subscriber permanently?")){
-    Axios.post("http://localhost:5000/deleteprofile",subscriberDetails).then(
+    Axios.post("/deleteprofile",subscriberDetails).then(
       res=>{
         if(res.data.status==="success"){
           toast("Deleted successfully!",{

@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -35,7 +35,7 @@ class Assessment extends React.Component {
     document.body.classList.add("register-page");
     let policy_id = this.props.match.params.id;
 
-    Axios.get("http://localhost:5000/getOnePolicy/" + policy_id)
+    Axios.get("/getOnePolicy/" + policy_id)
       .then(response => {
         console.log(response)
         this.setState({
@@ -47,7 +47,7 @@ class Assessment extends React.Component {
       .catch(function (error) {
         console.log(error);
       });
-    Axios.get("http://localhost:5000/assessment")
+    Axios.get("/assessment")
       .then(response => {
         console.log("response", response);
         this.setState({
@@ -59,7 +59,7 @@ class Assessment extends React.Component {
       });
 
 
-    Axios.get('http://localhost:5000/policies')
+    Axios.get('/policies')
       .then(response => {
         console.log('response', response)
         this.setState({
@@ -89,7 +89,7 @@ class Assessment extends React.Component {
 
     // console.log(this.state.assessment);
 
-    Axios.put("http://localhost:5000/assessment", assessmentDetails)
+    Axios.put("/assessment", assessmentDetails)
       .then(res => {
         console.log(res.status);
 
@@ -223,7 +223,7 @@ class Assessment extends React.Component {
       console.log(AssessmentIndex);
       this.state.assessment.splice(AssessmentIndex, 1)
       this.setState({ assessment: this.state.assessment })
-      Axios.post("http://localhost:5000/deleteassessment", { _id: assessmentId })
+      Axios.post("/deleteassessment", { _id: assessmentId })
         .then(response => {
           console.log("Deleted");
         })

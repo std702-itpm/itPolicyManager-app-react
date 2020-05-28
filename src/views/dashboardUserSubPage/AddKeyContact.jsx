@@ -1,6 +1,6 @@
 
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -58,7 +58,7 @@ class AddKeyContacts extends React.Component {
       action: "add"
     };
     
-    Axios.post('http://localhost:5000/user',addKeyContactDetails)
+    Axios.post('/user',addKeyContactDetails)
     .then(res => {console.log(res.data);
       if (res.data.status === "success") {
         toast("Save successfully", { 

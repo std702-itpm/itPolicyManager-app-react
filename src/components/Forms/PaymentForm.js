@@ -1,7 +1,7 @@
 import * as React from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { injectStripe, Elements /*CardElement*/ } from "react-stripe-elements";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -45,14 +45,14 @@ class PaymentForm extends React.Component {
     
     for(var i=0;i<this.state.policyIdList.length;i++){
       //get policy list from policies collection from the database by id 
-      Axios.get("http://localhost:5000/policies",
+      Axios.get("/policies",
       {params: {type:"one",_id:this.state.policyIdList[i] }})
       .then(response=>{ 
         alert(response.data);       
         this.addData(response.data);
       });
     }   
-    const response = await Axios.post("http://localhost:5000/create_paymentintent", { token, product });
+    const response = await Axios.post("/create_paymentintent", { token, product });
       //console.log("Response:", response.data.status);
       if (response.data.status === "success") {
         toast("Payment successful! Check your email for details", { 
@@ -90,7 +90,7 @@ class PaymentForm extends React.Component {
     }
     console.log("PolicyData: "+policyData)
     //inserted subscribed policies in subscribed policy collection in the database
-    Axios.post("http://localhost:5000/addSubscribedPolicy",policyData);
+    Axios.post("/addSubscribedPolicy",policyData);
   }
 
   render() {

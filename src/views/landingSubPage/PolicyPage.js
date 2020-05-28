@@ -1,6 +1,6 @@
 
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -24,7 +24,7 @@ class PolicyPage extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/policypage", {
+    Axios.get("/policypage", {
       params: {type: "all" }
     })
       .then(response => {
