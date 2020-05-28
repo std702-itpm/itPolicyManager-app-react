@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import Api from "services/Api"
 
 // reactstrap components
@@ -35,8 +35,8 @@ class ReviewPage extends React.Component {
 
     componentDidMount() {
         console.log("Landed in policy-action");
-        
-        Axios.get("http://localhost:5000/company", {
+
+        Axios.get("/company", {
             params: {
                 _id: localStorage.getItem("session_name"),
                 type: "company"
@@ -73,7 +73,7 @@ class ReviewPage extends React.Component {
     getPolicyData() {
 
         let requests = this.state.reviewers.map(reviewer =>
-            Axios.get("http://localhost:5000/company", {
+            Axios.get("/company", {
                 params: {
                     _id: reviewer,
                     type: "user"

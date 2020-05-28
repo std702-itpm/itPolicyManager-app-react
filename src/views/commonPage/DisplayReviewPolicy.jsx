@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -42,7 +42,7 @@ class Policies extends React.Component {
         let pName = this.props.match.params.policyName.replace(/-/g, " ");
         if (this.props.match.params) {
             // console.log(pName)
-            Axios.get("http://localhost:5000/clientReviewer", {
+            Axios.get("/clientReviewer", {
                 params: { _id: this.props.match.params.companyId }
             }).then(response => {
                 this.setState({
@@ -77,7 +77,7 @@ class Policies extends React.Component {
 
     //if reviewer reject the policy
     rejectHandler() {
-        Axios.get("http://localhost:5000/company", {
+        Axios.get("/company", {
             params: { _id: this.props.match.params.userId, type: "user" }
         }).then(response => {
             const data = {
@@ -95,7 +95,7 @@ class Policies extends React.Component {
 
     processBtnReq(data) {
         if (data.review === "ACCEPTED") {
-            Axios.post("http://localhost:5000/clientReviewer", data).then(response => {
+            Axios.post("/clientReviewer", data).then(response => {
                 // console.log(response.data);
                 console.log("status:", response.data.value);
                 if (response.data.value === "success") {
@@ -115,7 +115,7 @@ class Policies extends React.Component {
                 }
             })
         } else if (data.review === "REJECTED") {
-            Axios.post("http://localhost:5000/clientReviewer", data).then(response => {
+            Axios.post("/clientReviewer", data).then(response => {
                 // console.log(response.data);
                 console.log("status:", response.data.value);
                 if (response.data.value === "success") {
@@ -135,7 +135,7 @@ class Policies extends React.Component {
                 }
             })
         } else {
-            Axios.post("http://localhost:5000/clientReviewer", data).then(response => {
+            Axios.post("/clientReviewer", data).then(response => {
                 // console.log(response.data);
                 console.log("status:", response.data.value);
                 if (response.data.value === "success") {
@@ -160,7 +160,7 @@ class Policies extends React.Component {
     //saves in the database if reviewer reject the policy
     acceptHandler() {
 
-        Axios.get("http://localhost:5000/company", {
+        Axios.get("/company", {
             params: { _id: this.props.match.params.userId, type: "user" }
         }).then(response => {
             //var moment = require('moment');
@@ -179,7 +179,7 @@ class Policies extends React.Component {
     }
 
     commentBtnHandler() {
-        Axios.get("http://localhost:5000/company", {
+        Axios.get("/company", {
             params: { _id: this.props.match.params.userId, type: "user" }
         }).then(response => {
             const data = {

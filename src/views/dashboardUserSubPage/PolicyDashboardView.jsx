@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -17,7 +17,7 @@ export default class PolicyDashboardView extends React.Component {
 
     componentDidMount() {
         let policy_id = this.props.match.params.id
-        Axios.get("http://localhost:5000/getOnePolicy/" + policy_id)
+        Axios.get("/getOnePolicy/" + policy_id)
             .then(response => {
                 console.log(response)
                 this.setState({

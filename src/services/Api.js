@@ -1,9 +1,9 @@
-import Axios from 'axios';
+import Axios from 'configs/AxiosConfig';
 
 class Api {
 
     fetchCompanyByName(name) {
-        return Axios.get("http://localhost:5000/company", {
+        return Axios.get("/company", {
             params: {
                 name: name,
                 type: "company"
@@ -12,7 +12,7 @@ class Api {
     }
 
     fetchSubscribedPolicies(companyId, policyId) {
-        return Axios.get("http://localhost:5000/getSubscribedPolicy", {
+        return Axios.get("/getSubscribedPolicy", {
             params: {
                 company_id: companyId,
                 policy_id: policyId
@@ -21,7 +21,7 @@ class Api {
     }
 
     fetchSubscribedPolicy(policyId) {
-        return Axios.get("http://localhost:5000/getSubscribedPolicy", {
+        return Axios.get("/getSubscribedPolicy", {
             params: {
                 policy_type: "one",
                 policy_id: policyId

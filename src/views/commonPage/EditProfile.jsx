@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -39,7 +39,7 @@ class Policies extends React.Component {
     if (this.props.subscriberId === undefined) {
       console.log("IF: " + idInfo.id);
       //if logged in user wants to edit his profile
-      Axios.get("http://localhost:5000/edituserprofile/" + idInfo.id)
+      Axios.get("/edituserprofile/" + idInfo.id)
         .then(response => {
           console.log("response", response);
           this.fillData(response);
@@ -51,7 +51,7 @@ class Policies extends React.Component {
     else {
       //if logged in super admin wants to edit the other subscriber's profile
       console.log("Else: " + this.props.subscriberId);
-      Axios.get("http://localhost:5000/editprofile/" + this.props.subscriberId)
+      Axios.get("/editprofile/" + this.props.subscriberId)
         .then(response => {
           console.log("response", response);
           this.fillData(response);
@@ -110,7 +110,7 @@ class Policies extends React.Component {
       logo: realpath
     };
 
-    Axios.post("http://localhost:5000/editprofile", companyDetails).then(
+    Axios.post("/editprofile", companyDetails).then(
       res => {
         if (res.data.status === "success") {
           toast("Save successfully", {

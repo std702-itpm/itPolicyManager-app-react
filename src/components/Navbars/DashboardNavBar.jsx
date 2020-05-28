@@ -1,5 +1,7 @@
 
 import React from "react";
+import Axios from 'configs/AxiosConfig';
+
 import {
   Collapse,
   Navbar,
@@ -31,10 +33,12 @@ class Header extends React.Component {
   }
 
   changeRoute() {
-    localStorage.clear();
-    let path = `/landing-page`;
-    this.props.history.push(path);
-  }
+    Axios.delete('/signin')
+        .then(() => {
+          localStorage.clear();
+          let path = `/landing-page`;
+          this.props.history.push(path);
+        })}
   toggle() {
     if (this.state.isOpen) {
       this.setState({

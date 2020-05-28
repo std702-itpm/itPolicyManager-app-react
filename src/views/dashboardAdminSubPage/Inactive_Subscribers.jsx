@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -28,7 +28,7 @@ class inactiveSubscribers extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/company", {
+    Axios.get("/company", {
       params: {type: "companyAllInactive" }
     })
       .then(response => {
@@ -95,7 +95,7 @@ class inactiveSubscribers extends React.Component {
           companyId:subscriberId,
           status:true
       }
-      Axios.post("http://localhost:5000/deleteprofile",subscriberDetails).then(
+      Axios.post("/deleteprofile",subscriberDetails).then(
           res=>{
               if(res.data.status==="success"){
                   toast("Subsciber is re-activated!",{
@@ -122,7 +122,7 @@ class inactiveSubscribers extends React.Component {
       var data={
         companyId:id
       }
-      Axios.post("http://localhost:5000/deleteCompany",data)
+      Axios.post("/deleteCompany",data)
       .then(response=>{
         if(response.data.status==="success"){
           toast("The subscriber details deleted permanantly!",{

@@ -1,5 +1,5 @@
 import React,{Component}from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -71,14 +71,14 @@ import {
             bEmail: this.state.bEmail
         };
 
-        Axios.post('http://localhost:5000/register', RegisterDetails)
+        Axios.post('/register', RegisterDetails)
         .then(res => {console.log(res.data);
             const company = {
                 id: res.data.id,
                 policies: matchPolicies,
                 status: "new"
             }
-            Axios.post('http://localhost:5000/company', company)
+            Axios.post('/company', company)
             .then(response => {
                 console.log('response', response)
             })

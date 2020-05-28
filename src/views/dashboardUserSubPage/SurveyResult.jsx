@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -39,7 +39,7 @@ class MatchedPolicies extends React.Component {
   componentDidMount() {
     localStorage.removeItem('subscribedPolicies');
 
-    Axios.get("http://localhost:5000/policies", {
+    Axios.get("/policies", {
       params: { type: "all" }
 
     }).then(response => {
@@ -51,7 +51,7 @@ class MatchedPolicies extends React.Component {
       console.log(error)
     });
 
-    Axios.get("http://localhost:5000/company", {
+    Axios.get("/company", {
       params: { _id: localStorage.getItem("session_name"), type: "company" }
     })
       .then(response => {
@@ -111,7 +111,7 @@ class MatchedPolicies extends React.Component {
   /*To get the matched policies from the survey taken*/
   getMatchedPolicy() {
     let requests = this.state.matchedPolicies.map(matchedPolicy =>
-      Axios.get("http://localhost:5000/policies", {
+      Axios.get("/policies", {
         params: { _id: matchedPolicy, type: "one" }
       })
     );

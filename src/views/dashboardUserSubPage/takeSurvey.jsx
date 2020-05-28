@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -36,7 +36,7 @@ class takeSurvey extends React.Component {
       type:"company",
       _id:localStorage.getItem('session_name')
     }
-    Axios.get("http://localhost:5000/company",{params:company})
+    Axios.get("/company",{params:company})
     .then(response=>{
       this.state.matchedPolicies.push(response.data.match_policy);
       response.data.subscribed_policy.forEach((policy, index) => {
@@ -64,7 +64,7 @@ class takeSurvey extends React.Component {
     policies: newPolicyList ,
 
   };
-  Axios.post("http://localhost:5000/company", company)
+  Axios.post("/company", company)
     .then(response => {
       // console.log("response", response);
       if (response.data.result === "success") {

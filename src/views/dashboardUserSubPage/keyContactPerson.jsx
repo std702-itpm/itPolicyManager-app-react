@@ -1,6 +1,6 @@
 
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -35,12 +35,12 @@ class keyContactPerson extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/company", {
+    Axios.get("/company", {
       params: { _id: localStorage.getItem("session_id"), type: "user" }
     })
       .then(response => {
         console.log("user: " + response.data.company);
-        Axios.get("http://localhost:5000/user", {
+        Axios.get("/user", {
           params: { companyId: response.data.company }
         })
           .then(response => {
@@ -74,7 +74,7 @@ class keyContactPerson extends React.Component {
       action: "delete"
     };
 
-    Axios.post("http://localhost:5000/user", keyContactDetails).then(
+    Axios.post("/user", keyContactDetails).then(
       res => {
         console.log(res.data);
         console.log("Response Status:", res.data.status);

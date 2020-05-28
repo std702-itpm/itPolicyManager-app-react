@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -40,7 +40,7 @@ class sendAssessment extends React.Component {
     document.body.classList.add("register-page");
     let policy_id = localStorage.getItem("reviewPolicyId");
 
-    Axios.get("http://localhost:5000/getOnePolicy/" + policy_id)
+    Axios.get("/getOnePolicy/" + policy_id)
       .then(response => {
         console.log(response)
         this.setState({
@@ -75,7 +75,7 @@ class sendAssessment extends React.Component {
       score: score
     }
 
-    Axios.post("http://localhost:5000/assessmentResult", data)
+    Axios.post("/assessmentResult", data)
       .then(response => {
         console.log(response)
       })

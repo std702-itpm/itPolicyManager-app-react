@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -32,7 +32,7 @@ class Questions extends React.Component {
   componentDidMount() {
     document.body.classList.add("register-page");
     
-    Axios.get("http://localhost:5000/questions")
+    Axios.get("/questions")
       .then(response => {
         console.log("response", response);
         this.setState({
@@ -43,7 +43,7 @@ class Questions extends React.Component {
         console.log(error);
       });
 
-    Axios.get('http://localhost:5000/policies')
+    Axios.get('/policies')
     .then(response => {
         console.log('response', response)
         this.setState({
@@ -68,7 +68,7 @@ class Questions extends React.Component {
 
     // console.log(this.state.questions);
     
-    Axios.post('http://localhost:5000/questions', questionDetails)
+    Axios.post('/questions', questionDetails)
     .then(res => {console.log(res.data);
      //notification
      if (res.data.status === "success") {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -38,7 +38,7 @@ class LandingPage extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("http://localhost:5000/getAllPolicies/")
+    Axios.get("/getAllPolicies/")
       .then(response => {
         this.setState({ landingPolicies: response.data });
       })

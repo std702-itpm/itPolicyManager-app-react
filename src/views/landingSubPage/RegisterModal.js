@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 import { toast } from "react-toastify";
 
 // reactstrap components
@@ -94,7 +94,7 @@ class RegisterModal extends Component {
 
       return;
     }
-    Axios.post('http://localhost:5000/register', RegisterDetails)
+    Axios.post('/register', RegisterDetails)
       .then(res => {
         console.log(res.data);
         if (res.data.value === true) {

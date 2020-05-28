@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Axios from 'axios';
+import Axios from 'configs/AxiosConfig';
 import { toast } from 'react-toastify';
 import Api from "services/Api"
 
@@ -38,7 +38,7 @@ export default class KeyContactPeople extends Component {
             })
             console.log(this.state.reviewers)
             this.state.reviewers.forEach(reviewer => {
-                Axios.get("http://localhost:5000/user", {
+                Axios.get("/user", {
                     params: {
                         _id: reviewer.reviewer_id,
                         companyId: ""
@@ -84,7 +84,7 @@ export default class KeyContactPeople extends Component {
                     email: user.email,
                     policyId: localStorage.getItem("reviewPolicyId")
                 }
-                Axios.post("http://localhost:5000/sendAssessmentToReviewers", data)
+                Axios.post("/sendAssessmentToReviewers", data)
                     .then(response => {
                         if (response.data.status === "success") {
                             toast("Assessment is sent successfully!", {

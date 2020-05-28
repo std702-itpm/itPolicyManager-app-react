@@ -18,7 +18,7 @@
 */
 import React,{Component}from "react";
 import {NavLink, Link} from "react-router-dom";
-import Axios from "axios";
+import Axios from 'configs/AxiosConfig';
 
 // reactstrap components
 import {
@@ -74,7 +74,7 @@ class SignIn extends Component {
       password: this.state.passwordInput
     };
     
-    Axios.post('http://localhost:5000/signin', signinDetails)
+    Axios.post('/signin', signinDetails)
     .then(res => {
       if(res.data.value === true){
         console.log(res);
