@@ -33,6 +33,7 @@ class RegisterModal extends Component {
     this.onRegisterClick = this.onRegisterClick.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.routeChange = this.routeChange.bind(this);
+    this.requestForCompanyData = this.requestForCompanyData.bind(this);
 
     this.state = {
       modal: true,
@@ -47,7 +48,6 @@ class RegisterModal extends Component {
       bZip: '',
       bDescription: '',
     }
-
     document.documentElement.classList.remove("nav-open");
   }
 
@@ -91,7 +91,6 @@ class RegisterModal extends Component {
       bDescription: this.state.bDescription
     };
     if (this.validateInput(RegisterDetails)) {
-
       return;
     }
     Axios.post('/register', RegisterDetails)
@@ -112,7 +111,6 @@ class RegisterModal extends Component {
           toast(res.data.message, {
             type: "error",
             position: toast.POSITION.TOP_CENTER,
-            
           });
         }
       });
@@ -172,6 +170,20 @@ class RegisterModal extends Component {
     });
   }
 
+  requestForCompanyData(e) {
+    e.preventDefault();
+    Axios.get('/nzbn/' + this.state.nzbnInput)
+        .then((res) => {
+          const companyInfo = res.data;
+          this.setState({
+            bNameInput: companyInfo.companyName,
+            bAddr: companyInfo.address1,
+            bCity: companyInfo.city,
+            bZip: companyInfo.zip
+          });
+        });
+  }
+
   render() {
     return (
       <>
@@ -208,8 +220,12 @@ class RegisterModal extends Component {
                       <FormGroup>
                         <label><h6>Business Name</h6></label>
                         <InputGroup className="form-group-no-border">
-                          <Input placeholder="Name" type="text" name="bNameInput"
-                            onChange={this.onChangeInput} />
+                          <Input
+                              name="bNameInput"
+                              placeholder="Name"
+                              type="text"
+                              value = {this.state.bNameInput}
+                              onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
                       <FormGroup>
@@ -217,11 +233,21 @@ class RegisterModal extends Component {
                         <Row>
                           <InputGroup className="form-group-no-border">
                             <Col className="car-register-nzbn" lg="8">
-                              <Input placeholder="NZBN" type="text" name="nzbnInput"
-                                onChange={this.onChangeInput} />
+                              <Input
+                                  name="nzbnInput"
+                                  placeholder="NZBN"
+                                  type="text"
+                                  onChange={this.onChangeInput} />
                             </Col>
                             <Col lg="4">
-                              <Input type="checkbox" value="nzbn" />
+                              <Button
+                                className="btn-link"
+                                color="danger"
+                                type="button"
+                                onClick={this.requestForCompanyData}
+                              >
+                                Chech NZBN
+                              </Button>
                             </Col>
                           </InputGroup>
                         </Row>
@@ -229,17 +255,21 @@ class RegisterModal extends Component {
                       <FormGroup>
                         <label><h6>Business Email</h6></label>
                         <InputGroup className="form-group-no-border">
-                          <Input placeholder="Email@email.com" type="text"
-                            name="bEmail"
-                            onChange={this.onChangeInput} />
+                          <Input
+                              name="bEmail"
+                              placeholder="Email@email.com"
+                              type="text"
+                              onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
                       <FormGroup>
                         <label><h6>Contact Number</h6></label>
                         <InputGroup className="form-group-no-border">
-                          <Input placeholder="+64" type="number"
-                            name="bContact"
-                            onChange={this.onChangeInput} />
+                          <Input
+                              name="bContact"
+                              placeholder="+64"
+                              type="number"
+                              onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
                     </Col>
@@ -247,17 +277,22 @@ class RegisterModal extends Component {
                       <FormGroup>
                         <label><h6>Address</h6></label>
                         <InputGroup className="form-group-no-border">
-                          <Input placeholder="Address1" type="text"
-                            name="bAddr"
-                            onChange={this.onChangeInput} />
+                          <Input
+                              name="bAddr"
+                              placeholder="Address1"
+                              type="text"
+                              value = {this.state.bAddr}
+                              onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
                       <FormGroup>
                         <label><h6>Address 2</h6></label>
                         <InputGroup className="form-group-no-border">
-                          <Input placeholder="Address2" type="text"
-                            name="bAddr2"
-                            onChange={this.onChangeInput} />
+                          <Input
+                              name="bAddr2"
+                              placeholder="Address2"
+                              type="text"
+                              onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
                       <FormGroup>
@@ -265,21 +300,29 @@ class RegisterModal extends Component {
                           <InputGroup className="form-group-no-border">
                             <Col md="6">
                               <label htmlFor="city">City</label>
-                              <Input type="text" id="city"
-                                name="bCity"
-                                onChange={this.onChangeInput} />
+                              <Input
+                                  name="bCity"
+                                  type="text"
+                                  id="city"
+                                  value = {this.state.bCity}
+                                  onChange={this.onChangeInput} />
                             </Col>
                             <Col md="4">
                               <label htmlFor="state">State</label>
-                              <Input type="text" id="state"
-                                name="bState"
-                                onChange={this.onChangeInput} />
+                              <Input
+                                  name="bState"
+                                  type="text"
+                                  id="state"
+                                  onChange={this.onChangeInput} />
                             </Col>
                             <Col md="2">
                               <label htmlFor="zip">Zip</label>
-                              <Input type="text" id="zip"
-                                name="bZip"
-                                onChange={this.onChangeInput} />
+                              <Input
+                                  name="bZip"
+                                  type="text"
+                                  id="zip"
+                                  value = {this.state.bZip}
+                                  onChange={this.onChangeInput} />
                             </Col>
                           </InputGroup>
                         </Row>
@@ -287,9 +330,14 @@ class RegisterModal extends Component {
                       <FormGroup>
                         <label><h6>Description of Business</h6></label>
                         <InputGroup className="form-group-no-border">
-                          <Input type='textarea' maxLength='500' id='description' rows={4} aria-multiline='true'
-                            name="bDescription"
-                            onChange={this.onChangeInput} />
+                          <Input
+                              name="bDescription"
+                              type='textarea'
+                              maxLength='500'
+                              id='description'
+                              rows={4}
+                              aria-multiline='true'
+                              onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
                     </Col>
