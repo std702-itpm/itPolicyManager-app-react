@@ -47,6 +47,7 @@ class RegisterModal extends Component {
       bState: '',
       bZip: '',
       bDescription: '',
+      displayLoader: 'none',
     }
     document.documentElement.classList.remove("nav-open");
   }
@@ -172,7 +173,11 @@ class RegisterModal extends Component {
 
   requestForCompanyData(e) {
     e.preventDefault();
+    this.setState({displayLoader: 'flex'});
     Axios.get('/nzbn/' + this.state.nzbnInput)
+        .finally(() => {
+          this.setState({displayLoader: 'none'})
+        })
         .then((res) => {
           const companyInfo = res.data;
           this.setState({
@@ -200,6 +205,14 @@ class RegisterModal extends Component {
         {/* Modal */}
         <Container>
           <Modal isOpen={this.state.modal} toggle={this.toggleModal} size="xl">
+            {/* Loader spinner */}
+            <div className = {styles.loaderWrapper}
+                style={{display: `${ this.state.displayLoader }`}}>
+              <div className="spinner-border" style={{width: '5rem', height: '5rem'}}>
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+            {/* Modal body */}
             <div>
               <div className="modal-header">
                 <NavLink to="/landing-page"
@@ -246,7 +259,7 @@ class RegisterModal extends Component {
                                 type="button"
                                 onClick={this.requestForCompanyData}
                               >
-                                Chech NZBN
+                                Check NZBN
                               </Button>
                             </Col>
                           </InputGroup>
