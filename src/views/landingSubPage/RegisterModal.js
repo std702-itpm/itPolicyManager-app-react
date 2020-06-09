@@ -20,6 +20,7 @@ import {
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "components/Headers/LandingPageHeader.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
+import LoaderSpinner from "components/Commons/LoaderSpinner/LoaderSpinner";
 
 import styles from "./register.module.css";
 
@@ -47,7 +48,7 @@ class RegisterModal extends Component {
       bState: '',
       bZip: '',
       bDescription: '',
-      displayLoader: 'none',
+      displayLoaderSpinner: false,
     }
     document.documentElement.classList.remove("nav-open");
   }
@@ -65,9 +66,6 @@ class RegisterModal extends Component {
     this.props.history.push(path);
   }
 
-  componentWillUnmount() {
-  }
-
   toggleModal() {
     this.setState({
       modal: !this.state.modal
@@ -78,7 +76,6 @@ class RegisterModal extends Component {
   onRegisterClick(e) {
     e.preventDefault();
 
-    console.log("onRegisterClick clicked! ");
     const RegisterDetails = {
       bNameInput: this.state.bNameInput,
       nzbnInput: this.state.nzbnInput,
@@ -173,10 +170,10 @@ class RegisterModal extends Component {
 
   requestForCompanyData(e) {
     e.preventDefault();
-    this.setState({displayLoader: 'flex'});
+    this.setState({displayLoaderSpinner: true});
     Axios.get('/nzbn/' + this.state.nzbnInput)
         .finally(() => {
-          this.setState({displayLoader: 'none'})
+          this.setState({displayLoaderSpinner: false})
         })
         .then((res) => {
           const companyInfo = res.data;
@@ -206,12 +203,7 @@ class RegisterModal extends Component {
         <Container>
           <Modal isOpen={this.state.modal} toggle={this.toggleModal} size="xl">
             {/* Loader spinner */}
-            <div className = {styles.loaderWrapper}
-                style={{display: `${ this.state.displayLoader }`}}>
-              <div className="spinner-border" style={{width: '5rem', height: '5rem'}}>
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
+            {this.state.displayLoaderSpinner ? <LoaderSpinner/> : null}
             {/* Modal body */}
             <div>
               <div className="modal-header">
