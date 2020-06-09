@@ -183,6 +183,9 @@ class RegisterModal extends Component {
             bCity: companyInfo.city,
             bZip: companyInfo.zip
           });
+        })
+        .catch(() => {
+          this.toastError("Incorrect NZBN");
         });
   }
 
