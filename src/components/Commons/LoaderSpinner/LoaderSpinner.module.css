@@ -1,0 +1,18 @@
+.loaderWrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+    background-color: rgba(85, 85, 85, 0.55);
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.spinner {
+    /* Width and height together define the spinner's size */
+    width: 3rem;
+    height: 3rem;
+}
