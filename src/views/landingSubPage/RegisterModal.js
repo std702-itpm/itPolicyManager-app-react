@@ -184,8 +184,8 @@ class RegisterModal extends Component {
             bZip: companyInfo.zip
           });
         })
-        .catch(() => {
-          this.toastError("Incorrect NZBN");
+        .catch((err) => {
+          this.toastError(err.response.data.message);
         });
   }
 
