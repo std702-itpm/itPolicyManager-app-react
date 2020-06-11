@@ -28,6 +28,10 @@ class Api {
             }
         })
     }
+
+    submitPolicyReview(data){
+        return Axios.post("/submitPolicyReview", data)
+    }
 }
 
 export default Api;

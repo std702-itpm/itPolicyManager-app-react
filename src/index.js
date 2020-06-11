@@ -73,7 +73,7 @@ ReactDOM.render(
       />
 
       <Route
-        path="/review-policy/:companyId/:policyName/:userId"
+        path="/review-policy/:companyId/:subscribedPolicyId/:userId"
         render={props => <DisplayReviewPolicy key={props.match.params.userId} {...props} />}
       />
 
