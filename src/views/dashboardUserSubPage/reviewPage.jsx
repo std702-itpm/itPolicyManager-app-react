@@ -17,7 +17,9 @@ import {
 } from "reactstrap";
 
 toast.configure();
-
+/**
+ * Path: /subscribed-policy-action-start-workflow
+ */
 class ReviewPage extends React.Component {
   constructor(props) {
     super(props);
@@ -161,16 +163,6 @@ class ReviewPage extends React.Component {
     let newReviewerList = [];
     let reviewer_list = [];
     var isPolicyBlocked = false;
-    if (!(window.confirm("Do you still need to add more reviewers in future?"))) {
-      isPolicyBlocked = true;
-      toast("The Policy will be sent to the reviewer/s to start the review workflow.", {
-        type: "success",
-        position: toast.POSITION.TOP_CENTER,
-        onClose: () => {
-          this.props.history.push("subscribed-policies");
-        }
-      });
-    }
 
     if (this.state.reviewerList !== undefined) {
       this.state.reviewerList.forEach(reviewer => {

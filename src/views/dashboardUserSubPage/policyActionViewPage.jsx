@@ -34,8 +34,6 @@ class ReviewPage extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Landed in policy-action");
-
         Axios.get("/company", {
             params: {
                 _id: localStorage.getItem("session_name"),
@@ -55,8 +53,6 @@ class ReviewPage extends React.Component {
             localStorage.getItem('reviewPolicyId')
         ).then(response => {
             this.setState({
-                // reviewers: response.data.singlePolicy.reviewer,
-                // status: response.data.singlePolicy.status
                 reviewer_list: response.data.reviewer_list,
                 status: response.data.status
             })
@@ -98,11 +94,9 @@ class ReviewPage extends React.Component {
     }
 
     displayStartWorkflowBtn() {
-        console.log("sttus: " + this.state.status)
-        //   console.log("this.state.reviewers.legnth" + this.state.reviewers.legnth)
+        console.log("sttus: " + this.state)
         if (this.state.reviewers.length === 0 &&
             (this.state.status === "done" || this.state.status === "awareness" || this.state.status === "reporting")) {
-            console.log("I am in if")
             return (
                 <><br></br>
                     <span style={{ color: "red" }}>
@@ -118,35 +112,26 @@ class ReviewPage extends React.Component {
                         className="btn-round"
                         color="primary"
                         style={{ fontSize: "16px", fontWeight: "bold" }}
-                        to={{
-                            pathname: "subscribed-policy-action-start-workflow"
-                        }}
+                        to={{ pathname: "subscribed-policy-action-start-workflow" }}
                         title="to review page"
                         tag={Link}>
                         Start Review Workflow
-                            </Button>
+                    </Button>
                 </li>
             );
-        } else if (this.state.status === "not reviewed") {
+        } else if (this.state.status === "not reviewed" || this.state.status === "confirmation") {
             return (
                 <li>
                     <Button
                         className="btn-round"
                         color="primary"
                         style={{ fontSize: "16px", fontWeight: "bold" }}
-                        to={{
-                            pathname: "subscribed-policy-action-start-workflow"
-                        }}
+                        to={{ pathname: "subscribed-policy-action-start-workflow" }}
                         title="to review page"
                         tag={Link}>
                         Add more reviewers
-                            </Button>
+                    </Button>
                 </li>
-
-                // <><br></br>
-                // <span style={{color: "red"}}>
-                //     <strong>Please do follow-up the reviewers</strong>
-                // </span></>
             );
         }
     }
