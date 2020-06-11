@@ -94,7 +94,6 @@ class ReviewPage extends React.Component {
     }
 
     displayStartWorkflowBtn() {
-        console.log("sttus: " + this.state)
         if (this.state.reviewers.length === 0 &&
             (this.state.status === "done" || this.state.status === "awareness" || this.state.status === "reporting")) {
             return (
