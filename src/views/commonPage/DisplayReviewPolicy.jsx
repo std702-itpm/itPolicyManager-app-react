@@ -67,18 +67,20 @@ class Policies extends React.Component {
         });
     }
 
-    //if reviewer reject the policy
-    rejectHandler() {
-
-        const data = {
+    prepareRequestData(isAccepted) {
+        return {
             policyId: this.props.match.params.subscribedPolicyId,
             companyId: this.props.match.params.companyId,
             userId: this.props.match.params.userId,
-            isAccepted: false,
+            isAccepted: isAccepted,
             index: this.state.index,
             feedback: this.state.commentInput
         }
-        this.api.submitPolicyReview(data).then(response => {
+    }
+
+    //if reviewer reject the policy
+    rejectHandler() {
+        this.api.submitPolicyReview(this.prepareRequestData(false)).then(response => {
             console.log(response);
             toast("This policy has been rejected after review." +
                 "Initiator will received a notification about it.", {
@@ -98,19 +100,9 @@ class Policies extends React.Component {
         });
     }
 
-    //saves in the database if reviewer reject the policy
+    //saves in the database if reviewer accept the policy
     acceptHandler() {
-
-        const data = {
-            policyId: this.props.match.params.subscribedPolicyId,
-            companyId: this.props.match.params.companyId,
-            userId: this.props.match.params.userId,
-            isAccepted: true,
-            index: this.state.index,
-            feedback: this.state.commentInput
-        }
-        this.api.submitPolicyReview(data).then(response => {
-
+        this.api.submitPolicyReview(this.prepareRequestData(true)).then(response => {
             toast("This policy has been accepted after review." +
                 "Initiator will received a notification about it.", {
                 type: "success",
@@ -119,7 +111,6 @@ class Policies extends React.Component {
                     window.location.href = '/landing-page'
                 }
             });
-
         }).catch(error => {
             console.log(error);
 
@@ -131,38 +122,29 @@ class Policies extends React.Component {
     }
 
     commentBtnHandler() {
-        Axios.get("/company", {
-            params: { _id: this.props.match.params.userId, type: "user" }
-        }).then(response => {
-            const data = {
-                fname: response.data.fname,
-                lname: response.data.lname,
-                policyName: this.props.match.params.policyName.replace(/-/g, " "),
-                companyId: this.props.match.params.companyId,
-                userId: this.props.match.params.userId,
-                review: "COMMENT",
-                comment: this.state.commentInput
-            }
-
-            Axios.post("/clientReviewer", data).then(response => {
-                // console.log(response.data);
-                console.log("status:", response.data.value);
-                if (response.data.value === "success") {
-                    toast("Your review comment has been sent." +
-                        " Initiator will received a notification about your review comment.", {
-                        type: "success",
-                        position: toast.POSITION.TOP_CENTER,
-                        onClose: () => {
-                            window.location.href = '/landing-page'
-                        }
-                    });
-                } else {
-                    toast("There is an error sending your review feedback", {
-                        type: "error",
-                        position: toast.POSITION.TOP_CENTER,
-                    });
+        if (!this.state.commentInput) {
+            toast("The comment box is empty, Please write your comment before sending a comment.", {
+                type: "error",
+                position: toast.POSITION.TOP_CENTER,
+            });
+            return;
+        }
+        this.api.submitPolicyComment(this.prepareRequestData(false)).then(response => {
+            toast("Your review comment has been sent." +
+                " Initiator will received a notification about your review comment.", {
+                type: "success",
+                position: toast.POSITION.TOP_CENTER,
+                onClose: () => {
+                    window.location.href = '/landing-page'
                 }
-            })
+            });
+        }).catch(error => {
+            console.log(error);
+
+            toast("There is an error while sending your review feedback.", {
+                type: "error",
+                position: toast.POSITION.TOP_CENTER,
+            });
         });
     }
 

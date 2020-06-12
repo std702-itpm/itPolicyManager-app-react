@@ -32,6 +32,10 @@ class Api {
     submitPolicyReview(data){
         return Axios.post("/submitPolicyReview", data)
     }
+
+    submitPolicyComment(data){
+        return Axios.post("/policyComment", data)
+    }
 }
 
 export default Api;
