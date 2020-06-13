@@ -125,12 +125,6 @@ class RegisterModal extends Component {
             return true;
           }
           break;
-        case "nzbnInput":
-          if (!registerDetails[key]) {
-            this.toastError("Please fill your business NZBN");
-            return true;
-          }
-          break;
         case "bEmail":
           if (!registerDetails[key]) {
             this.toastError("Please fill your email address");
