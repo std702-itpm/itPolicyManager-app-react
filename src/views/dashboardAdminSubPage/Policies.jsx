@@ -83,15 +83,14 @@ class Policies extends React.Component {
                 Delete
               </Button>
               {" "}
-              <Link
+              <Button
                 to={`/dashboard/edit-assessment/${policy._id}`}
                 className="btn-success btn-round"
 
                 onClick={() => this.AssessmentBtn()}
-                style={{ fontSize: "20px", color: "white" }}
               >
-                <strong>Assessment</strong>
-              </Link>
+                Assessment
+              </Button>
             </td>
           </tr>
         );
