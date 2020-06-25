@@ -128,7 +128,7 @@ class keyContactPerson extends React.Component {
                   outline
                   onClick={e => this.onDeleteClick(keyContact._id)}
                 >
-                  <i className="nc-icon nc-basket" style={{fontSize: "18px", color: "red"}}/>
+                  Delete
                 </Button>
               </td>
             </tr>
@@ -157,10 +157,10 @@ class keyContactPerson extends React.Component {
                   <Table responsive>
                     <thead>
                       <tr>
-                        <th></th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Postion</th>
+                        <th className="text-center">Action</th>
                       </tr>
                     </thead>
                     <tbody>{this.renderKeyContacts()}</tbody>
@@ -171,7 +171,7 @@ class keyContactPerson extends React.Component {
                     color="success"
                     onClick={this.onAddClick}
                   >
-                    Add a new peron
+                    Add key contact person
                   </Button>
                 </CardBody>
               </Card>
