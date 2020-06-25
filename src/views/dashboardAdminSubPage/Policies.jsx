@@ -83,15 +83,14 @@ class Policies extends React.Component {
                 Delete
               </Button>
               {" "}
-              <Link
+              <Button
                 to={`/dashboard/edit-assessment/${policy._id}`}
                 className="btn-success btn-round"
 
                 onClick={() => this.AssessmentBtn()}
-                style={{ fontSize: "20px", color: "white" }}
               >
-                <strong>Assessment</strong>
-              </Link>
+                Assessment
+              </Button>
             </td>
           </tr>
         );
@@ -139,7 +138,7 @@ class Policies extends React.Component {
                 <CardBody>
                   <Table responsive>
                     <thead>
-                      <tr><Button outline color="success" className="btn-round" onClick={e => this.addPolicy()}>Add Policy</Button></tr>
+                      <tr><Button outline color="success" className="btn-round" onClick={this.addPolicy}>Add Policy</Button></tr>
                       <tr>
                         <th className="text-center">Policy Name</th>
                         <th className="text-center">Action</th>
