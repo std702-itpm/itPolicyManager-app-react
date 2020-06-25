@@ -17,17 +17,18 @@ import {
 export default class EditPolicy extends Component {
     constructor(props) {
         super(props);
-        this.renderContent = this.renderContent.bind(this);
+
+        this.getPolicyById = this.getPolicyById.bind(this);
+        this.changePolicyName = this.changePolicyName.bind(this);
+        this.editPolicySection = this.editPolicySection.bind(this);
+        this.addSection = this.addSection.bind(this);
         this.handleSaveContent = this.handleSaveContent.bind(this);
-        this.addContent = this.addContent.bind(this);
-        this.onInputChange = this.onInputChange.bind(this);
-        // this.handlePrint = this.handlePrint.bind(this);
-        // this.renderPDF = this.renderPDF.bind(this);
-        // this.getDate = this.getDate.bind(this);
-        // this.getPDF = this.getPDF.bind(this);
+
         this.state = {
-            contents: [],
-            tempcontents: [],
+            // This empty string makes policy's sections displaying more consistent,
+            // and simplifies the addition new sections process
+            contents: [""],
+
             policy: [],
             updatedContent: [],
             policyName: "",
@@ -36,61 +37,61 @@ export default class EditPolicy extends Component {
     }
 
     componentDidMount() {
-        if (!(this.props.policyId === undefined)) {
-            //if policy id is available then user can get policy from id in the database
-            Axios.get("/policies", {
-                params: {type: "one", _id: this.props.policyId}//localStorage.getItem('reviewPolicy')}
-            })
-                .then(response => {
-                    console.log(response)
-                    this.setState({
-                        policy: response.data,
-                        contents: response.data.content,
-                        policyName: response.data.policy_name,
-                        policyId: response.data._id
-                    });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        if (this.props.policyId) {
+            this.getPolicyById(this.props.policyId);
         }
     }
 
-//handle save button
+    getPolicyById(policyId) {
+        // If policy's ID has been passed in,
+        // user gets the policy from the database by ID
+        Axios.get("/policies", {
+            params: {type: "one", _id: policyId}
+        })
+            .then(response => {
+                console.log(response)
+                this.setState({
+                    policy: response.data,
+                    contents: response.data.content.length > 0 ? response.data.content : [""],
+                    policyName: response.data.policy_name,
+                    policyId: response.data._id
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    //handle save button
     handleSaveContent(e) {
         e.preventDefault();
-        console.log("Save clicked!");
-        console.log(this.state.contents);
         const updatedContent = {
-            content: this.state.contents,
             _id: this.state.policyId,
+            policyName: this.state.policyName,
+            content: this.state.contents
         };
-        console.log("Updated:" + updatedContent)
 
-        Axios.put("/edit-policy", updatedContent).then(
-            res => {
-                console.log(res.data);
-                console.log(res);
-                if (res.status === 204) {
-                    toast("Updated successfully", {
-                        type: "success",
-                        position: toast.POSITION.TOP_CENTER,
-                        onClose: () => {
-                            window.location.href = 'DisplayPolicyTest'
-                        }
-                    });
-                } else {
-                    toast("Unsuccessful save. Something went wrong, Try again", {
-                        type: "error",
-                        position: toast.POSITION.TOP_CENTER,
-                    });
-                }
-            }
-        );
+        Axios.put("/edit-policy", updatedContent)
+            .then(res => {
+                toast("Updated successfully", {
+                    type: "success",
+                    position: toast.POSITION.TOP_CENTER,
+                    onClose: () => {
+                        window.location.href = 'DisplayPolicyTest'
+                    }
+                });
+            })
+            .catch(err => {
+                // Right here the error handling should be
+                toast("Unsuccessful save. Something went wrong, Try again", {
+                    type: "error",
+                    position: toast.POSITION.TOP_CENTER,
+                });
+            });
     }
 
     //Input changes handler
-    onInputChange(e) {
+    changePolicyName(e) {
         const target = e.target;
         const name = target.name;
         const value = target.value;
@@ -98,45 +99,16 @@ export default class EditPolicy extends Component {
     }
 
     //get contents for policy
-    renderContent(content, contentIndex) {
-        const contentModification = (e) => {
-            let content_temp = this.state.contents;
-            content_temp[contentIndex] = e.target.value;
-            this.setState({contents: content_temp});
-        };
-
-        return (
-            <FormGroup>
-                <InputGroup className="form-group-no-border">
-                    <Input
-                        value={content}
-                        type="textarea"
-                        onChange={contentModification}
-                        rows="12"
-                        id={contentIndex}
-                        name={contentIndex}
-                    />
-                </InputGroup>
-            </FormGroup>
-        )
+    editPolicySection(e) {
+        let contentBuffer = this.state.contents;
+        contentBuffer[e.target.id] = e.target.value;
+        this.setState({contents: contentBuffer});
     }
 
-    addContent() {
-        return (
-            <InputGroup>
-                <Input type="textarea" rows="12"/>
-            </InputGroup>
-        );
-    }
-
-    content() {
-        return this.state.contents.map((content, contentIndex) => {
-            return (
-                <>
-                    {this.renderContent(content, contentIndex)}
-                </>
-            );
-        });
+    addSection() {
+        let content_temp = this.state.contents;
+        content_temp.push("");
+        this.setState({contents: content_temp});
     }
 
     render() {
@@ -153,14 +125,16 @@ export default class EditPolicy extends Component {
                                            value={this.state.policyName}
                                            type="text"
                                            name="policyName"
-                                           onChange={this.onInputChange}/>
+                                           onChange={this.changePolicyName}/>
                                 </InputGroup>
                             </FormGroup>
-                            {this.content()}
-                            <FormGroup>{this.addContent()}</FormGroup>
+                            <PolicyContent
+                                content={this.state.contents}
+                                handler={this.editPolicySection}
+                            />
                             <Button outline
                                     color="primary"
-                                    onClick={this.addContent}
+                                    onClick={this.addSection}
                                     className="btn-round">
                                 Add Content
                             </Button>
@@ -193,4 +167,42 @@ export default class EditPolicy extends Component {
             </div>
         );
     }
+}
+
+/**
+ * Represents whole content of a policy
+ */
+function PolicyContent(props) {
+    const content = props.content;
+    let sectionElements = [];
+    let id = 0;
+
+    sectionElements = content.map((section) =>
+        <PolicySection content={section} handler={props.handler} id={id++}/>
+    );
+
+    return (
+        <>
+            {sectionElements}
+        </>
+    );
+}
+
+/**
+ * Represents one section of a policy
+ */
+function PolicySection(props) {
+    return (
+        <FormGroup>
+            <InputGroup className="form-group-no-border">
+                <Input
+                    type="textarea"
+                    rows="12"
+                    id={props.id}
+                    value={props.content}
+                    onChange={props.handler}
+                />
+            </InputGroup>
+        </FormGroup>
+    );
 }
