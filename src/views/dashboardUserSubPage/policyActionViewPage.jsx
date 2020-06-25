@@ -65,7 +65,6 @@ class ReviewPage extends React.Component {
     }
 
     getPolicyData() {
-
         let requests = this.state.reviewer_list.map(reviewer =>
             Axios.get("/company", {
                 params: {
