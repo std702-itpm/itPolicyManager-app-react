@@ -77,7 +77,7 @@ export default class EditPolicy extends Component {
                     type: "success",
                     position: toast.POSITION.TOP_CENTER,
                     onClose: () => {
-                        window.location.href = 'DisplayPolicyTest'
+                        window.location.href = 'policies'
                     }
                 });
             })
