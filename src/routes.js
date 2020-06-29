@@ -29,45 +29,45 @@ import sendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessme
 import KeyContactPeople from "views/dashboardAccountablePersonSubPage/KeyContactPeopleForAssessment.jsx"
 
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
-  const userType = localStorage.getItem('session_type');
-  const userLogo = localStorage.getItem('session_logo');  
-
+const userType = localStorage.getItem('session_type');
+const userLogo = localStorage.getItem('session_logo');
+//System Admin
 var routesAdmin = [{
-    path: "/dashboardcontent",
-    pro: "true",
-    name: "Dashboard",
-    name2:"Dashboard",
-    icon: "nc-icon nc-bank",
-    component: DashboardContent,
-    sidebar: true,
-    layout: "/dashboard"
-  },
-  {
-    path: "/policies",
-    name: "Policies",
-    name2:"Policies",
-    icon: "nc-icon nc-paper",
-    component: Policies,
-    sidebar: true,
-    layout: "/dashboard"
-  },
-  {
-    path: "/editPolicy",
-    name2:"Edit",
-    component: EditPolicy,
-    logo: userLogo,
-    sidebar: false,
-    layout: "/dashboard"
-  },
-  {
-    path: "/subscribers",
-    name: "Subscribers",
-    name2:"Subscribers",
-    icon: "nc-icon nc-single-02",
-    component: Subscribers,
-    sidebar: true,
-    layout: "/dashboard"
-  },
+  path: "/dashboardcontent",
+  pro: "true",
+  name: "Dashboard",
+  name2: "Dashboard",
+  icon: "nc-icon nc-bank",
+  component: DashboardContent,
+  sidebar: true,
+  layout: "/dashboard"
+},
+{
+  path: "/policies",
+  name: "Policies",
+  name2: "Policies",
+  icon: "nc-icon nc-paper",
+  component: Policies,
+  sidebar: true,
+  layout: "/dashboard"
+},
+{
+  path: "/editPolicy",
+  name2: "Edit",
+  component: EditPolicy,
+  logo: userLogo,
+  sidebar: false,
+  layout: "/dashboard"
+},
+{
+  path: "/subscribers",
+  name: "Subscribers",
+  name2: "Subscribers",
+  icon: "nc-icon nc-single-02",
+  component: Subscribers,
+  sidebar: true,
+  layout: "/dashboard"
+},
 
   {
     path:"/inactiveSubscribers",
@@ -106,13 +106,50 @@ var routesAdmin = [{
     sidebar: false,
     layout: "/dashboard"
   },
-];
+{
+  path: "/inactiveSubscribers",
+  name: "Inactive Subscribers",
+  name2: "Subscribers",
+  icon: "nc-icon nc-single-02",
+  component: inactiveSubscribers,
+  sidebar: true,
+  layout: "/dashboard"
+},
 
-var routesClient = [
+{
+  path: "/edit-profile/" + localStorage.getItem("session_id"),
+  name: "Edit Profile",
+  name2: "Edit Profile",
+  icon: "nc-icon nc-badge",
+  component: EditProfile,
+  sidebar: true,
+  layout: "/dashboard"
+},
+{
+  path: "/edit-questions",
+  name: "Questions",
+  name2: "Questions",
+  icon: "nc-icon nc-paper",
+  component: Questions,
+  sidebar: true,
+  layout: "/dashboard"
+},
+{
+  path: "/edit-assessment/:id",
+  name: "Assessment",
+  name2: "Assessment",
+  icon: "nc-icon nc-paper",
+  component: Assessment,
+  sidebar: false,
+  layout: "/dashboard"
+},
+];
+//Company initiator
+var routesCompanyInitiator = [
   {
     path: "/survey-result",
     name: "Policy Dashboard",
-    name2:"Policy Dashboard & Survey Result",
+    name2: "Policy Dashboard & Survey Result",
     icon: "nc-icon nc-alert-circle-i",
     component: SurveyResult,
     logo: userLogo,
@@ -122,17 +159,17 @@ var routesClient = [
   {
     path: "/Company_Admin",
     name: "Company Admin",
-     name2:"Company Admin",
+    name2: "Company Admin",
     icon: "nc-icon nc-single-02",
     component: addAccountablePerson,
     sidebar: true,
     layout: "/dashboard"
   },
-  
+
   {
     path: "/edit-profile/" + localStorage.getItem("session_id"),
     name: "Edit Profile",
-    name2:"Edit Profile",
+    name2: "Edit Profile",
     icon: "nc-icon nc-badge",
     component: EditProfile,
     logo: userLogo,
@@ -142,7 +179,7 @@ var routesClient = [
   {
     path: "/subscribed-policies",
     name: "Subscribed Policies",
-    name2:"Subscribed Policies",
+    name2: "Subscribed Policies",
     icon: "nc-icon nc-book-bookmark",
     component: SubscribedPolicy,
     logo: userLogo,
@@ -152,7 +189,7 @@ var routesClient = [
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",
-    name2:"Key Contact Person",
+    name2: "Key Contact Person",
     icon: "nc-icon nc-simple-add",
     component: keyContactPerson,
     logo: userLogo,
@@ -162,7 +199,7 @@ var routesClient = [
   {
     path: "/PolicyDashboardView/:id",
     name: "Policy Dashboard View",
-    name2:"Policy Dashboard View",
+    name2: "Policy Dashboard View",
     icon: "nc-icon nc-paper",
     component: PolicyDashboardView,
     sidebar: false,
@@ -170,7 +207,7 @@ var routesClient = [
   },
   {
     path: "/subscribed-policy-action",
-    name2:"Policy Details",
+    name2: "Policy Details",
     component: ActionPage,
     logo: userLogo,
     sidebar: false,
@@ -178,7 +215,7 @@ var routesClient = [
   },
   {
     path: "/subscribed-policy-action-start-workflow",
-    name2:"Review Details",
+    name2: "Review Details",
     component: ReviewPage,
     logo: userLogo,
     sidebar: false,
@@ -186,43 +223,43 @@ var routesClient = [
   },
   {
     path: "/AddkeyContacts",
-    name2:"Add Key Contacts",
-    component:AddKeyContacts,
+    name2: "Add Key Contacts",
+    component: AddKeyContacts,
     logo: userLogo,
     sidebar: false,
     layout: "/dashboard"
   },
   {
     path: "/DisplayPolicy",
-    name2:"Policy Informtion",
-    component:DisplayPolicy,
+    name2: "Policy Informtion",
+    component: DisplayPolicy,
     logo: userLogo,
     sidebar: false,
     layout: "/dashboard"
   },
   {
     path: "/printPreview",
-    component:printPreview,
+    component: printPreview,
     logo: userLogo,
     sidebar: false,
     layout: "/dashboard"
   },
   {
     path: "/take-survey",
-    name2:"take survey",
-    component:takeSurvey,
+    name2: "take survey",
+    component: takeSurvey,
     logo: userLogo,
     sidebar: false,
     layout: "/dashboard"
   },
 ];
-
-var routesAccountablePerson=[
+//Company Admin
+var routesAccountablePerson = [
   {
     path: "/dashboardcontent",
     pro: "true",
     name: "Dashboard",
-    name2:"Dashboard",
+    name2: "Dashboard",
     icon: "nc-icon nc-bank",
     component: DashboardContent,
     sidebar: true,
@@ -231,7 +268,7 @@ var routesAccountablePerson=[
   {
     path: "/subscribed-policies",
     name: "Subscribed Policies",
-    name2:"Subscribed Policies",
+    name2: "Subscribed Policies",
     icon: "nc-icon nc-book-bookmark",
     component: SubscribedPolicy,
     logo: userLogo,
@@ -241,7 +278,7 @@ var routesAccountablePerson=[
   {
     path: "/keyContactPerson",
     name: "Key Contact Person",
-    name2:"Key Contact Person",
+    name2: "Key Contact Person",
     icon: "nc-icon nc-simple-add",
     component: keyContactPerson,
     logo: userLogo,
@@ -251,7 +288,7 @@ var routesAccountablePerson=[
   {
     path: "/sendassessment",
     name: "Send Assessment",
-    name2:"Send Assessment",
+    name2: "Send Assessment",
     icon: "nc-icon nc-simple-add",
     component: policyToSendAssessment,
     logo: userLogo,
@@ -260,7 +297,7 @@ var routesAccountablePerson=[
   },
   {
     path: "/send-assessment-action",
-    name2:"Assessment Details",
+    name2: "Assessment Details",
     component: sendAssessment,
     logo: userLogo,
     sidebar: false,
@@ -269,7 +306,7 @@ var routesAccountablePerson=[
   {
     path: "/keyContactPeople-ForAssessment",
     name: "Key Contact People",
-    name2:"Key Contact People",
+    name2: "Key Contact People",
     icon: "nc-icon nc-simple-add",
     component: KeyContactPeople,
     logo: userLogo,
@@ -278,16 +315,16 @@ var routesAccountablePerson=[
   },
 ]
 
-var routes= []
+var routes = []
 
-if(userType === "admin"){
+if (userType === "admin") {
   routes = routesAdmin;
 }
-else if(userType==="Accountable Person"){
-  routes=routesAccountablePerson
+else if (userType === "Accountable Person") {
+  routes = routesAccountablePerson
 }
-else{
-  routes = routesClient;
+else if (userType === "comp_initiator") {
+  routes = routesCompanyInitiator;
 }
- 
+
 export default routes;
