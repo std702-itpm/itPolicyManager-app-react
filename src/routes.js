@@ -8,7 +8,6 @@ import Policies from "views/dashboardAdminSubPage/Policies.jsx";
 import Subscribers from "views/dashboardAdminSubPage/Subscribers.jsx";
 import inactiveSubscribers from "views/dashboardAdminSubPage/Inactive_Subscribers.jsx";
 import EditPolicy from "views/commonPage/EditPolicy.jsx";
-// import KeyPerson from "views/dashboardAdminSubPage/AddKeyContact.jsx";
 import Questions from "views/dashboardAdminSubPage/Questions.jsx";
 import Assessment from "views/dashboardAdminSubPage/Assessment.jsx";
 import addAccountablePerson from "views/dashboardUserSubPage/companyAdmin.jsx"
@@ -29,10 +28,6 @@ import policyToSendAssessment from "views/dashboardAccountablePersonSubPage/Poli
 import sendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessment.jsx";
 import KeyContactPeople from "views/dashboardAccountablePersonSubPage/KeyContactPeopleForAssessment.jsx"
 
-// import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
-// import RegModal from "views/commonPage/addNewSubscriber";
-// import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
-//import PolicyDashboard from "views/dashboardUserSubPage/PolicyDashboard.jsx";
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
   const userType = localStorage.getItem('session_type');
   const userLogo = localStorage.getItem('session_logo');  
@@ -93,14 +88,6 @@ var routesAdmin = [{
     sidebar: true,
     layout: "/dashboard"
   },
-  // {
-  //   path: "/AddUser",
-  //   name: "Add New User",
-  //   icon: "nc-icon nc-simple-add",
-  //   component: KeyPerson,//needed to be changed for adding user
-  //   sidebar: true,
-  //   layout: "/dashboard"
-  // },
   {
     path: "/edit-questions",
     name: "Questions",
@@ -290,8 +277,6 @@ var routesAccountablePerson=[
     layout: "/dashboard"
   },
 ]
-
-
 
 var routes= []
 

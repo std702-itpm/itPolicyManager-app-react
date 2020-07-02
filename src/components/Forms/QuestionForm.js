@@ -20,7 +20,7 @@ class QuestionForm extends Component {
     }
 
     componentDidMount() {
-        Axios.get('/questions')
+        Axios.get('/takeSurvey')
             .then(response => {
                 console.log('response', response)
                 this.setState({

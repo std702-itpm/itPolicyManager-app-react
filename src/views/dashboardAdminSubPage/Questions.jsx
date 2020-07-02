@@ -32,7 +32,7 @@ class Questions extends React.Component {
   componentDidMount() {
     document.body.classList.add("register-page");
     
-    Axios.get("/questions")
+    Axios.get("/takeSurvey")
       .then(response => {
         console.log("response", response);
         this.setState({
@@ -68,7 +68,7 @@ class Questions extends React.Component {
 
     // console.log(this.state.questions);
     
-    Axios.post('/questions', questionDetails)
+    Axios.post('/updateSurvey', questionDetails)
     .then(res => {console.log(res.data);
      //notification
      if (res.data.status === "success") {
