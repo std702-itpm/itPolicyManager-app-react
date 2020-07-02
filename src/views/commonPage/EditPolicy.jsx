@@ -45,9 +45,7 @@ export default class EditPolicy extends Component {
     getPolicyById(policyId) {
         // If policy's ID has been passed in,
         // user gets the policy from the database by ID
-        Axios.get("/policies", {
-            params: {type: "one", _id: policyId}
-        })
+        Axios.get("/getOnePolicy/" + policyId)
             .then(response => {
                 console.log(response)
                 this.setState({

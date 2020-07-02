@@ -59,7 +59,7 @@ class Assessment extends React.Component {
       });
 
 
-    Axios.get('/policies')
+    Axios.get('/getAllPolicies')
       .then(response => {
         console.log('response', response)
         this.setState({

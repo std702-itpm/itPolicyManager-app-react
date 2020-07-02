@@ -45,8 +45,7 @@ class PaymentForm extends React.Component {
     
     for(var i=0;i<this.state.policyIdList.length;i++){
       //get policy list from policies collection from the database by id 
-      Axios.get("/policies",
-      {params: {type:"one",_id:this.state.policyIdList[i] }})
+      Axios.get("/getOnePolicy/" + this.state.policyIdList[i])
       .then(response=>{ 
         alert(response.data);       
         this.addData(response.data);
@@ -80,7 +79,7 @@ class PaymentForm extends React.Component {
       approval_date:"",
       date_subscribed:Date.now(),
       status: "not reviewed",
-      version:1   
+      version:1
       // reviewer_list:[{
       //   review_status: false,
       //   review_reminder_email_sent:false,

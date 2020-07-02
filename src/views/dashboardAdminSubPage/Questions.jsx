@@ -43,12 +43,11 @@ class Questions extends React.Component {
         console.log(error);
       });
 
-    Axios.get('/policies')
+    Axios.get('/getAllPolicies')
     .then(response => {
         console.log('response', response)
         this.setState({
             policies: response.data
-
         });
     })
     .catch(function (error) {
