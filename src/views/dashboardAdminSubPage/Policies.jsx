@@ -37,9 +37,7 @@ class Policies extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get("/policies", {
-      params: { type: "all" }
-    })
+    Axios.get("/getAllPolicies")
       .then(response => {
         this.setState({
           policies: response.data
@@ -103,7 +101,7 @@ class Policies extends React.Component {
   DeletePolicy(policy) {
     if (window.confirm("Are you sure you want to delete policy " + policy.policy_name)){
       this.setState({displayLoaderSpinner: true});
-      Axios.delete('/policies/' + policy._id)
+      Axios.delete('/deletePolicy/' + policy._id)
         .finally(() => {
           this.setState({displayLoaderSpinner: false});
         })

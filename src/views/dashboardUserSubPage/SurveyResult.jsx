@@ -39,10 +39,7 @@ class MatchedPolicies extends React.Component {
   componentDidMount() {
     localStorage.removeItem('subscribedPolicies');
 
-    Axios.get("/policies", {
-      params: { type: "all" }
-
-    }).then(response => {
+    Axios.get('/getAllPolicies').then(response => {
       this.setState({
         policies: response.data,
         isChecked: this.state.isChecked
@@ -111,9 +108,7 @@ class MatchedPolicies extends React.Component {
   /*To get the matched policies from the survey taken*/
   getMatchedPolicy() {
     let requests = this.state.matchedPolicies.map(matchedPolicy =>
-      Axios.get("/policies", {
-        params: { _id: matchedPolicy, type: "one" }
-      })
+      Axios.get("/getOnePolicy/" + matchedPolicy)
     );
     Promise.all(requests).then(policyData => {
       this.setState({ suggestedPolicies/*policies*/: policyData.map(x => x.data) });
