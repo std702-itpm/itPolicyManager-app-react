@@ -52,8 +52,7 @@ class ReviewPage extends React.Component {
       console.log(error);
     })
 
-    this.api.fetchSubscribedPolicies(
-      localStorage.getItem("session_companyId"),
+    this.api.fetchSubscribedPolicy(
       localStorage.getItem('reviewPolicyId')
     ).then(response => {
       let reviewerIdList = [];

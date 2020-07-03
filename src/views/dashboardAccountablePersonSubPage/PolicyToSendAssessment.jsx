@@ -31,9 +31,8 @@ class policyToSendAssessment extends React.Component {
     localStorage.removeItem('reviewPolicy');
     console.log("TEST");
 
-    this.api.fetchSubscribedPolicies(
-      localStorage.getItem("session_companyId"),
-      ""
+    this.api.fetchSubscribedPoliciesByCompanyId(
+      localStorage.getItem("session_companyId")
     ).then(response => {
       // console.log("response", response);
       this.setState({

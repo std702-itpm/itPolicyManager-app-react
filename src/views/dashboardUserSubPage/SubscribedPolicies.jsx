@@ -30,7 +30,8 @@ class SubscribedPolicies extends React.Component {
 
   componentDidMount() {
     localStorage.removeItem('reviewPolicy');
-    this.api.fetchSubscribedPolicies(localStorage.getItem("session_companyId"), ""
+    this.api.fetchSubscribedPoliciesByCompanyId(
+      localStorage.getItem("session_companyId")
     ).then(response => {
       this.setState({
         sub_policy: response.data
