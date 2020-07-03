@@ -9,7 +9,7 @@ import Subscribers from "views/dashboardAdminSubPage/Subscribers.jsx";
 import inactiveSubscribers from "views/dashboardAdminSubPage/Inactive_Subscribers.jsx";
 import EditPolicy from "views/commonPage/EditPolicy.jsx";
 import Questions from "views/dashboardAdminSubPage/Questions.jsx";
-import Assessment from "views/dashboardAdminSubPage/Assessment.jsx";
+import EditAssessment from "views/dashboardAdminSubPage/EditAssessment.jsx";
 import addAccountablePerson from "views/dashboardUserSubPage/companyAdmin.jsx"
 
 //client
@@ -25,7 +25,7 @@ import takeSurvey from "views/dashboardUserSubPage/takeSurvey.jsx";
 
 //Accountable person
 import policyToSendAssessment from "views/dashboardAccountablePersonSubPage/PolicyToSendAssessment.jsx";
-import sendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessment.jsx";
+import sendAssessment from "views/dashboardAccountablePersonSubPage/Assessment.jsx";
 import KeyContactPeople from "views/dashboardAccountablePersonSubPage/KeyContactPeopleForAssessment.jsx"
 
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
@@ -99,10 +99,10 @@ var routesAdmin = [{
 },
 {
   path: "/edit-assessment/:id",
-  name: "Assessment",
-  name2: "Assessment",
+  name: "Edit Assessment",
+  name2: "Edit Assessment",
   icon: "nc-icon nc-paper",
-  component: Assessment,
+  component: EditAssessment,
   sidebar: false,
   layout: "/dashboard"
 },

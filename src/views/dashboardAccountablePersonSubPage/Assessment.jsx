@@ -20,7 +20,7 @@ let checkedAnswer;
 let isAnswerCorrect = [];
 let score = 0;
 
-class sendAssessment extends React.Component {
+class Assessment extends React.Component {
   constructor(props) {
     super(props);
     this.renderAssessment = this.renderAssessment.bind(this);
@@ -187,4 +187,4 @@ class sendAssessment extends React.Component {
   }
 }
 
-export default sendAssessment;
+export default Assessment;
