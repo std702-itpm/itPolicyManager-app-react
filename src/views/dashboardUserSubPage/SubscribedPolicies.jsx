@@ -69,14 +69,14 @@ class SubscribedPolicies extends React.Component {
                 style={{ 'marginRight': '7px' }}
                 color="success"
                 value={policy.policy_name}
-                onClick={(e) => this.reviewButtonHandler(e, policy.policy_id)}>
+                onClick={(e) => this.reviewButtonHandler(e, policy._id)}>
                 Details
                 </Button>
               <Button className="btn-round"
                 style={{ 'marginRight': '7px' }}
                 color="success"
                 value={policy.policy_name}
-                onClick={(e) => this.reviewButtonHandler(e, policy.policy_id)}>
+                onClick={(e) => this.reviewButtonHandler(e, policy._id)}>
                 Send Assessment
                       </Button>
             </td>
