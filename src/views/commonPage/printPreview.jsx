@@ -31,8 +31,7 @@ export default class printPreview extends Component {
     console.log(localStorage.getItem("session_name"));
     //get subscribed policy from policy id and company id
 
-    this.api.fetchSubscribedPolicies(
-      localStorage.getItem("session_companyId"),
+    this.api.fetchSubscribedPolicy(
       localStorage.getItem('reviewPolicyId')
     ).then(response => {
       this.setState({ review_date: response.data.reviewed_date, approval_date: response.data.approval_date });

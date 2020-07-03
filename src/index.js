@@ -22,7 +22,7 @@ import PaySubscription from 'views/commonPage/PaySubscription.js';
 import DisplayReviewPolicy from "views/commonPage/DisplayReviewPolicy.jsx";
 import PolicyView from "views/PolicyView";
 import PolicyDashboardView from "views/dashboardUserSubPage/PolicyDashboardView.jsx";
-import SendAssessment from "views/dashboardAccountablePersonSubPage/SendAssessment.jsx";
+import Assessment from "views/dashboardAccountablePersonSubPage/Assessment.jsx";
 
 
 // others
@@ -78,10 +78,10 @@ ReactDOM.render(
       />
 
       <Route
-        path="/send-assessment/:policyId/:userId"
-        render={props => <SendAssessment key={props.match.params.userId} {...props} />}
+        path="/assessment/:subscribedPolicyId"
+        render={props => <Assessment key={props.match.params.subscribedPolicyId} {...props}/>}
       />
-      <Redirect to="/landing-page" /> */}
+      <Redirect to="/landing-page" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

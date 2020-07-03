@@ -42,7 +42,7 @@ class ReviewPage extends React.Component {
   }
 
   componentDidMount() {
-      Axios.get("/user", {
+    Axios.get("/user", {
       params: { companyId: localStorage.getItem("session_companyId") }
     }).then(response => {
       this.setState({
@@ -52,11 +52,10 @@ class ReviewPage extends React.Component {
       console.log(error);
     })
 
-    this.api.fetchSubscribedPolicies(
-      localStorage.getItem("session_companyId"),
+    this.api.fetchSubscribedPolicy(
       localStorage.getItem('reviewPolicyId')
     ).then(response => {
-      let reviewerIdList;
+      let reviewerIdList = [];
       response.data.reviewer_list.forEach(reviewer => {
         reviewerIdList.push(reviewer.reviewer_id)
       })
@@ -72,43 +71,33 @@ class ReviewPage extends React.Component {
   }
 
   renderDisplayReviewers() {
-    let newUserList = [];
-    let newUsers = [];
-    let users = this.state.users;
-    var reviewers = [];
+    var reviewerIdList = [];
     if (this.state.reviewerList !== undefined) {
-      reviewers = this.state.reviewerList;
+      reviewerIdList = this.state.reviewerList;
     }
-    users.forEach(user => {
-      newUsers.push(user._id);
-    })
-
-    const displayReviewers = (keyContact) => {
-      return newUsers.map(newUser => {
-        if (keyContact.user_type === undefined && keyContact._id === newUser) {
-          return (
-            <tr key={keyContact._id}>
-              <td><Input
-                type="checkbox"
-                value={keyContact._id}
-                defaultChecked={this.state.isSelected}
-                onClick={(e) => this.keyContactsCheckboxHandler(e)}
-              />
-              </td>
-              <td>{keyContact.fname + " " + keyContact.lname}</td>
-              <td>{keyContact.email}</td>
-              <td>{keyContact.position}</td>
-            </tr>
-          );
-        } else {
-          return <tr></tr>;
-        }
-      })
-
-    };
-
+    const renderReviewers = (keyContact) => {
+      let wasSelectedReviewer = reviewerIdList.find(reviewerId => reviewerId === keyContact._id);
+      if (keyContact.user_type === undefined) {
+        return (
+          <tr key={keyContact._id}>
+            <td><Input
+              type="checkbox"
+              value={keyContact._id}
+              defaultChecked={wasSelectedReviewer}
+              onClick={(e) => this.keyContactsCheckboxHandler(e)}
+            />
+            </td>
+            <td>{keyContact.fname + " " + keyContact.lname}</td>
+            <td>{keyContact.email}</td>
+            <td>{keyContact.position}</td>
+          </tr>
+        );
+      } else {
+        return <></ >;
+      }
+    }
     return this.state.users.map(function (keyContact) {
-      return displayReviewers(keyContact);
+      return renderReviewers(keyContact);
     });
 
   }
@@ -137,26 +126,6 @@ class ReviewPage extends React.Component {
     });
     //for testing
     console.log("Testing" + this.state.reviewerList);
-  }
-
-  renderDisplayPolicyStatus() {
-    let status;
-    if (this.state.singlePolicy.status === "not reviewed") {
-      status = "confirmation";
-    } else if (this.state.singlePolicy.status === "confirmation") {
-      status = "adoption";
-    } else if (this.state.singlePolicy.status === "adoption") {
-      status = "awareness";
-    } else if (this.state.singlePolicy.status === "awareness") {
-      status = "reporting";
-    } else if (this.state.singlePolicy.status === "awareness") {
-      status = "done";
-    } else {
-      status = this.state.singlePolicy.status;
-    }
-    console.log("status==>" + status);
-    //this.setState({status:status});
-    return (<span className="text-primary">{status}</span>)
   }
 
   startReviewButtonHandler(e) {
@@ -227,9 +196,9 @@ class ReviewPage extends React.Component {
               <Card className="card-upgrade" style={{ transform: "none" }}>
                 <CardHeader className="text-center">
                   <CardTitle tag="h4">
-                    <span> Choose <strong> Key Contacts </strong> to start </span>
+                    <span> Choose <strong> Key Contacts </strong> to start/continue </span>
                     <span className="text-primary">{this.state.policyName}</span><br></br>
-                    <span><strong>{this.renderDisplayPolicyStatus()} review.</strong></span>
+                    <span><strong>reviewing workflow.</strong></span>
                   </CardTitle>
                 </CardHeader>
                 <CardBody>

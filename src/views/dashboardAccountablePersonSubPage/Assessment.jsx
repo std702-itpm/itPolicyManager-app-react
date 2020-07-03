@@ -2,6 +2,7 @@ import React from "react";
 import Axios from 'configs/AxiosConfig';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Api from "services/Api"
 
 // reactstrap components
 import {
@@ -12,7 +13,8 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle
+  CardTitle,
+  Label
 } from "reactstrap";
 import { Checkbox } from "antd";
 
@@ -20,36 +22,33 @@ let checkedAnswer;
 let isAnswerCorrect = [];
 let score = 0;
 
-class sendAssessment extends React.Component {
+class Assessment extends React.Component {
   constructor(props) {
     super(props);
     this.renderAssessment = this.renderAssessment.bind(this);
     this.renderOption = this.renderOption.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.subscribedPolicyId = "";
     this.state = {
       assessment: [],
       checkedAnswer: "",
       policies: [],
       currentPolicy: [],
     };
-
+    this.api = new Api();
     document.documentElement.classList.remove("nav-open");
   }
 
   componentDidMount() {
-    document.body.classList.add("register-page");
-    let policy_id = localStorage.getItem("reviewPolicyId");
-
-    Axios.get("/getOnePolicy/" + policy_id)
+    this.subscribedPolicyId = this.props.match.params.subscribedPolicyId;
+    this.api.fetchSubscribedPolicy(this.subscribedPolicyId)
       .then(response => {
         console.log(response)
         this.setState({
           currentPolicy: response.data,
           assessment: response.data.assessments
         });
-        // console.log(this.state.contents);
-      })
-      .catch(function (error) {
+      }).catch(function (error) {
         console.log(error);
       });
   }
@@ -85,36 +84,30 @@ class sendAssessment extends React.Component {
   }
 
   renderAssessment(assessment, assessmentIndex) {
-    const handleChange = e => {
-      this.setState({ checkedAnswer: e.target.value });
-      console.log("ASDF" + this.state.checkedAnswer)
-    };
-
-    // console.log(assessment.options)
-
+    console.log(assessment);
     return (
       <div>
-        <Input
-          type="textarea"
-          value={assessment.assessment_content}
-          onChange={handleChange}
-        />
+        <h4>{assessment.assessment_content}</h4>
+          
         <ul style={{ listStyleType: "none" }}>
           {assessment.options.map((option, optionIndex) => (
             <Row>
-
               <Col md="10">
-                <li style={{ listStyleType: "none" }}>{this.renderOption(option, optionIndex, assessment.correct_answer)}</li>
+                <li style={{ listStyleType: "none" }}>
+                  {this.renderOption(option, optionIndex, assessment.correct_answer, assessment.assessment_content)}
+                </li>
               </Col>
             </Row>
           ))}
         </ul>
-        <br></br><br></br><hr></hr>
+        <br></br>
+        <br></br>
+        <hr></hr>
       </div>
     );
   }
 
-  renderOption(option, optionIndex, correct_answer) {
+  renderOption(option, optionIndex, correct_answer, content) {
     const handleChange = e => {
       checkedAnswer = e.target.value;
       if (checkedAnswer === correct_answer) {
@@ -125,25 +118,16 @@ class sendAssessment extends React.Component {
       }
       console.log("ASDF" + isAnswerCorrect)
     };
-
-
+    content = content.replace(/\s+/g, '-').toLowerCase();
     return (
       <div>
         <Row style={{ marginTop: '12px' }}>
           <Col md="8">
-            <Checkbox onChange={handleChange} value={optionIndex + 1} />{option.name}
+            <Label check>
+              <Input type="radio" name={content} value={optionIndex + 1} onChange={handleChange} />
+              {option.name}
+            </Label>
           </Col>
-
-          {/* <select value={option.policy} onChange={handlePolicyChange}>
-              {this.state.policies.map(policy => (
-                <>
-                  <option 
-                    value={policy._id} checked>
-                    {policy.policy_name}
-                  </option>
-                </>
-              ))}
-            </select> */}
         </Row>
       </div>
     );
@@ -187,4 +171,4 @@ class sendAssessment extends React.Component {
   }
 }
 
-export default sendAssessment;
+export default Assessment;

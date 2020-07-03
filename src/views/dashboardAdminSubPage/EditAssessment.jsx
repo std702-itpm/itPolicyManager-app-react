@@ -16,7 +16,7 @@ import {
   CardTitle
 } from "reactstrap";
 
-class Assessment extends React.Component {
+class EditAssessment extends React.Component {
   constructor(props) {
     super(props);
     this.renderAssessment = this.renderAssessment.bind(this);
@@ -269,4 +269,4 @@ class Assessment extends React.Component {
   }
 }
 
-export default Assessment;
+export default EditAssessment;

@@ -11,11 +11,10 @@ class Api {
         });
     }
 
-    fetchSubscribedPolicies(companyId, policyId) {
-        return Axios.get("/getSubscribedPolicy", {
+    fetchSubscribedPoliciesByCompanyId(companyId) {
+        return Axios.get("/getSubscribedPoliciesByCompanyId", {
             params: {
-                company_id: companyId,
-                policy_id: policyId
+                company_id: companyId
             }
         })
     }
@@ -23,7 +22,6 @@ class Api {
     fetchSubscribedPolicy(policyId) {
         return Axios.get("/getSubscribedPolicy", {
             params: {
-                policy_type: "one",
                 policy_id: policyId
             }
         })
@@ -35,6 +33,14 @@ class Api {
 
     submitPolicyComment(data){
         return Axios.post("/policyComment", data)
+    }
+
+    fetchUserByCompanyId(companyId){
+        return Axios.get("/user", {
+            params: {
+                companyId: companyId
+            }
+        })
     }
 }
 
