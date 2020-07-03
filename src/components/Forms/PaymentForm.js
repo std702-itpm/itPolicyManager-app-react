@@ -46,8 +46,7 @@ class PaymentForm extends React.Component {
     for(var i=0;i<this.state.policyIdList.length;i++){
       //get policy list from policies collection from the database by id 
       Axios.get("/getOnePolicy/" + this.state.policyIdList[i])
-      .then(response=>{ 
-        alert(response.data);       
+      .then(response=>{
         this.addData(response.data);
       });
     }   
@@ -70,26 +69,11 @@ class PaymentForm extends React.Component {
   };
 
   addData(data){
-    var policyData={
-      companyId:localStorage.getItem('session_companyId'),
-      policyId:data._id,
-      content:data.content,
-      name:data.policy_name,
-      reviewed_date:"",
-      approval_date:"",
-      date_subscribed:Date.now(),
-      status: "not reviewed",
-      version:1
-      // reviewer_list:[{
-      //   review_status: false,
-      //   review_reminder_email_sent:false,
-      //   review_reminder_email_error:false,
-      //   review_first_email_sent_time:"",
-      // }]
-    }
-    console.log("PolicyData: "+policyData)
     //inserted subscribed policies in subscribed policy collection in the database
-    Axios.post("/addSubscribedPolicy",policyData);
+    Axios.post("/addSubscribedPolicy",{
+      companyId:localStorage.getItem('session_companyId'),
+      policyData:data
+    });
   }
 
   render() {

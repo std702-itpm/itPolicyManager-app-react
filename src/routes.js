@@ -69,43 +69,6 @@ var routesAdmin = [{
   layout: "/dashboard"
 },
 
-  {
-    path:"/inactiveSubscribers",
-    name:"Inactive Subscribers",
-    name2:"Subscribers",
-    icon:"nc-icon nc-single-02",
-    component:inactiveSubscribers,
-    sidebar:true,
-    layout:"/dashboard"
-  },
-  
-  {
-    path: "/edit-profile/" + localStorage.getItem("session_id"),
-    name: "Edit Profile",
-    name2:"Edit Profile",
-    icon: "nc-icon nc-badge",
-    component: EditProfile,
-    sidebar: true,
-    layout: "/dashboard"
-  },
-  {
-    path: "/edit-questions",
-    name: "Questions",
-    name2:"Questions",
-    icon: "nc-icon nc-paper",
-    component: Questions,
-    sidebar: true,
-    layout: "/dashboard"
-  },
-  {
-    path: "/edit-assessment/:id",
-    name: "Assessment",
-    name2:"Assessment",
-    icon: "nc-icon nc-paper",
-    component: Assessment,
-    sidebar: false,
-    layout: "/dashboard"
-  },
 {
   path: "/inactiveSubscribers",
   name: "Inactive Subscribers",
@@ -251,7 +214,34 @@ var routesCompanyInitiator = [
     logo: userLogo,
     sidebar: false,
     layout: "/dashboard"
+  },{
+    path: "/sendassessment",
+    name: "Send Assessment",
+    name2: "Send Assessment",
+    icon: "nc-icon nc-simple-add",
+    component: policyToSendAssessment,
+    logo: userLogo,
+    sidebar: true,
+    layout: "/dashboard"
   },
+  {
+    path: "/send-assessment-action",
+    name2: "Assessment Details",
+    component: sendAssessment,
+    logo: userLogo,
+    sidebar: false,
+    layout: "/dashboard"
+  },
+  {
+    path: "/keyContactPeople-ForAssessment",
+    name: "Key Contact People",
+    name2: "Key Contact People",
+    icon: "nc-icon nc-simple-add",
+    component: KeyContactPeople,
+    logo: userLogo,
+    sidebar: false,
+    layout: "/dashboard"
+  }
 ];
 //Company Admin
 var routesAccountablePerson = [

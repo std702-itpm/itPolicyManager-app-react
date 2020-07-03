@@ -29,21 +29,21 @@ class policyToSendAssessment extends React.Component {
 
   componentDidMount() {
     localStorage.removeItem('reviewPolicy');
+    console.log("TEST");
 
-    this.api.fetchSubscribedPolicies(localStorage.getItem("session_companyId"), ""
+    this.api.fetchSubscribedPolicies(
+      localStorage.getItem("session_companyId"),
+      ""
     ).then(response => {
       // console.log("response", response);
       this.setState({
         sub_policy: response.data
       });
       console.log(this.state.sub_policy);
-    })
-      .catch(function (error) {
-        console.log(error);
-      });
+    }).catch(function (error) {
+      console.log(error);
+    });
   }
-
-
 
   toggleModal() {
     this.setState({
@@ -72,7 +72,7 @@ class policyToSendAssessment extends React.Component {
                   style={{ 'marginRight': '7px' }}
                   color="success"
                   value={policy.policy_name}
-                  onClick={(e) => this.reviewButtonHandler(e, policy.policy_id)}>
+                  onClick={(e) => this.reviewButtonHandler(e, policy._id)}>
                   Send Assessment
                       </Button>
               </td>
@@ -81,7 +81,7 @@ class policyToSendAssessment extends React.Component {
         )
       } else {
         return (
-        <p></p>
+          <p></p>
         );
       }
     })
@@ -122,8 +122,9 @@ class policyToSendAssessment extends React.Component {
                 </CardHeader>
                 <CardBody>
                   {this.state.sub_policy.length !== 0 ? this.tableDisplay() : <p>
-                    <span style={{ color: "red" }}>No Subscription yet!</span><br></br><br></br>
-                                  You can subscribed to any IT policy you need by taking the survey and purchasing suggested policy/ies.
+                    <span style={{ color: "red" }}>No Subscription yet!</span>
+                    <br></br><br></br>
+                    You can subscribed to any IT policy you need by taking the survey and purchasing suggested policy/ies.
                   </p>}
                 </CardBody>
               </Card>

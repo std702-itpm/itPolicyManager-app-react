@@ -36,6 +36,14 @@ class Api {
     submitPolicyComment(data){
         return Axios.post("/policyComment", data)
     }
+
+    fetchUserByCompanyId(companyId){
+        return Axios.get("/user", {
+            params: {
+                companyId: companyId
+            }
+        })
+    }
 }
 
 export default Api;
