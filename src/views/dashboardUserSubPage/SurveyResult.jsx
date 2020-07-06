@@ -76,7 +76,6 @@ class MatchedPolicies extends React.Component {
           this.setState({subscribedPolicies: res.data});
         })
         .catch(err => {
-          console.log("Error");
           console.log(err);
         });
   }
