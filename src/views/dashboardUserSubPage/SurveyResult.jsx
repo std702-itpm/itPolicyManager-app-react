@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Axios from 'configs/AxiosConfig';
+import Api from "services/Api";
 
 // reactstrap components
 import {
@@ -19,34 +20,28 @@ class MatchedPolicies extends React.Component {
   constructor(props) {
     super(props);
 
+    this.api = new Api();
+
     this.policy = this.policy.bind(this);
     this.subscribeBtn = this.subscribeBtn.bind(this);
     this.subscribeBtnForMatchedPolicy = this.subscribeBtnForMatchedPolicy.bind(this);
     this.checkboxHandler = this.checkboxHandler.bind(this);
+    this.getSubscribedPolicies = this.getSubscribedPolicies.bind(this);
+    this.renderSubscriptionStatus = this.renderSubscriptionStatus.bind(this);
 
     this.state = {
-      isSelected: false,
-      isChecked: false,
+      availablePolicies: [],  // Policies existing in the system
+      subscribedPolicies: [], // Policies the company has already subscribed to
       matchedPolicies: [],
-      policies: [],
-
       suggestedPolicies: [],
-      filterSubscribedPolicy: [],
-      subscribedPolicies: [],
     };
   }
 
   componentDidMount() {
     localStorage.removeItem('subscribedPolicies');
 
-    Axios.get('/getAllPolicies').then(response => {
-      this.setState({
-        policies: response.data,
-        isChecked: this.state.isChecked
-      });
-    }).catch(function (error) {
-      console.log(error)
-    });
+    this.getAvailablePolicies();
+    this.getSubscribedPolicies();
 
     Axios.get("/company", {
       params: { _id: localStorage.getItem("session_name"), type: "company" }
@@ -64,45 +59,76 @@ class MatchedPolicies extends React.Component {
       });
   }
 
+  getAvailablePolicies() {
+    this.api.fetchAvailablePolicies()
+        .then(res => {
+          this.setState({availablePolicies: res.data});
+        })
+        .catch(err => {
+          console.log("Error");
+          console.log(err);
+        });
+  }
+
+  getSubscribedPolicies() {
+    this.api.fetchSubscribedPoliciesByCompanyId(localStorage.session_companyId)
+        .then(res => {
+          this.setState({subscribedPolicies: res.data});
+        })
+        .catch(err => {
+          console.log("Error");
+          console.log(err);
+        });
+  }
+
   /*To display the list of policies*/
   displayPolicies() {
-    var nMatchPolicy = [];
-    var subscribePolicy = this.state.subscribedPolicies;
-    var suggestedPolicies = this.state.policies;
-
-    if (!(subscribePolicy.length === 0)) {
-      nMatchPolicy = suggestedPolicies.filter((policy) => {
-        return !nMatchPolicy.includes(policy);
-      });
-    } else {
-      return this.state.policies.map((policy, index) => {
-
-        if (!(policy.policy_name === "No match policy")) {
+      return this.state.availablePolicies.map((policy, index) => {
           return (
-            <tr>
-              <td key={index}>
+            <tr key={index}>
+              <td>
                 <label>
-                  <Input
-                    key={policy._id + 2}
-                    type="checkbox"
-                    value={policy._id}
-                    defaultChecked={this.state.isChecked}
-                    onClick={this.checkboxHandler}
-                  />
-                  <a href={"PolicyDashboardView/" + policy._id} style={{ color: "blue" }}
-                    target="_blank" rel="noopener noreferrer" >
+                  {this.renderSubscriptionStatus(policy)}
+                  <a href={"PolicyDashboardView/" + policy._id}
+                     style={{ color: "blue" }}
+                     target="_blank" rel="noopener noreferrer" >
                     {policy.policy_name}
                   </a>
                 </label>
               </td>
             </tr>
           )
-        }else{
-          return <tr></tr>;
-        }
-
       });
+  }
+
+  renderSubscriptionStatus(policy) {
+    const isSubscribed = this.state.subscribedPolicies.some(e => e.policy_id === policy._id);
+    let checkbox;
+    if (isSubscribed) {
+
+      checkbox = (
+          <Input
+              key={policy._id + 2}
+              type="checkbox"
+              checked="true"
+              disabled
+              value={policy._id}
+          />
+      );
+
+    } else {
+
+      checkbox = (
+          <Input
+              key={policy._id + 2}
+              type="checkbox"
+              value={policy._id}
+              onClick={this.checkboxHandler}
+          />
+      );
+
     }
+    return checkbox;
   }
 
   /*To get the matched policies from the survey taken*/
@@ -192,7 +218,7 @@ class MatchedPolicies extends React.Component {
 
   /*Subscribe button for suggested policies*/
   subscribeBtnForMatchedPolicy() {
-    if (!(this.state.suggestedPolicies.length === 0)) {
+    if (this.state.suggestedPolicies.length !== 0) {
       return (
         <Button
           className="btn-round"
@@ -219,7 +245,7 @@ class MatchedPolicies extends React.Component {
   /*Subscribe button for list of policies*/
   subscribeBtn() {
 
-    if (!(this.state.policies.length === 0)) {
+    if (this.state.availablePolicies.length !== 0) {
 
       return (
         <Button

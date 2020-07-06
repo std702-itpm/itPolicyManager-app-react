@@ -11,6 +11,14 @@ class Api {
         });
     }
 
+    /**
+     * Fetches all available policies
+     * @returns {Promise<AxiosResponse<any>>}
+     */
+    fetchAvailablePolicies() {
+        return Axios.get("/getAllPolicies");
+    }
+
     fetchSubscribedPoliciesByCompanyId(companyId) {
         return Axios.get("/getSubscribedPoliciesByCompanyId", {
             params: {
