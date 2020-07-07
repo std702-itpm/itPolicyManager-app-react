@@ -104,15 +104,11 @@ class ReviewPage extends React.Component {
 
   keyContactsCheckboxHandler(e) {
     let reviewers = [];
-    console.log(e.target.value)
     if (this.state.reviewerList !== undefined) {
       reviewers = this.state.reviewerList;
     }
-    console.log("this.state.isSelected: " + this.state.isSelected);
     if (e.target.checked) {
-      //this.setState({ isSelected: !this.state.isSelected });
       reviewers.push(e.target.value);
-      console.log("Reviewers: " + reviewers)
     }
     else {
       for (let index = 0; index < reviewers.length; index++) {
@@ -124,8 +120,6 @@ class ReviewPage extends React.Component {
     this.setState({
       reviewerList: reviewers
     });
-    //for testing
-    console.log("Testing" + this.state.reviewerList);
   }
 
   startReviewButtonHandler(e) {

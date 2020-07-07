@@ -19,6 +19,7 @@ class SubscribedPolicies extends React.Component {
     super(props);
     this.tableDisplay = this.tableDisplay.bind(this);
     this.reviewButtonHandler = this.reviewButtonHandler.bind(this);
+    this.assessmentButtonHandler = this.assessmentButtonHandler.bind(this);
     this.tableDataDisplay = this.tableDataDisplay.bind(this);
     this.state = ({
       sub_policy: [],
@@ -50,8 +51,13 @@ class SubscribedPolicies extends React.Component {
   reviewButtonHandler(e, id) {
     localStorage.setItem('reviewPolicyId', id);
     localStorage.setItem('reviewPolicy', e.target.value)
-    console.log(localStorage.getItem('reviewPolicy')); //Testing
     this.props.history.push("subscribed-policy-action");
+  }
+
+  assessmentButtonHandler(e, id) {
+    localStorage.setItem('reviewPolicyId', id);
+    localStorage.setItem('reviewPolicy', e.target.value)
+    this.props.history.push("keyContactPeople-ForAssessment");
   }
 
   tableDataDisplay() {
@@ -72,13 +78,16 @@ class SubscribedPolicies extends React.Component {
                 onClick={(e) => this.reviewButtonHandler(e, policy._id)}>
                 Details
                 </Button>
-              <Button className="btn-round"
-                style={{ 'marginRight': '7px' }}
-                color="success"
-                value={policy.policy_name}
-                onClick={(e) => this.reviewButtonHandler(e, policy._id)}>
-                Send Assessment
-                      </Button>
+              {
+                policy.status === "awareness" &&
+                <Button className="btn-round"
+                  style={{ 'marginRight': '7px' }}
+                  color="success"
+                  value={policy.policy_name}
+                  onClick={(e) => this.assessmentButtonHandler(e, policy._id)}>
+                  Send Assessment
+              </Button>
+              }
             </td>
           </tr>
         </>

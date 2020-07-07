@@ -60,7 +60,7 @@ class Assessment extends React.Component {
   }
 
   onSubmit() {
-    return;
+    // TODO: Fix this logic
     isAnswerCorrect.forEach(answer => {
       if (answer) {
         score = score + 1;
