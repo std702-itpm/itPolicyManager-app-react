@@ -27,10 +27,10 @@ class Api {
         })
     }
 
-    fetchSubscribedPolicy(policyId) {
+    fetchSubscribedPolicy(subscribedPolicyId) {
         return Axios.get("/getSubscribedPolicy", {
             params: {
-                policy_id: policyId
+                subscribedPolicyId: subscribedPolicyId
             }
         })
     }
