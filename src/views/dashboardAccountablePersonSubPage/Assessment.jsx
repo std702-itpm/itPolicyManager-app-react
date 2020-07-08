@@ -46,7 +46,6 @@ class Assessment extends React.Component {
     this.subscribedPolicyId = this.props.match.params.subscribedPolicyId;
     this.api.fetchSubscribedPolicy(this.subscribedPolicyId)
       .then(response => {
-        console.log(response.data);
         this.setState({
           currentPolicy: response.data,
           assessment: response.data.assessments
@@ -56,9 +55,6 @@ class Assessment extends React.Component {
       });
 
   }
-  componentDidUpdate() {
-  }
-
   onSubmit() {
     // TODO: Fix this logic
     isAnswerCorrect.forEach(answer => {
@@ -86,7 +82,6 @@ class Assessment extends React.Component {
         console.log(error)
       })
   }
-
 
   renderAssessment(assessment, assessmentIndex) {
     console.log(assessment);
@@ -119,7 +114,6 @@ class Assessment extends React.Component {
       } else {
         option.isSelected = false;
       }
-      console.log(option);
     };
     content = content.replace(/\s+/g, '-').toLowerCase();
     return (
