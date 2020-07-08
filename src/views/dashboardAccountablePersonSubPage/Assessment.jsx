@@ -27,13 +27,12 @@ class Assessment extends React.Component {
   constructor(props) {
     super(props);
     this.renderAssessment = this.renderAssessment.bind(this);
-    this.renderOption = this.renderOption.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.renderLoginPage = this.renderLoginPage.bind(this);
     this.subscribedPolicyId = "";
     this.state = {
       isLoggedIn: false,
-      assessment: [],
+      assessmentList: [],
       checkedAnswer: "",
       policies: [],
       currentPolicy: [],
@@ -48,7 +47,7 @@ class Assessment extends React.Component {
       .then(response => {
         this.setState({
           currentPolicy: response.data,
-          assessment: response.data.assessments
+          assessmentList: response.data.assessments
         });
       }).catch(function (error) {
         console.log(error);
@@ -57,46 +56,60 @@ class Assessment extends React.Component {
   }
   onSubmit() {
     // TODO: Fix this logic
-    isAnswerCorrect.forEach(answer => {
-      if (answer) {
-        score = score + 1;
+    let totalScore = 0;
+    let maxScore = this.state.assessmentList.length;
+    this.state.assessmentList.forEach(assessment => {
+      if (!assessment.selectedOption) {
+        alert("Please answer every questions in the assessment.")
+        throw "Please complete every questions";
+      }
+      if (assessment.correct_answer === assessment.selectedOption) {
+        totalScore++
       }
     })
-    toast("The score is: " + score, {
-      type: "success",
-      position: toast.POSITION.TOP_CENTER,
-      onClose: () => {
-        window.location.href = '/landing-page';
-      }
-    })
+    if (totalScore < maxScore) {
+      toast("You've scored " + totalScore + " out of " + maxScore + 
+      ". Please review the policy and try again.", {
+        type: "error",
+        position: toast.POSITION.TOP_CENTER
+      })
+    } else {
+      toast("Congratulation! You've scored : " + totalScore + " out of " + maxScore + 
+      ". The certificate will be sent to your email soon.", {
+        type: "success",
+        position: toast.POSITION.TOP_CENTER
+      })
+    }
     var data = {
       reviewerId: this.props.match.params.userId,
       score: score
     }
-
-    Axios.post("/assessmentResult", data)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    // TODO Fix the save function in back-end
+    // Axios.post("/assessmentResult", data)
+    //   .then(response => {
+    //     console.log(response)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
   }
 
   renderAssessment(assessment, assessmentIndex) {
-    console.log(assessment);
+    const optionChange = function (event, optionIndex) {
+      assessment.selectedOption = optionIndex + 1;
+    }
     return (
-      <Row style={{ justifyContent: "center" }}>
+      <Row style={{ justifyContent: "center" }} key={assessmentIndex.toString()}>
         <Col xs="10">
           <h4>{assessment.assessment_content}</h4>
-
           <ul style={{ listStyleType: "none" }}>
             {assessment.options.map((option, optionIndex) => (
-              <li style={{}}>
-                {this.renderOption(option,
-                  optionIndex,
-                  assessment.correct_answer,
-                  assessment.assessment_content)}
+              <li key={assessmentIndex.toString() + optionIndex.toString()}>
+                <Label style={{ cursor: "pointer" }}>
+                  <Input type="radio" name={assessmentIndex} value={option.isSelected}
+                    onChange={e => optionChange(e, optionIndex)} />
+                  {option.name}
+                </Label>
               </li>
             ))}
           </ul>
@@ -106,32 +119,7 @@ class Assessment extends React.Component {
     );
   }
 
-  renderOption(option, optionIndex, correct_answer, content) {
-    const handleChange = e => {
-      checkedAnswer = e.target.value;
-      if (checkedAnswer == correct_answer) {
-        option.isSelected = true;
-      } else {
-        option.isSelected = false;
-      }
-    };
-    content = content.replace(/\s+/g, '-').toLowerCase();
-    return (
-      <div>
-        <Row style={{ paddingTop: '10px' }}>
-          <Col md="8">
-            <Label check>
-              <Input type="radio" name={content} value={optionIndex + 1} onChange={handleChange} />
-              {option.name}
-            </Label>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
-
   renderLoginPage() {
-
     const login = () => {
       const assessmentTakerList = this.state.currentPolicy.assessment_takers;
       const isEmailExists = assessmentTakerList.some(taker => taker.user.email === this.state.loginEmail);
@@ -196,7 +184,7 @@ class Assessment extends React.Component {
                   </Link>
               </CardHeader>
               <CardBody>
-                {this.state.assessment.map((assessment, assessmentIndex) => (
+                {this.state.assessmentList.map((assessment, assessmentIndex) => (
                   <React.Fragment>
                     {this.renderAssessment(assessment, assessmentIndex)}
                   </React.Fragment>
