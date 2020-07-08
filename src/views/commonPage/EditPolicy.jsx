@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import Axios from 'configs/AxiosConfig';
 import {toast} from "react-toastify";
+import PolicyEditor from 'components/PolicyEditor/PolicyEditor'
 
 //reactstrap components
 import {
@@ -20,15 +21,12 @@ export default class EditPolicy extends Component {
 
         this.getPolicyById = this.getPolicyById.bind(this);
         this.changePolicyName = this.changePolicyName.bind(this);
-        this.editPolicySection = this.editPolicySection.bind(this);
+        this.updatePolicySection = this.updatePolicySection.bind(this);
         this.addSection = this.addSection.bind(this);
         this.handleSaveContent = this.handleSaveContent.bind(this);
 
         this.state = {
-            // This empty string makes policy's sections displaying more consistent,
-            // and simplifies the addition new sections process
-            contents: [""],
-
+            contents: [],
             policy: [],
             updatedContent: [],
             policyName: "",
@@ -39,6 +37,10 @@ export default class EditPolicy extends Component {
     componentDidMount() {
         if (this.props.policyId) {
             this.getPolicyById(this.props.policyId);
+        }else{
+            this.setState({
+                contents:[""]
+            });
         }
     }
 
@@ -47,7 +49,6 @@ export default class EditPolicy extends Component {
         // user gets the policy from the database by ID
         Axios.get("/getOnePolicy/" + policyId)
             .then(response => {
-                console.log(response)
                 this.setState({
                     policy: response.data,
                     contents: response.data.content.length > 0 ? response.data.content : [""],
@@ -96,10 +97,14 @@ export default class EditPolicy extends Component {
         this.setState({[name]: value});
     }
 
-    //get contents for policy
-    editPolicySection(e) {
+    /**
+     * Update policy's content
+     * @param editorId - represents section's index
+     * @param sectionContent - new content of a section
+     */
+    updatePolicySection(editorId, sectionContent) {
         let contentBuffer = this.state.contents;
-        contentBuffer[e.target.id] = e.target.value;
+        contentBuffer[editorId] = sectionContent;
         this.setState({contents: contentBuffer});
     }
 
@@ -128,7 +133,7 @@ export default class EditPolicy extends Component {
                             </FormGroup>
                             <PolicyContent
                                 content={this.state.contents}
-                                handler={this.editPolicySection}
+                                handler={this.updatePolicySection}
                             />
                             <Button outline
                                     color="primary"
@@ -154,12 +159,6 @@ export default class EditPolicy extends Component {
                                 Details
                             </Button>
                         </Form>
-                        {/* <div id="renderPDF" >
-                           <p style={{fontFamily: 'Verdana', fontSize: 12}}>{localStorage.getItem("session_name")}</p>
-                           <p style={{fontFamily: 'Verdana', fontSize: 12}}>{this.getDate()}</p>
-                           <h3 className="text-center">{localStorage.getItem('reviewPolicy')}</h3>
-                           {this.renderPDF()}
-                         </div> */}
                     </Col>
                 </Row>
             </div>
@@ -173,34 +172,14 @@ export default class EditPolicy extends Component {
 function PolicyContent(props) {
     const content = props.content;
     let sectionElements = [];
-    let id = 0;
 
-    sectionElements = content.map((section) =>
-        <PolicySection content={section} handler={props.handler} id={id++}/>
+    sectionElements = content.map((section, index) =>
+        <PolicyEditor content={section} handler={props.handler} id={index}/>
     );
 
     return (
         <>
             {sectionElements}
         </>
-    );
-}
-
-/**
- * Represents one section of a policy
- */
-function PolicySection(props) {
-    return (
-        <FormGroup>
-            <InputGroup className="form-group-no-border">
-                <Input
-                    type="textarea"
-                    rows="12"
-                    id={props.id}
-                    value={props.content}
-                    onChange={props.handler}
-                />
-            </InputGroup>
-        </FormGroup>
     );
 }

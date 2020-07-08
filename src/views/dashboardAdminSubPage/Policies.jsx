@@ -83,7 +83,7 @@ class Policies extends React.Component {
   }
 
   addPolicy() {
-    this.setState({ modal: true });
+    this.setState({ modal: true , policyId: null});
   }
 
   editPolicy(id) {
