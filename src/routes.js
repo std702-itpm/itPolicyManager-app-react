@@ -221,7 +221,7 @@ var routesCompanyInitiator = [
     icon: "nc-icon nc-simple-add",
     component: policyToSendAssessment,
     logo: userLogo,
-    sidebar: true,
+    sidebar: false,
     layout: "/dashboard"
   },
   {

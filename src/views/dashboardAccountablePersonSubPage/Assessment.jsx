@@ -1,27 +1,12 @@
 import React from "react";
-import Axios from 'configs/AxiosConfig';
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Api from "services/Api"
 
 // reactstrap components
 import {
-  Row,
-  Col,
-  Input,
-  InputGroup,
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Label,
-  Jumbotron
+  Row, Col, Input, InputGroup, Button, Card, CardHeader,
+  CardBody, CardTitle, Label, Jumbotron, Modal, ModalBody, ModalFooter
 } from "reactstrap";
-
-let checkedAnswer;
-let isAnswerCorrect = [];
-let score = 0;
 
 class Assessment extends React.Component {
   constructor(props) {
@@ -29,15 +14,28 @@ class Assessment extends React.Component {
     this.renderAssessment = this.renderAssessment.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.renderLoginPage = this.renderLoginPage.bind(this);
+    this.openPolicyModal = this.openPolicyModal.bind(this);
+    this.togglePolicyModal = this.togglePolicyModal.bind(this);
+    this.confirmPolicyModal = this.confirmPolicyModal.bind(this);
+    this.complianceCheckboxChange = this.complianceCheckboxChange.bind(this);
     this.subscribedPolicyId = "";
+    this.user = {};
+    this.score = 0;
+    this.maxScore = 0;
     this.state = {
-      isLoggedIn: false,
+      isLoggedIn: false, //TODO Change it back to false
       assessmentList: [],
-      checkedAnswer: "",
-      policies: [],
-      currentPolicy: [],
-      loginEmail: ""
+      currentPolicy: {},
+      contents: [],
+      loginEmail: "",
+      modal: false,
+      isComplianceChecked: false,
+      showComplianceCheckbox: false,
     };
+    this.modalOption = {
+      keyboard: false,
+      backdrop: "static"
+    }
     this.api = new Api();
   }
 
@@ -47,7 +45,8 @@ class Assessment extends React.Component {
       .then(response => {
         this.setState({
           currentPolicy: response.data,
-          assessmentList: response.data.assessments
+          assessmentList: response.data.assessments,
+          contents: response.data.content
         });
       }).catch(function (error) {
         console.log(error);
@@ -55,43 +54,95 @@ class Assessment extends React.Component {
 
   }
   onSubmit() {
-    // TODO: Fix this logic
-    let totalScore = 0;
-    let maxScore = this.state.assessmentList.length;
+    this.score = 0;
+    this.maxScore = this.state.assessmentList.length;
     this.state.assessmentList.forEach(assessment => {
       if (!assessment.selectedOption) {
         alert("Please answer every questions in the assessment.")
-        throw "Please complete every questions";
+        //Break the loops
+        throw new Error("Please complete every questions");
       }
       if (assessment.correct_answer === assessment.selectedOption) {
-        totalScore++
+        this.score++
       }
     })
-    if (totalScore < maxScore) {
-      toast("You've scored " + totalScore + " out of " + maxScore + 
-      ". Please review the policy and try again.", {
+    if (this.score < this.maxScore) {
+      //Failed the quiz
+      toast("You've scored " + this.score + " out of " + this.maxScore +
+        ". Please review the policy and accept the compliance.", {
         type: "error",
-        position: toast.POSITION.TOP_CENTER
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+      })
+      this.setState({
+        showComplianceCheckbox: true,
+        modal: true,
       })
     } else {
-      toast("Congratulation! You've scored : " + totalScore + " out of " + maxScore + 
-      ". The certificate will be sent to your email soon.", {
+      toast("Congratulation! You've scored : " + this.score + " out of " + this.maxScore +
+        ". The certificate will be sent to your email soon.", {
         type: "success",
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.saveAssessmentResult();
+    }
+  }
+
+  saveAssessmentResult() {
+    this.api.saveAssessmentResult({
+      score: this.score,
+      maxScore: this.maxScore,
+      isComplianceChecked: this.state.isComplianceChecked,
+      user: this.user
+    }).then(response => {
+      toast(response.data.message, {
+        type: "success",
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+        onClose: () => {
+          window.location.href = '/landing-page'
+        }
+      })
+
+    }).catch(error => console.error(error))
+  }
+
+  openPolicyModal() {
+    this.setState({
+      modal: true
+    })
+  }
+  togglePolicyModal() {
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
+
+  confirmPolicyModal() {
+    if (this.state.isComplianceChecked && this.state.showComplianceCheckbox) {
+      toast("Your submission has been record. We will send the certificate to your email", {
+        type: "success",
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.saveAssessmentResult()
+      this.togglePolicyModal();
+    } else {
+      toast("Please make sure you have read the policy and accept the compliance.", {
+        type: "error",
+        autoClose: 3000,
         position: toast.POSITION.TOP_CENTER
       })
     }
-    var data = {
-      reviewerId: this.props.match.params.userId,
-      score: score
-    }
-    // TODO Fix the save function in back-end
-    // Axios.post("/assessmentResult", data)
-    //   .then(response => {
-    //     console.log(response)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
+
+  }
+
+  complianceCheckboxChange(e) {
+    this.setState({
+      isComplianceChecked: e.target.checked
+    })
+
   }
 
   renderAssessment(assessment, assessmentIndex) {
@@ -122,13 +173,17 @@ class Assessment extends React.Component {
   renderLoginPage() {
     const login = () => {
       const assessmentTakerList = this.state.currentPolicy.assessment_takers;
-      const isEmailExists = assessmentTakerList.some(taker => taker.user.email === this.state.loginEmail);
-      if (isEmailExists) {
+      this.user = assessmentTakerList.find(taker => taker.user.email === this.state.loginEmail);
+      if (this.user) {
         this.setState({
           isLoggedIn: true
         })
       } else {
-        alert("Your email is not valid");
+        toast("Your email is not valid. Please try again.", {
+          type: "error",
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER
+        })
         this.setState({
           loginEmail: ""
         })
@@ -179,13 +234,13 @@ class Assessment extends React.Component {
                 <p className="card-category">
                   Assessment Questions for <b>{this.state.currentPolicy.policy_name}</b>
                 </p>
-                <Link to="/dashboard/policies" className="btn btn-danger">
-                  &#8592; Go Back to Policies
-                  </Link>
+                <Button onClick={this.openPolicyModal} className="btn btn-danger">
+                  &#8592; Read the policy
+                </Button>
               </CardHeader>
               <CardBody>
                 {this.state.assessmentList.map((assessment, assessmentIndex) => (
-                  <React.Fragment>
+                  <React.Fragment key={assessmentIndex}>
                     {this.renderAssessment(assessment, assessmentIndex)}
                   </React.Fragment>
                 ))}
@@ -198,6 +253,36 @@ class Assessment extends React.Component {
             </Card>
           </Col>
         </Row>
+        <Modal isOpen={this.state.modal} toggle={this.togglePolicyModal}
+          backdrop={this.modalOption.backdrop} keyboard={this.modalOption.keyboard} size="xl">
+          <ModalBody style={{ paddingTop: "3rem", paddingRight: "3rem", paddingLeft: "3rem" }} >
+            <Row>
+              <Col>
+                <h2>Content of {this.state.currentPolicy.policy_name}</h2>
+              </Col>
+            </Row>
+            {this.state.contents.map((con, index) =>
+              <Row key={index} style={{ paddingBottom: "1rem" }}>
+                <Col> {con}</Col>
+              </Row>
+            )}
+          </ModalBody>
+          <ModalFooter style={{ padding: "1rem 3rem", display: "block", borderTop: "1px solid #000000" }}>
+            <Row>
+              <Col xs="10">
+                {this.state.showComplianceCheckbox &&
+                  <Label check>
+                    <Input type="checkbox" checked={this.state.isComplianceChecked} onChange={this.complianceCheckboxChange} />
+                  I have read and understand the policy: {this.state.currentPolicy.policy_name}.
+                  I will comply with the stated guidelines.
+                </Label>}
+              </Col>
+              <Col style={{ textAlign: "right" }}>
+                <Button color="primary" onClick={this.confirmPolicyModal}>Confirm</Button>{' '}
+              </Col>
+            </Row>
+          </ModalFooter>
+        </Modal>
       </>
     }
   }

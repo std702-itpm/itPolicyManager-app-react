@@ -50,6 +50,10 @@ class Api {
             }
         })
     }
+
+    saveAssessmentResult(data){
+        return Axios.post("/assessmentResult", data)
+    }
 }
 
 export default Api;
