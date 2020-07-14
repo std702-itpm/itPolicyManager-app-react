@@ -23,7 +23,7 @@ class Assessment extends React.Component {
     this.score = 0;
     this.maxScore = 0;
     this.state = {
-      isLoggedIn: false, //TODO Change it back to false
+      isLoggedIn: false,
       assessmentList: [],
       currentPolicy: {},
       contents: [],
