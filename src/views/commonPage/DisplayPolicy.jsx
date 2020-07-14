@@ -32,8 +32,6 @@ export default class DisplayPolicyTest extends Component {
             }
         })
             .then(response => {
-                console.log("response:")
-                console.log(response)
                 this.setState({
                     policy: response.data.singlePolicy,
                     contents: response.data.singlePolicy.content,
