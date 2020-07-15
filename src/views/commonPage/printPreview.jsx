@@ -80,7 +80,7 @@ export default class printPreview extends Component {
                         <p>Version: {this.state.policy.version}</p>
                         <p>Review Date: {this.getCurrentDate()}</p>
                         <p>Approval Date: {this.state.approval_date}</p>
-                        <p>Accountable Person: Kristof C (hardcoded) </p>
+                        <p>Accountable Person: Kristof C</p>
                       </div>
                     </Col>
                     <Col className="ml-auto mr-auto" md="5">
