@@ -10,11 +10,16 @@ import {
 // // styles
 import "assets/css/bootstrap.min.css";
 import ITPMLogo from "../assets/img/ITPM-02.png"
+import PolicyViewer from "../components/PolicyViewer/PolicyViewer";
 
 export default class policyView extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { currentPolicy: [] };
+        this.state = {
+            policyId: null,
+            policyName: null,
+            policyContent: null
+        };
     }
 
     componentDidMount() {
@@ -23,7 +28,9 @@ export default class policyView extends React.Component {
             .then(response => {
                 console.log(response)
                 this.setState({
-                    currentPolicy: response.data
+                    policyId: response.data._id,
+                    policyName: response.data.policy_name,
+                    policyContent: response.data.content.join("<br>"),
                 });
                 // console.log(this.state.contents);
             })
@@ -46,9 +53,11 @@ export default class policyView extends React.Component {
                                 style={{ float: "right" }}
                             />
                             <p>
-                                Policy ID:  {this.state.currentPolicy._id}<br />
-                                Policy Name: {this.state.currentPolicy.policy_name}<br /><br />
-                                Content: <br /> {this.state.currentPolicy.content} <br /><br />
+                                Policy ID:  {this.state.policyId}<br />
+                                Policy Name: {this.state.policyName}<br /><br />
+                                Content: <br/>
+                                <PolicyViewer key={this.state.policyId} policyContent={this.state.policyContent} />
+                                <br/><br/>
                             </p>
 
                             <Button>
