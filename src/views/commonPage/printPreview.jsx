@@ -46,12 +46,29 @@ export default class printPreview extends Component {
   //handle print button
   handlePrint = (e) => {
     e.preventDefault();
-    let input = document.getElementById("renderPDF");
-    html2canvas(input)
+    const source = document.getElementById("renderPDF");
+    html2canvas(source, {
+      scale: 3
+    })
       .then((canvas) => {
-        let imgData = canvas.toDataURL('image/png');
-        let pdf = new jsPDF('p', 'mm', [950, 2000]);
-        pdf.addImage(imgData, 'PNG', 10, 12);
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 210;
+        const imgHeight = 200;
+        const pageHeight = 297;
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, position + 12, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position + 12, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+
         pdf.save(localStorage.getItem('reviewPolicy'));
       });
   }
