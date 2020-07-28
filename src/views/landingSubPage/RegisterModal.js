@@ -174,8 +174,11 @@ class RegisterModal extends Component {
           this.setState({
             bNameInput: companyInfo.companyName,
             bAddr: companyInfo.address1,
+            bAddr2: companyInfo.address2,
             bCity: companyInfo.city,
-            bZip: companyInfo.zip
+            bZip: companyInfo.zip,
+            bContact: companyInfo.phoneNumber,
+            bEmail: companyInfo.email
           });
         })
         .catch((err) => {
@@ -261,6 +264,7 @@ class RegisterModal extends Component {
                               name="bEmail"
                               placeholder="Email@email.com"
                               type="text"
+                              value={this.state.bEmail}
                               onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
@@ -270,7 +274,10 @@ class RegisterModal extends Component {
                           <Input
                               name="bContact"
                               placeholder="+64"
-                              type="number"
+                              // changed the type from 'number' to 'text' to allow the '+' sign from response
+                              // in proper way here must be validation with regex
+                              type="text"
+                              value={this.state.bContact}
                               onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
@@ -294,6 +301,7 @@ class RegisterModal extends Component {
                               name="bAddr2"
                               placeholder="Address2"
                               type="text"
+                              value = {this.state.bAddr2}
                               onChange={this.onChangeInput} />
                         </InputGroup>
                       </FormGroup>
