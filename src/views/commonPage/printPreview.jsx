@@ -53,7 +53,7 @@ export default class printPreview extends Component {
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const imgWidth = 210;
-        const imgHeight = 200;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
         const pageHeight = 297;
         let heightLeft = imgHeight;
         let position = 0;
